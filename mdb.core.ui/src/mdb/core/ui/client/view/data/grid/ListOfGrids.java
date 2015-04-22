@@ -29,6 +29,7 @@ public class ListOfGrids {
 			setCreateMenuPaging(isCreateMenu);
 		}
 		
+		/*
 		@Override
 		protected void createMenu () {
 			
@@ -43,7 +44,7 @@ public class ListOfGrids {
 				return super.createMenuContainer();
 			}
 			else return null;
-		}
+		}*/
 		
 	}
 	

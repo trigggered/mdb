@@ -96,7 +96,24 @@ public abstract class MasterDetailGridView extends DataView {
 		_listOfGrids.putRequestToQueue();
 	}
 	
-	protected abstract HashMap<String,String>  getDetaileReqParams(ListGridRecord value);
+	protected abstract String  getRelationField();
+	
+	/* (non-Javadoc)
+	 * @see mdb.core.ui.client.view.data.grid.MasterDetailGridView#getDetaileReqParams(com.smartgwt.client.widgets.grid.ListGridRecord)
+	 */
+	
+	protected HashMap<String, String> getDetaileReqParams(ListGridRecord masterSelectedData) {
+		HashMap<String,String> toReturn = null;
+		if (masterSelectedData !=null) {	
+			String masterId = masterSelectedData.getAttribute(getRelationField());				
+		 
+			toReturn = new HashMap<String,String>();
+			toReturn.put(getRelationField(),masterId);
+		}
+		return toReturn;
+	}
+	
+	
 	
 	protected void requestDetailData(ListGridRecord value) {
 		HashMap<String,String> params = getDetaileReqParams(value);		
