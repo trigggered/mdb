@@ -1,0 +1,7 @@
+/.gwt/
+/.idea/
+/.settings/
+/gwt-unitCache/
+/sql/
+/mdb.core.ui.iml
+/mdb.ui.war

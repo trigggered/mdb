@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns="http://java.sun.com/xml/ns/javaee"
+xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
+	<!-- TODO: Add <servlet> tags for each servlet here. -->
+	<!-- TODO: Add <servlet-mapping> tags for each <servlet> here. -->
+	<!-- TODO: Optionally add a <welcome-file-list> tag to display a welcome file. -->
+	
+<!-- Servlets --> 
+  
+  <servlet>
+    <servlet-name>MdbGatewayServiceImpl</servlet-name>
+    <servlet-class>mdb.ui.server.communication.rpc.mdbgw.MdbGatewayServiceImpl</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>MdbGatewayServiceImpl</servlet-name>
+    <url-pattern>/mdbUI/gateway</url-pattern>
+  </servlet-mapping>
+  
+    <servlet>
+    <servlet-name>RegExpServiceImpl</servlet-name>
+    <servlet-class>mdb.ui.server.communication.rpc.regexp.RegExpServiceImpl</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>RegExpServiceImpl</servlet-name>
+    <url-pattern>/mdbUI/regexpservice</url-pattern>
+  </servlet-mapping>
+  
+
+ <servlet>
+    <servlet-name>FileUploadServlet</servlet-name>
+    <servlet-class>mdb.ui.server.communication.servlet.FileUploadServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>FileUploadServlet</servlet-name>
+    <url-pattern>/mdbUI/upload</url-pattern>
+  </servlet-mapping>
+  
+  <!-- 
+  	<security-constraint>
+      <web-resource-collection>
+        <web-resource-name>Viewpoint Secure URLs</web-resource-name>
+        <url-pattern>/*</url-pattern>
+      </web-resource-collection>
+      <user-data-constraint>
+        <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+      </user-data-constraint>
+    </security-constraint>
+   -->
+</web-app>
