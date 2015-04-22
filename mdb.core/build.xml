@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="mdb.core" basedir="." default="default">
+<property name="src.dir" value="src" />
+<property name="build.dir" value="build" />
+<property name="classes.dir" value="${build.dir}/classes" />
+<property name="dest.dir" value="./../to deploy" />
+
+<property name="mdb.shared.dir" value="./../mdb.core.shared" />
+
+<property name="war.filename" value="mdb.core.war" />
+<property name="war.path" value="dir/${war.filename}" />
+
+<property name="jboss.home" value="/u01/app/jboss" />
+<property name="jboss.deployments.dir" value="${jboss.home}/standalone/deployments" />
+
+<property name="mdb.shared.filename" value="mdb.core.shared.jar" />
+<property name="lib.dir" value="WebContent/WEB-INF/lib" />
+
+<path id="compile.classpath">
+    <fileset dir="WebContent/WEB-INF/lib">
+        <include name="**/*.jar" />
+        <include name="**/*.xml" />        
+    </fileset>
+</path>
+
+<target name="default" depends="init, build-dependence, copy-dependence, compile, buildwar,deploy,jboss.deploy, clean">
+</target>
+
+<target name="build" depends="init, build-dependence, copy-dependence, compile, buildwar,deploy, clean">
+</target>
+
+<target name="init">
+    <mkdir dir="${classes.dir}"/>    
+</target>
+
+<target name="build-dependence">
+    <subant target="default">
+      <fileset dir="${mdb.shared.dir}" includes="build.xml"/>
+    </subant>
+</target>
+
+<target name="copy-dependence">
+    <copy file="${dest.dir}/${mdb.shared.filename}" todir="${lib.dir}" />      
+        
+</target>
+
+
+<target name="compile" description="Java compile">
+     <javac destdir="${classes.dir}" classpathref="compile.classpath">
+          <src path="${src.dir}"/>
+     </javac>                         
+</target>
+
+ 
+<target name="buildwar">
+    <war destfile="${war.filename}" webxml="WebContent/WEB-INF/web.xml">
+        <webinf dir="WebContent/WEB-INF/">
+              <include name="**/gwt-servlet.jar" />
+        </webinf>  
+        <!--  
+        <exclude name="WEB-INF/**" />
+        <webinf dir="WebContent/WEB-INF/">            
+            <include name="**/mdb.core.shared.jar" />
+            <include name="**/gson-2.2.2.jar" />
+            <include name="**/guice-3.0.jar" />
+            <include name="**/com.sun.rowset.jar" />
+            <include name="**/classes/**" />
+        </webinf>        
+        <lib dir="WebContent/WEB-INF/lib"/>
+        -->
+        <fileset dir="WebContent"/>        
+        <classes dir="${classes.dir}"/> 
+    </war>
+</target>
+
+<target name="deploy">
+    <copy file="${war.filename}" todir="${dest.dir}" />
+</target>
+
+
+<target name="jboss.deploy">    
+    <delete file="${jboss.deployments.dir}/${war.filename}.deployed"/>
+    <copy file="${dest.dir}/${war.filename}" todir="${jboss.deployments.dir}" />
+</target>
+
+
+<target name="clean">
+    <delete dir="${classes.dir}" />
+    <delete file="${war.filename}" />
+</target>
+
+</project>
