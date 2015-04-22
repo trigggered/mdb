@@ -1,0 +1,13 @@
+eclipse.preferences.version=1
+filesCopiedToWebInfLib=
+gaeHrdEnabled=true
+gaeIsEclipseDefaultInstPath=true
+googleCloudSqlEnabled=false
+localDevMySqlEnabled=true
+mySqlDatabaseName=mdb
+mySqlDatabasePassword=www
+mySqlDatabaseUser=root
+mySqlHostName=localhost
+mySqlIsConfigured=true
+mySqlJdbcJar=/home/azhuk/my workspaces/lib/mysql-connector-java-5.0.8-bin.jar
+mySqlPort=3306
