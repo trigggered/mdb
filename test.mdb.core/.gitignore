@@ -1,0 +1,7 @@
+/.settings/
+/bin/
+/createHWClient .sh
+/createWsClient (copy).sh~
+/createWsClient.sh
+/createWsClient.sh~
+/mdb.core.data.jar
