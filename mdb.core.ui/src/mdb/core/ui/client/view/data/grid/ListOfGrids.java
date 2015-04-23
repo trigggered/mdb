@@ -6,7 +6,6 @@ import java.util.HashMap;
 
 import mdb.core.shared.data.Params;
 import mdb.core.ui.client.communication.impl.GatewayQueue;
-import mdb.core.ui.client.view.components.menu.IMenuContainer;
 
 import com.smartgwt.client.widgets.layout.Layout;
 
@@ -18,15 +17,19 @@ public class ListOfGrids {
 		int _arrayPosition;
 		
 		public EmbeddedGrid(int entityId) {
-			super(entityId);
+			//super(entityId);
+			setMainEntityId(entityId);
 			setCreateMenuNavigator(false);
 			setCreateMenuPaging(false);
+			setCreateMenuContainer(false);
 		}
 		
-		public EmbeddedGrid(int entityId, boolean isCreateMenu) {
-			super(entityId);
-			setCreateMenuNavigator(isCreateMenu);
-			setCreateMenuPaging(isCreateMenu);
+		public EmbeddedGrid(int entityId, boolean value) {
+			//super(entityId);
+			setMainEntityId(entityId);
+			setCreateMenuNavigator(value);
+			setCreateMenuPaging(value);
+			setCreateMenuContainer(value);
 		}
 		
 		/*

@@ -3,6 +3,7 @@
  */
 package mdb.core.ui.client.view.data;
 
+import java.util.Collection;
 import java.util.HashMap;
 
 import mdb.core.shared.data.Params;
@@ -69,6 +70,12 @@ public abstract class DataView extends BaseView implements IDataView {
 	private ICallbackEvent<Void> _afterEditEvent 	= _saveAfterEvent;
 	private ICallbackEvent<Void> _afterInsertEvent = _saveAfterEvent;
 	
+	@Override
+	protected void createComponents() {
+		super.createComponents();	
+		_params = new Params();
+	}
+	
 	/**
 	 * @return the _isCreateMenuPaging
 	 */
@@ -86,6 +93,7 @@ public abstract class DataView extends BaseView implements IDataView {
 	/**
 	 * @param _isCreateMenuPaging the _isCreateMenuPaging to set
 	 */
+	@Override
 	public void setCreateMenuPaging(boolean value) {
 		this._isCreateMenuPaging = value;
 	}
@@ -93,6 +101,7 @@ public abstract class DataView extends BaseView implements IDataView {
 	/**
 	 * @param _isCreateMenuNavigator the _isCreateMenuNavigator to set
 	 */
+	@Override
 	public void setCreateMenuNavigator(boolean value) {
 		this._isCreateMenuNavigator = value;
 	}
@@ -139,8 +148,17 @@ public abstract class DataView extends BaseView implements IDataView {
 	
 	
 	
-	public  void prepareRequestData(IRemoteDataRequest ... arr) {
+	public  void prepareRequestData(Collection<IDataView> values) {
 	
+		for (IRemoteDataRequest dataRequestor : values ) {
+			if (dataRequestor!= null)
+				dataRequestor.prepareRequestData();			 
+		 }
+	}
+	
+	
+	public  void prepareRequestData(IRemoteDataRequest ... arr) {
+		
 		for (IRemoteDataRequest dataRequestor : arr ) {
 			if (dataRequestor!= null)
 				dataRequestor.prepareRequestData();			 
@@ -155,7 +173,15 @@ public abstract class DataView extends BaseView implements IDataView {
 			 }
 		 }		
 	}
-	
+	/*
+	public void putRequestToQueue(Collection<IDataView> values ) {
+		 for (IDataView dataRequestor : values ) {
+			 if (dataRequestor!= null) {
+				 GatewayQueue.instance().put(dataRequestor.getDataBinder().getDataProvider());
+			 }
+		 }		
+	}
+	*/
 	
 	@Override
 	public void callRequestData() {
@@ -344,7 +370,7 @@ public abstract class DataView extends BaseView implements IDataView {
 	/**
 	 * 
 	 */
-	protected void callAfterDeleteEvent() {
+	public void callAfterDeleteEvent() {
 		if (_afterDeleteEvent != null) {
 			_afterDeleteEvent.doWork(null);
 		}

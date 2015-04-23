@@ -42,6 +42,7 @@ public class EditDialog extends BaseDataDialog implements IDataComponent  {
 	
 	
 	public DynamicForm getDataForm() {
+		
 		return _dataForm;
 	}
 
@@ -80,6 +81,7 @@ public class EditDialog extends BaseDataDialog implements IDataComponent  {
 	}
 	
 	
+	@SuppressWarnings("rawtypes")
 	@Override
 	public boolean isHaseChanges() {	
 		Map changetValues = getDataForm().getChangedValues();
@@ -110,17 +112,15 @@ public class EditDialog extends BaseDataDialog implements IDataComponent  {
 	public static void view (IDataSource dataSource,  ListGrid grid) {		
 		view (dataSource, grid, false, false);		
 	}
-	
-	public static void viewForEdit (IDataSource dataSource,  ListGrid grid) {		
-		view (dataSource, grid, true, true);		
-	}
-	
-	public static void viewForEdit (IDataSource dataSource,  ListGrid grid,  boolean isCanRemouteSave) {		
-		view (dataSource, grid, true,  isCanRemouteSave);		
-	}
+
 	
 	public static void view (IDataSource dataSource,  ListGrid grid, boolean isCanEdit, boolean isCanRemouteSave) {		
-		EditDialog dlg = new EditDialog(null);
+		view (dataSource,  grid, isCanEdit, isCanRemouteSave, null);		
+	}
+	
+	
+	public static void view (IDataSource dataSource,  ListGrid grid, boolean isCanEdit, boolean isCanRemouteSave, ICallbackEvent<Record>  callbackEvent) {		
+		EditDialog dlg = new EditDialog(callbackEvent);
 		
 		dlg.setDataSource(dataSource, isCanEdit);		
 		dlg.setEditGrid(grid);
@@ -129,8 +129,24 @@ public class EditDialog extends BaseDataDialog implements IDataComponent  {
 		dlg.show();		
 	}
 	
-	public static void viewForNewRecord (IDataSource dataSource, Record initRecord,  ICallbackEvent<Record>  callackEvent) {
-		EditDialog dlg = new EditDialog(callackEvent);
+	
+	public static void viewForEdit (IDataSource dataSource,  ListGrid grid) {		
+		view (dataSource, grid, true, true);		
+	}
+	
+	public static void viewForEdit (IDataSource dataSource,  ListGrid grid,  boolean isCanRemouteSave) {		
+		view (dataSource, grid, true,  isCanRemouteSave);		
+	}
+
+	
+	public static void viewForEdit (IDataSource dataSource,  ListGrid grid,  boolean isCanRemouteSave, 
+			ICallbackEvent<Record>  callbackEvent) {		
+		view (dataSource, grid, true,  isCanRemouteSave, callbackEvent);		
+	}
+	
+	
+	public static void viewForNewRecord (IDataSource dataSource, Record initRecord,  ICallbackEvent<Record>  callbackEvent) {
+		EditDialog dlg = new EditDialog(callbackEvent);
 		dlg.setDataSource(dataSource);
 		if (initRecord!=null) {
 			dlg.getDataForm().editNewRecord(initRecord);
@@ -140,6 +156,9 @@ public class EditDialog extends BaseDataDialog implements IDataComponent  {
 		}		
 		dlg.show();		
 	}	
+	
+	
+
 	
 	@Override
 	public String getCaption() {		

@@ -14,6 +14,9 @@ import mdb.core.ui.client.events.IChangeHandler;
  */
 public interface ICustomItemEditor {
 	void addOnValueChangeEvent(IChangeHandler value  );
+	
+	IChangeHandler getOnValueChangeEvent();
+	
 	MdbField getMdbField();
 	void setMdbField( MdbField value);	
 }

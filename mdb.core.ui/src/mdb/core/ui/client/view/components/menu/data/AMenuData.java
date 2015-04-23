@@ -40,6 +40,7 @@ public abstract class AMenuData extends  Menu   {
 		  getButtonInitialiser().put(IDataNavigator.Buttons.dataSave, new Component(Captions.SAVE, "dataNavigator/save.png"));
 		  getButtonInitialiser().put(IDataNavigator.Buttons.dataCancel,new Component(Captions.CANCEL, "dataNavigator/cancel.png"));
 		  getButtonInitialiser().put(IDataNavigator.Buttons.dataRefresh,new Component(Captions.REFRESH, "dataNavigator/refresh.png"));				
+		  getButtonInitialiser().put(IDataNavigator.Buttons.dataPrint,new Component(Captions.PRINT, "dataNavigator/printer.png"));
 		  getButtonInitialiser().put(IDataNavigator.Buttons.dataFilter,new Component(Captions.FILTER, "dataNavigator/find.png"));
 		  
 		  getButtonInitialiser().put(IDataPaging.Buttons.dataFirstPage,new Component(Captions.FIRST_PAGE, "dataNavigator/resultsetfirst.png"));

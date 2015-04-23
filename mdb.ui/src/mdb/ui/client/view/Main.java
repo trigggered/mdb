@@ -62,7 +62,7 @@ public class Main extends AMainView  implements ITreeView {
     private VLayout _sideNavLayout;
     private TreeGrid _sideNavTree;    	
 
-    private int APP_ID =0;
+    private final int APP_ID =0;
     
     /* (non-Javadoc)
 	 * @see mdb.core.ui.view.IMainView#getAppId()

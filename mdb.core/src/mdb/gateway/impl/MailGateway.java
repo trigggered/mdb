@@ -54,14 +54,15 @@ public class MailGateway implements IMailGatewayServiceRemote  {
 			Address[] to  = new Address[recipientsList.size()]; 
 			to= recipientsList.toArray(to);
 			
-			m.setHeader("Content-Type","text/plain; charset=\"utf-8\"");
+			m.setHeader("Content-Type","text/html; charset=\"utf-8\"");
 			
 			m.setFrom(from);
 			
 			m.setRecipients(Message.RecipientType.TO, to);
 			m.setSubject(subject);
 			m.setSentDate(new java.util.Date());			
-			m.setContent(content,"text/plain; charset=utf-8");
+			//m.setContent(content,"text/plain; charset=utf-8");
+			m.setContent(content,"text/html; charset=utf-8");
 			
 			//MimeMessage.setContentLanguage(languages);
 			Transport.send(m);

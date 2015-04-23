@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 import mdb.core.ui.client.events.ICallbackEvent;
 import mdb.core.ui.client.events.IDataEditHandler;
 import mdb.core.ui.client.resources.locales.Captions;
+import mdb.core.ui.client.view.data.IListDataView;
 import mdb.core.ui.client.view.data.grid.GridView;
 
 import com.smartgwt.client.data.Record;
@@ -24,18 +25,19 @@ public class SelectDialog extends BaseDataDialog {
 			.getName());
 
 	private ICallbackEvent<Record[]> _callbackEvent;
-	private GridView _grid;		
+
+	private IListDataView _dataListView;
 	private boolean _isMultiSelect = false;
 	private int  _entityId;	
 	
 	public SelectDialog(int entityId, boolean isCanMultiSelect, ICallbackEvent<Record[]> callbackEvent) {
 	 _entityId = entityId;	
-	 _grid.setMainEntityId(_entityId);
-	 _grid.setFilteringEnable(false);
-	 _grid.setSortingEnable(false);
+	 _dataListView.setMainEntityId(_entityId);
+	 _dataListView.setFilteringEnable(false);
+	 _dataListView.setSortingEnable(false);
 	 _callbackEvent = callbackEvent;
 	 setIsMultiSelect(isCanMultiSelect);
-	 _grid.addEditEvent(new IDataEditHandler(			 ) {
+	 _dataListView.addEditEvent(new IDataEditHandler(			 ) {
 	 	
 		@Override
 		public void onEdit(Record record) {			
@@ -56,15 +58,15 @@ public class SelectDialog extends BaseDataDialog {
 	@Override
 	public void okBtnClickEvent() {
 		if (_callbackEvent != null)  {
-			Record[] records = _grid.getListGrid().getSelectedRecords();
+			Record[] records = _dataListView.getListGrid().getSelectedRecords();
 			_callbackEvent.doWork(records);
-			_grid.getListGrid().selectRecords(records, false);
+			_dataListView.getListGrid().selectRecords(records, false);
 		}			
 		super.okBtnClickEvent();	
 	}
 	
 	public void callRequestData() {
-		_grid.callRequestData();
+		_dataListView.callRequestData();
 	}
 	
 	public ICallbackEvent<Record[]> getCallbackEvent() {
@@ -75,14 +77,18 @@ public class SelectDialog extends BaseDataDialog {
 		this._callbackEvent = _callbackEvent;
 	}
 	
+	protected IListDataView   createListDataView() {
+		return new GridView();
+	}
+	
 	@Override
 	protected void createContextLayout() {		
-		_grid = new GridView();
-		_grid.setCreateMenuNavigator(false);
-		_grid.setMainEntityId(_entityId);
+		_dataListView = createListDataView();
+		_dataListView.setCreateMenuNavigator(false);
+		_dataListView.setMainEntityId(_entityId);
 		setIsMultiSelect(true);	
 		
-		addItem(_grid);	      
+		addItem(_dataListView.getCanvas());	      
 	}
 	
 	/* (non-Javadoc)
@@ -113,10 +119,10 @@ public class SelectDialog extends BaseDataDialog {
 	public void setIsMultiSelect(boolean value) {
 		this._isMultiSelect = value;
 		if (_isMultiSelect) {
-			_grid.getListGrid().setSelectionType(SelectionStyle.SIMPLE);
-			_grid.getListGrid().setSelectionAppearance(SelectionAppearance.CHECKBOX);
+			_dataListView.getListGrid().setSelectionType(SelectionStyle.SIMPLE);
+			_dataListView.getListGrid().setSelectionAppearance(SelectionAppearance.CHECKBOX);
 		} else {			
-			_grid.getListGrid().setSelectionType(SelectionStyle.SINGLE);
+			_dataListView.getListGrid().setSelectionType(SelectionStyle.SINGLE);
 		}
 	}
 	
@@ -136,8 +142,8 @@ public class SelectDialog extends BaseDataDialog {
 		return  Captions.CHOSE_REC;
 	}
 
-	public GridView getGrid() {
-		return _grid;
+	public IListDataView getGrid() {
+		return _dataListView;
 	}
 
 	

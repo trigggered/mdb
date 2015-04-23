@@ -52,4 +52,5 @@ public interface IView extends ISingleInstanceOnly {
 	public void setViewContainerID(String id);
 	
 	public String getViewContainerID( );
+	public void print();
 }

@@ -15,5 +15,5 @@ import javax.jws.WebService;
 public interface IMailGatewayServiceRemote {
 
 	@WebMethod
-	 public void send(String addressFrom, String[] addressTo  ,String subject, String content);
+	 public void send(String addressFrom, String[] addressTo  ,String subject, String content) ;	
 }

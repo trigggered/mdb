@@ -37,7 +37,7 @@ import com.smartgwt.client.widgets.layout.VLayout;
  *
  */
 
-public abstract class AListView extends DataView  {
+public abstract class AListView extends DataView implements IListDataView  {
 
 	
 	 private static final Logger _logger = Logger
@@ -230,7 +230,7 @@ public abstract class AListView extends DataView  {
 	}
 	
 	@Override
-	protected void removeRecord(Record rec) {
+	public void removeRecord(Record rec) {
 		if ( rec == null) {
 			_logger.info("selected record is null");
 		}else {

@@ -12,12 +12,11 @@ import mdb.core.shared.transport.IRequestData.ExecuteType;
 import mdb.core.shared.transport.RequestEntity;
 import mdb.core.ui.client.command.ICommand;
 import mdb.core.ui.client.data.impl.fields.DataSourceFieldsBuilder;
-import mdb.core.ui.client.events.ICallbackEvent;
 import mdb.core.ui.client.view.components.menu.IMenuContainer;
 import mdb.core.ui.client.view.components.menu.IMenuItem;
 import mdb.core.ui.client.view.components.menu.IMenuItem.ItemType;
-import mdb.core.ui.client.view.components.menu.mdb.MenuFieldViews;
 import mdb.core.ui.client.view.components.menu.Menu;
+import mdb.core.ui.client.view.components.menu.mdb.MenuFieldViews;
 import mdb.core.ui.client.view.data.IDataView;
 import mdb.core.ui.client.view.data.grid.GridView;
 import mdb.core.ui.client.view.dialogs.edit.EditDialog;
@@ -90,13 +89,7 @@ public class EntityFieldsEditor extends GridView {
 	
 	@Override
 	public  void callInsertEvent() {		
-		EditDialog.viewForNewRecord(getMainDataSource(), getNewFieldDefinitionRecord(),
-				new ICallbackEvent<Record>() {			
-			@Override
-			public void doWork(Record data) {
-				//getMainDataSource().getDataSource().addData(data);
-			}
-		});			
+		EditDialog.viewForNewRecord(getMainDataSource(), getNewFieldDefinitionRecord(),null);			
 	}	
 	
 	

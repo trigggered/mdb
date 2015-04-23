@@ -213,10 +213,12 @@ public class DataSourceFieldsBuilder {
 					
 					DataSourceTextField dsTextField = new DataSourceTextField(colName, colTitle );
 					
+					
 					toReturn.setLookUpFld(toReturn.new LookUpFld(lookUpSrc, lookUpKey, lookUpFlds, masterFld));					
 					
 					
 					ButtonItemSelectEditor editor = new ButtonItemSelectEditor(Integer.parseInt(lookUpSrc) );
+					
 	    			
 	    			toReturn.setItemEditor(editor);	    			
 	    			

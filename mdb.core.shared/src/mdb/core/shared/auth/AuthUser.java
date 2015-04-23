@@ -8,12 +8,14 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 
+import com.google.gwt.user.client.rpc.IsSerializable;
+
 /**
  * @author azhuk
  * Creation date: Dec 23, 2013
  *
  */
-public  class AuthUser implements IUserInfo, java.io.Serializable  {
+public  class AuthUser implements IUserInfo, IsSerializable  {
 	/**
 	 * 
 	 */
@@ -31,6 +33,7 @@ public  class AuthUser implements IUserInfo, java.io.Serializable  {
 	private Date _authTime;
 	private String _devisionName;
 	private int _devisionId;
+	private int _chooseApplicationID;
 
 	public static AuthUser copyFrom (IUserInfo info) {
 		AuthUser toReturn = new AuthUser();
@@ -156,6 +159,16 @@ public  class AuthUser implements IUserInfo, java.io.Serializable  {
 	@Override
 	public List<String> getRoles() {
 		return _roles;
+	}
+
+	@Override
+	public int getChooseApplicationID() {
+		return _chooseApplicationID;
+	}
+
+	@Override
+	public void setChooseApplicationID(int _chooseApplicationID) {
+		this._chooseApplicationID = _chooseApplicationID;
 	}
 	
 	

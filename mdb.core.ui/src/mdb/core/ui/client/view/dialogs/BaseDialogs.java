@@ -257,5 +257,9 @@ public abstract class BaseDialogs extends Window implements IView {
 	public String getViewContainerID( ) {
 		return _containerID;
 	}
-	
+
+	@Override
+	public void print() {
+		Canvas.showPrintPreview(getCanvas());
+	}
 }

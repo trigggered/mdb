@@ -9,9 +9,11 @@ import mdb.core.shared.transport.IRequestData;
 import mdb.core.shared.transport.IRequestData.ExecuteType;
 import mdb.core.shared.transport.RequestEntity;
 import mdb.core.ui.client.view.data.AListView;
+import mdb.core.ui.client.view.data.IListDataView;
 
 import com.smartgwt.client.types.SelectionAppearance;
 import com.smartgwt.client.types.SelectionStyle;
+import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.grid.ListGrid;
 
 
@@ -22,7 +24,7 @@ import com.smartgwt.client.widgets.grid.ListGrid;
  *
  */
 
-public  class GridView extends AListView  {
+public  class GridView extends AListView implements IListDataView {
 
 	private static final Logger _logger = Logger
 			.getLogger(GridView.class.getName());
@@ -82,5 +84,9 @@ public  class GridView extends AListView  {
 		}
 	}
 	
+	@Override
+	public void print() {
+		Canvas.showPrintPreview(getListGrid());
+	}	
 
 }

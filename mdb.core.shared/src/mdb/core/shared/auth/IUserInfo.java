@@ -34,7 +34,13 @@ public interface IUserInfo extends Serializable{
 	public void setLoginName(String name);
 	
 	public String getLoginName();
-	
-	
+	/**
+	 * @return
+	 */
+	int getChooseApplicationID();	
+	/**
+	 * @param _chooseApplicationID
+	 */
+	void setChooseApplicationID(int _chooseApplicationID);	
 	
 }

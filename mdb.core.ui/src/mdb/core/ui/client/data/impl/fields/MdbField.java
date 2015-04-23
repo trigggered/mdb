@@ -35,6 +35,8 @@ public class MdbField {
 		String _lookUpSrc;
 		
 		String _lookUpKeyName;
+		
+		
 		/**
 		 * @return the _lookUpSrc
 		 */
@@ -107,6 +109,13 @@ public class MdbField {
 		 */
 		public void setLookUpKeyValue(String value) {
 			this._lookUpKeyValue = value;
+		}
+		/**
+		 * 
+		 */
+		public void clear() {
+			_lookUpFld.setLookUpKeyValue("-1");
+			_lookUpFld.setLookUpFldsValue("");
 		}	
 	}
 	

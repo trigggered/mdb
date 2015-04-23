@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import mdb.core.ui.client.communication.impl.GatewayQueue;
 import mdb.core.ui.client.view.data.DataView;
+import mdb.core.ui.client.view.data.IListDataView;
 import mdb.core.ui.client.view.data.grid.ListOfGrids.EmbeddedGrid;
 
 import com.smartgwt.client.data.Record;
@@ -11,7 +12,7 @@ import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
 import com.smartgwt.client.widgets.grid.events.RecordClickHandler;
 
-public abstract class MasterDetailGridView extends DataView {	
+public abstract class MasterDetailGridView extends DataView  implements IListDataView{	
 
 	
 	protected ListOfGrids _listOfGrids;
@@ -141,6 +142,17 @@ public abstract class MasterDetailGridView extends DataView {
 			view.getMainDataSource().save();
 		}
 	}
+
+	public void setFilteringEnable(boolean value) {	
+		 for (IListDataView dataView :   getListOfGrids().getList() ) {
+			 dataView.setFilteringEnable(value);
+		 }
+	}
 	
+	public void setSortingEnable(boolean value) {
+		for (IListDataView dataView :   getListOfGrids().getList() ) {
+			 dataView.setSortingEnable(value);
+		 }
+	}		
 		
 }
