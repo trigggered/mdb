@@ -3,7 +3,6 @@
  */
 package mdb.core.ui.client.data.impl.fields.editors;
 
-import java.util.logging.Logger;
 
 import mdb.core.ui.client.events.IButtonClickEvent;
 import mdb.core.ui.client.events.ICallbackEvent;
@@ -12,6 +11,9 @@ import mdb.core.ui.client.events.IChangeHandler;
 import mdb.core.ui.client.view.dialogs.SelectDialog;
 
 import com.smartgwt.client.data.Record;
+import com.smartgwt.client.widgets.form.fields.PickerIcon;
+import com.smartgwt.client.widgets.form.fields.events.FormItemClickHandler;
+import com.smartgwt.client.widgets.form.fields.events.FormItemIconClickEvent;
 
 /**
  * @author azhuk
@@ -21,9 +23,6 @@ import com.smartgwt.client.data.Record;
 public class ButtonItemSelectEditor  extends ButtonItemEditor implements ICustomItemEditor {
 	
 	private IChangeHandler _changeHandler;
-	
-	private static final Logger _logger = Logger
-			.getLogger(ButtonItemSelectEditor.class.getName());
 	
 	int _entityId;	
 
@@ -66,6 +65,11 @@ public class ButtonItemSelectEditor  extends ButtonItemEditor implements ICustom
 	@Override
 	public void addOnValueChangeEvent(IChangeHandler value) {
 		_changeHandler = value;		
+	}
+	
+	@Override
+	public IChangeHandler getOnValueChangeEvent() {
+		return _changeHandler;
 	}
 	
 

@@ -30,7 +30,8 @@ public abstract class BaseView extends VLayout implements IView {
 	private String _imgDescription;
 	private Tab _ownerWindow;
 	private boolean _isCanEdit = true;
-	private String _containerID;     
+	private String _containerID;    
+	private boolean _isCreateMenuContainer =true;
  
     public BaseView() {
     	_viewPanelType = EViewPanelType.HLayout;
@@ -47,12 +48,14 @@ public abstract class BaseView extends VLayout implements IView {
         setHeight100();    
         setLayoutMargin(5);
         
-        _menuContainer = createMenuContainer();
-        if (_menuContainer!=null) {
-        	addMember( _menuContainer.getLayout() );
-        	createMenu ();
-        }
+        if (isCreateMenuContainer()) {
+	        _menuContainer = createMenuContainer();
+	        if (_menuContainer!=null) {
+	        	addMember( _menuContainer.getLayout() );
+	        	createMenu ();
+	        }
         
+        }
         _viewPanel = createViewPanel();        
         if (_viewPanel != null) {
         	addMember( _viewPanel );
@@ -61,7 +64,16 @@ public abstract class BaseView extends VLayout implements IView {
     }       
     
     
-    protected boolean isComponentsCreated() {
+
+	public boolean isCreateMenuContainer() {
+		return _isCreateMenuContainer;
+	}
+
+	public void setCreateMenuContainer(boolean value) {
+		_isCreateMenuContainer =value;
+	}
+	
+	protected boolean isComponentsCreated() {
     	return _componentsCreated;
     }
     
@@ -69,7 +81,7 @@ public abstract class BaseView extends VLayout implements IView {
     	return _viewPanel;	
     }
     
-	protected IMenuContainer createMenuContainer () {
+	protected IMenuContainer createMenuContainer () {		
 		return null;
 	}
 
@@ -210,5 +222,10 @@ public abstract class BaseView extends VLayout implements IView {
 	
 	public String getViewContainerID( ) {
 		return _containerID;
+	}
+	
+	@Override
+	public void print() {		
+		Canvas.showPrintPreview(getCanvas());		
 	}
 }

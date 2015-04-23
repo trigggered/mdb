@@ -8,10 +8,10 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.logging.Logger;
 
-import mdb.core.shared.data.Field;
-import mdb.core.shared.data.Fields;
 import mdb.core.shared.data.EMdbBooleanType;
 import mdb.core.shared.data.EMdbFieldType;
+import mdb.core.shared.data.Field;
+import mdb.core.shared.data.Fields;
 import mdb.core.shared.transport.IRequestData;
 import mdb.core.shared.utils.DataConverter;
 import mdb.core.ui.client.communication.IDataProvider;
@@ -213,17 +213,19 @@ public class DataSourceFieldsBuilder {
 					
 					DataSourceTextField dsTextField = new DataSourceTextField(colName, colTitle );
 					
+					
 					toReturn.setLookUpFld(toReturn.new LookUpFld(lookUpSrc, lookUpKey, lookUpFlds, masterFld));					
 					
 					
 					ButtonItemSelectEditor editor = new ButtonItemSelectEditor(Integer.parseInt(lookUpSrc) );
+					
 	    			
 	    			toReturn.setItemEditor(editor);	    			
 	    			
 	    			dsTextField.setEditorProperties(editor);    				    			
 	    			toReturn.setDataSourceField(dsTextField);
 	    			
-    			}
+    		}
     			break;
     		case CONTEXT_VALUE: {
     			String lookUpKey =  record.getAttributeAsString(fldLookUpKey);

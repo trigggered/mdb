@@ -3,13 +3,13 @@
  */
 package mdb.core.ui.client.data.impl.fields.editors;
 
-import java.util.logging.Logger;
-
 import mdb.core.ui.client.events.IButtonClickEvent;
+import mdb.core.ui.client.events.IChangeEvent;
 
 import com.smartgwt.client.widgets.form.fields.FormItemIcon;
-import com.smartgwt.client.widgets.form.fields.events.IconClickEvent;
-import com.smartgwt.client.widgets.form.fields.events.IconClickHandler;
+import com.smartgwt.client.widgets.form.fields.PickerIcon;
+import com.smartgwt.client.widgets.form.fields.events.FormItemClickHandler;
+import com.smartgwt.client.widgets.form.fields.events.FormItemIconClickEvent;
 
 /**
  * @author azhuk
@@ -19,22 +19,46 @@ import com.smartgwt.client.widgets.form.fields.events.IconClickHandler;
 
  public  class ButtonItemEditor extends TextItemEditor {
 	 
-	private static final Logger _logger = Logger.getLogger(ButtonItemEditor.class
-			.getName());  		  
-	          
-	    private IButtonClickEvent _buttonClickEvent;
+	private IButtonClickEvent _buttonClickEvent;
 	    
 	    
 	    public ButtonItemEditor() {  
 	            
 	            FormItemIcon formItemIcon = new FormItemIcon();  
 	            setIcons(formItemIcon);  
-	  
-	            addIconClickHandler(new IconClickHandler() {  
-	                public void onIconClick(IconClickEvent event) {	  
-	                      onButtonClickEvent();                      
-	                }					
-	            });  
+	            formItemIcon.addFormItemClickHandler(new FormItemClickHandler() {
+					
+					@Override
+					public void onFormItemClick(FormItemIconClickEvent event) {
+						// TODO Auto-generated method stub
+						 onButtonClickEvent();    
+					}
+				});
+	            
+	  	    		PickerIcon clearPicker = new PickerIcon(PickerIcon.CLEAR, new FormItemClickHandler() {
+	    			
+	    			@Override
+	    			public void onFormItemClick(FormItemIconClickEvent event) {	    				
+	    				
+	    				getMdbField().getLookUpFld().clear();
+	    				
+	    				if (getOnValueChangeEvent()!=null) {
+	    					
+	    					getOnValueChangeEvent().onChange(new IChangeEvent() {
+	    						
+	    						@Override
+	    						public Object getValue() {											
+	    							return getMdbField();
+	    						}
+	    					});
+	    				}
+	    				
+	    			}
+	    		});
+	    				 
+	    		    
+	    		  
+	    		setIcons(clearPicker, formItemIcon);	    			    		
 	        }  
 	        
 	    

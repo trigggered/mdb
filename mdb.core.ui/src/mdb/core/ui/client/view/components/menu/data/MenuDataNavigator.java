@@ -24,6 +24,7 @@ public class MenuDataNavigator extends  AMenuData  implements IDataNavigator {
 		super(name, dataSource,view);		
 	}	
 	
+		
 	
 	public IDataNavigator getDataNavigator() {		
 		return this;
@@ -45,7 +46,9 @@ public class MenuDataNavigator extends  AMenuData  implements IDataNavigator {
 		createButton(IDataNavigator.Buttons.dataRefresh);
 		
 		addSeparator();
-		createButton(IDataNavigator.Buttons.dataFilter);	
+		createButton(IDataNavigator.Buttons.dataFilter);
+		addSeparator();
+		createButton(IDataNavigator.Buttons.dataPrint);
 		
 	}			
 
@@ -98,11 +101,23 @@ public class MenuDataNavigator extends  AMenuData  implements IDataNavigator {
 													 refresh();
 												}
 										};
+			case dataPrint: return new ICommand<IMenuItem>() {
+				public void execute(IMenuItem sender) {
+					 print();
+				}
+				
+		};
+		
 		default:
 			break; 								
 		}
 		return null;
 	}
+	private void print() {
+		getView().print();
+		
+	}
+	
 
 	/* (non-Javadoc)
 	 * @see mdb.core.ui.data.IDataNavigator#insert()

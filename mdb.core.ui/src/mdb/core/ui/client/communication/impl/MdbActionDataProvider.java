@@ -111,7 +111,7 @@ public class MdbActionDataProvider extends ADataProvider implements IDataProvide
  			  afterRequestActionParams();			  
 			break;
 		case ExecuteActon:
-			afterExecuteActon();
+			afterExecuteAction();
 			_state = EExecuteActionState.None;
 			break;
 		default:
@@ -140,7 +140,7 @@ public class MdbActionDataProvider extends ADataProvider implements IDataProvide
 	}
 	
 	
-	protected void afterExecuteActon() {
+	protected void afterExecuteAction() {
 		
 	}
 	

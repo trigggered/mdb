@@ -12,6 +12,7 @@ public interface IMenuButtons {
 		 dataCancel,
 		 dataRefresh,
 		 dataFilter,
+		 dataPrint,
 		 
 		 /*data paging*/
 		 dataFirstPage,

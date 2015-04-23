@@ -3,8 +3,6 @@
  */
 package mdb.core.ui.client.app;
 
-import java.util.logging.Logger;
-
 import mdb.core.shared.auth.IUserInfo;
 import mdb.core.ui.client.view.IMainView;
 
@@ -18,9 +16,6 @@ import com.google.gwt.event.logical.shared.ValueChangeHandler;
  */
 public class AppController implements ValueChangeHandler<String>, IAppController {
 	
-	private static final Logger _logger = Logger.getLogger(AppController.class
-			.getName());
-
 	private final boolean DEBUG_MODE = false;
 	
 	private static IAppController _instance;

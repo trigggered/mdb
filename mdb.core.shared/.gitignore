@@ -1,3 +1,4 @@
 /bin/
 /createWsClient.sh
 /WebGateway?wsdl
+/target

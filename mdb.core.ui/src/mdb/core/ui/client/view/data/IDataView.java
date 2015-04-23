@@ -55,4 +55,7 @@ public interface IDataView extends IBindDataSource, IView, IRemoteDataRequest{
 	
 	public boolean isValidate();
 	
+	public void setCreateMenuNavigator(boolean value);
+	public void setCreateMenuPaging(boolean value);
+	
 }

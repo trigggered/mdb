@@ -32,7 +32,7 @@ public class MenuPrepareFilters extends  MenuActions {
 		}
 		
 		@Override
-		protected void afterExecuteActon() {
+		protected void afterExecuteAction() {
 			
 			String data = getResponse().get(String.valueOf(getActionEntityId())).getData();
 			

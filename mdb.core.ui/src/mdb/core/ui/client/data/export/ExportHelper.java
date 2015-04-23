@@ -23,7 +23,7 @@ public class ExportHelper {
 		for (int i = 0; i < fields.length; i++) {
 			ListGridField listGridField = fields[i];
 			stringBuilder.append("\"");
-			stringBuilder.append(listGridField.getName());
+			stringBuilder.append(listGridField.getTitle());
 			stringBuilder.append("\",");
 		}
 		stringBuilder.deleteCharAt(stringBuilder.length() - 1); // remove last ","
@@ -36,6 +36,7 @@ public class ExportHelper {
 			ListGridField[] listGridFields = listGrid.getFields();
 			for (int j = 0; j < listGridFields.length; j++) {
 				ListGridField listGridField = listGridFields[j];
+				
 				stringBuilder.append("\"");
 				stringBuilder.append(listGridRecord.getAttribute(listGridField.getName()));
 				stringBuilder.append("\",");

@@ -11,6 +11,7 @@ package mdb.core.ui.client.resources.locales;
  */
 public class Captions {
 
+	public static final String PRINT = "Печать";
 	public static final String FILTER =  "Фильтр" ;
 	public static final String ADD =  "Добавить" ;
 	public static final String SAVE =  "Сохранить" ;
@@ -41,6 +42,7 @@ public class Captions {
 	public static final String COLLAPSE = "Свернуть";
 	public static final String EXPAND = "Развернуть";
 	public static final String CHOSE_REC =  "Выберите запись";
+	
 	
 	
 	
