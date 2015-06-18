@@ -70,7 +70,7 @@ public abstract class BaseDataDialog extends BaseDialogs {
 	
 	protected void saveChangesToServer() {		
 		
-		if (_isRemouteSave && getDataSource() != null && getDataSource().isHasChanges() ) {
+		if (isRemouteSave() && getDataSource() != null && getDataSource().isHasChanges() ) {
 				
 				SC.ask( "Save changes to server", new BooleanCallback() {
 					

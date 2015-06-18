@@ -209,8 +209,9 @@ public abstract class AListView extends DataView implements IListDataView  {
 		if (_editHandler!=null) {
 			_editHandler.onEdit(getSelectedRecord());
 		}
-		else {						
-			EditDialog.viewForEdit(getMainDataSource(), _grid);
+		else {				
+			
+			EditDialog.viewForEdit(getMainDataSource(), _grid, isAutoSave());
 		}
 	}
 	
