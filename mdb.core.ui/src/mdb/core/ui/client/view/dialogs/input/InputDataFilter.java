@@ -48,10 +48,12 @@ public class InputDataFilter extends BaseDataDialog {
 		return "Data filtering...";
 	}
 
+
+	
 	@Override
-	protected void setWindowPropety() {
-		super.setWindowPropety();
-		setWidth(500);  
+	protected void setWindowsSize() {
+		 super.setWindowsSize();
+		 setWidth("50%");  
 	}
 	
 	public void setDataSource(IDataSource value ) {

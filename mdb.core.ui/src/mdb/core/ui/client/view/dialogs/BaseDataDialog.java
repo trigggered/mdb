@@ -4,6 +4,8 @@
 package mdb.core.ui.client.view.dialogs;
 
 import mdb.core.ui.client.data.IDataSource;
+import mdb.core.ui.client.resources.locales.Captions;
+import mdb.core.ui.client.view.dialogs.message.Dialogs;
 
 import com.smartgwt.client.util.BooleanCallback;
 import com.smartgwt.client.util.SC;
@@ -72,33 +74,16 @@ public abstract class BaseDataDialog extends BaseDialogs {
 		
 		if (isRemouteSave() && getDataSource() != null && getDataSource().isHasChanges() ) {
 				
-				SC.ask( "Save changes to server", new BooleanCallback() {
+			Dialogs.AskDialog(Captions.Q_SAVE_CHANGES, new BooleanCallback() {				
+				@Override
+				public void execute(Boolean value) {
+					getDataSource().save();				
 					
-					@Override
-					public void execute(Boolean value) {
-							getDataSource().save();				
-					}
-				});		
+				}
+			});			
 		}
 	}
 		
-	/* (non-Javadoc)
-	 * @see mdb.ui.client.view.dialogs.BaseDialogs#okBtnClickEvent()
-	 */
-	/*@Override
-	protected void okBtnClickEvent() {
-		if (_dataForm.validate()) {			
-			_dataForm.saveData();			
-			Record rec = _dataForm.getValuesAsRecord();
-			_callbackEvent.doWork(recordToParams(rec));
-			hide();
-		}		
-	}
-	*/
-	
-	/* (non-Javadoc)
-	 * @see mdb.ui.client.view.dialogs.BaseDialogs#getCaption()
-	 */
 	@Override
 	public String getCaption() {		
 		return "Base Data Dialog";

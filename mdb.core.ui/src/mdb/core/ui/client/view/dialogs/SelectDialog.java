@@ -50,9 +50,9 @@ public class SelectDialog extends BaseDataDialog {
 	}
 	
 	@Override
-	protected void setDefaultSize() {
-		setWidth(500);  
-	    setHeight(600);
+	protected void setWindowsSize() {
+		 setWidth("50%");
+		 setHeight("90%");
 	}
 	
 	@Override

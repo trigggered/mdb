@@ -8,6 +8,7 @@ import java.util.HashMap;
 import mdb.core.ui.client.view.IMainView;
 import mdb.core.ui.client.view.IView;
 
+import com.gargoylesoftware.htmlunit.javascript.configuration.WebBrowser;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.util.BooleanCallback;
 import com.smartgwt.client.widgets.Button;
@@ -146,8 +147,8 @@ public abstract class BaseDialogs extends Window implements IView {
 	}
 		
 
-	protected void setWindowPropety() {		    
-	      setDefaultSize();
+	private void setWindowPropety() {		    
+	      setWindowsSize();
 	      setShowButtons(true);
 	      this.setTitle(getCaption());  
 	      this.setShowMinimizeButton(false);	      
@@ -158,9 +159,11 @@ public abstract class BaseDialogs extends Window implements IView {
 	}
 	
 	
-	protected void setDefaultSize() {
-		setWidth(360);  
-	    setHeight(500);
+	protected void setWindowsSize() {
+		//setWidth(360);  
+	    //setHeight(500);
+	   setWidth("35%");
+	   setHeight("80%");
 	}
 	
 	
