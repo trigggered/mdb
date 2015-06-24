@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import mdb.core.shared.transport.RequestEntity;
 import mdb.core.ui.client.data.bind.IViewDataBinder;
+import mdb.core.ui.client.data.impl.fields.DataSourceFields;
 
 import com.smartgwt.client.data.DataSource;
 import com.smartgwt.client.data.DataSourceField;
@@ -40,6 +41,7 @@ public interface IDataSource {
 	void callRemoteCommunication();
 	void editRecord (Record record);
 	void setDataComponent(IDataComponent dataComponent);
+	
 	IDataComponent getDataComponent();
 	
 	/**
@@ -64,6 +66,10 @@ public interface IDataSource {
 	 * @return
 	 */
 	boolean isLocalKeyGen();
+	/**
+	 * @param fields
+	 */
+	void setDataSourceFields(DataSourceFields fields);
 	
 	
 }

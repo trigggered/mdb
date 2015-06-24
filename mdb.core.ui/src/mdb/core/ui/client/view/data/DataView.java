@@ -511,6 +511,7 @@ public abstract class DataView extends BaseView implements IDataView {
 	/**
 	 * @return the _isAutoSaveAfterEdit
 	 */
+	@Override
 	public boolean isAutoSave() {
 		return _isAutoSaveAfterEdit;
 	}
@@ -518,6 +519,7 @@ public abstract class DataView extends BaseView implements IDataView {
 	/**
 	 * @param _isAutoSaveAfterEdit the _isAutoSaveAfterEdit to set
 	 */
+	@Override
 	public void setAutoSave(boolean value) {
 		this._isAutoSaveAfterEdit = value;
 	}

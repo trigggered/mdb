@@ -94,6 +94,7 @@ public class MdbActionDataProvider extends ADataProvider implements IDataProvide
 		GatewayQueue.instance().getProcessor().call(getRequest(), this);
 	}
 	
+	
 	/* (non-Javadoc)
 	 * @see com.google.gwt.user.client.rpc.AsyncCallback#onFailure(java.lang.Throwable)
 	 */
@@ -133,7 +134,7 @@ public class MdbActionDataProvider extends ADataProvider implements IDataProvide
 			}
 			else {
 				_actionReqFields.put(_executeActionId, null);
-				executeAction(null);
+			executeAction(null);
 			}
 		}	
 		getResponse().clear();
@@ -145,18 +146,28 @@ public class MdbActionDataProvider extends ADataProvider implements IDataProvide
 	}
 	
 	
-	private void viewActionReqSetVar (DataSourceFields value ) {
-		InputVariablesDialog.viewSetVariableDlg(value, new ICallbackEvent<Record>() {						
+	private void viewActionReqSetVar (DataSourceFields value ) {		
+		
+		InputVariablesDialog.viewSetVariableDlg(value, getOwnerView().getSelectedRecord(), 
+				new ICallbackEvent<Record>() {						
 			@Override
 			public void doWork(Record data) {
-				if (data != null) {					
-					executeAction (ViewDataConverter.record2Json(data));
+				if (data != null ) {					
+					getOwnerView().getMainDataSource().getDataSource().updateData(data);
+					
+					
+					if ( isCanExecAction () ) 
+					{
+						executeAction (ViewDataConverter.record2Json(data) );
+					}
 				}							
 			}
 		});
 	}
 	
-	
+	protected boolean isCanExecAction () {
+		return getOwnerView().isAutoSave();
+	}
 	
 	protected void executeAction (String value) {				
 		_state = EExecuteActionState.ExecuteActon;			
@@ -170,9 +181,12 @@ public class MdbActionDataProvider extends ADataProvider implements IDataProvide
 	}
 	
 	protected String getOriginValue() {
-		if ( getView() != null && getView().getSelectedRecord() != null)				
-			return  ViewDataConverter.record2Json(getView().getSelectedRecord());
-		else return null;		
+		String toReturn = null;
+		if ( getOwnerView() != null && getOwnerView().getSelectedRecord() != null) {				
+			toReturn =   ViewDataConverter.record2Json(getOwnerView().getSelectedRecord());
+			_logger.info("Original data: " +toReturn);
+		}		
+		return toReturn;		
 	}
 	
 	public  ExecuteType getExecuteType() {
@@ -180,7 +194,7 @@ public class MdbActionDataProvider extends ADataProvider implements IDataProvide
 	}
 	
 	
-	public IDataView getView() {
+	public IDataView getOwnerView() {
 		return _view;
 	}
 

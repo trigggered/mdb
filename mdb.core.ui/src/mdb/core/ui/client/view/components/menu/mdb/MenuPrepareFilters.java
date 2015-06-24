@@ -27,6 +27,11 @@ public class MenuPrepareFilters extends  MenuActions {
 		}
 		
 		@Override
+		protected boolean isCanExecAction() {
+			return true;
+		}
+		
+		@Override
 		protected boolean isExecutePossibility() {
 			return  true;
 		}
@@ -36,11 +41,11 @@ public class MenuPrepareFilters extends  MenuActions {
 			
 			String data = getResponse().get(String.valueOf(getActionEntityId())).getData();
 			
-			IDataSource ds = getView().getDataSources().get(Integer.valueOf(getActionEntityId()));
+			IDataSource ds = getOwnerView().getDataSources().get(Integer.valueOf(getActionEntityId()));
 			ds.setData(ViewDataConverter.jSon2RecordArray(data));
 			getResponse().clear();
 			try {
-				getView().bindDataComponents();
+				getOwnerView().bindDataComponents();
 			} catch (DataBindException e) {
 				_logger.severe(e.getMessage());	
 				

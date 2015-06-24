@@ -57,5 +57,13 @@ public interface IDataView extends IBindDataSource, IView, IRemoteDataRequest{
 	
 	public void setCreateMenuNavigator(boolean value);
 	public void setCreateMenuPaging(boolean value);
+	/**
+	 * @return
+	 */
+	boolean isAutoSave();
+	/**
+	 * @param value
+	 */
+	void setAutoSave(boolean value);
 	
 }

@@ -70,7 +70,7 @@ public class InputVariablesDialog extends EditDialog{
 			ds.setData(dataList);					
 			
 			variableDlg.setDataSource(ds);
-			canShow(variableDlg);		
+			tryShow(variableDlg);		
 	}
 
 	
@@ -80,24 +80,31 @@ public class InputVariablesDialog extends EditDialog{
 		final MdbDataSource ds = new MdbDataSource();
 		
 		ds.setDataComponent(variableDlg);
-		ds.setDataSourceFields(fields);
+		ds.setDataSourceFields(fields);		
 		ds.createEmptyRecord();				
 
 		variableDlg.setDataSource(ds);		
-		canShow(variableDlg);
-	}
+		tryShow(variableDlg);
+	}	
 
-	 
-	private static void canShow(InputVariablesDialog variableDlg) {
-
-		if ( isVisibleFiels(variableDlg.getDataForm().getFields()) ) {
-			variableDlg.view();
-			
-		} else {
-			
-			variableDlg._callbackEvent.doWork(variableDlg.getDataForm().getValuesAsRecord());
+	
+	public static void viewSetVariableDlg(DataSourceFields fields,  Record  record, ICallbackEvent<Record> callbackEvent) {
+		InputVariablesDialog variableDlg = new InputVariablesDialog( callbackEvent);				
+		
+		MdbDataSource ds = new MdbDataSource();
+		
+		ds.setDataComponent(variableDlg);
+		ds.setDataSourceFields(fields);				
+		if (record != null) {			
+			ds.setData(new Record[]{record});
 		}
-	}
+		else {
+			ds.createEmptyRecord();
+		}
+		
+		variableDlg.setDataSource(ds);		
+		tryShow(variableDlg);
+	}		
 	
 	
 	public static void viewSetVariableDlg(ArrayList<DataSourceField> fields,  ICallbackEvent<Record> callbackEvent) {
@@ -120,7 +127,19 @@ public class InputVariablesDialog extends EditDialog{
 
 			
 			variableDlg.setDataSource(ds);
-			canShow(variableDlg);	
+			tryShow(variableDlg);	
+	}
+	
+	 
+	private static void tryShow(InputVariablesDialog variableDlg) {
+
+		if ( isVisibleFiels(variableDlg.getDataForm().getFields()) ) {
+			variableDlg.view();
+			
+		} else {
+			
+			variableDlg._callbackEvent.doWork(variableDlg.getDataForm().getValuesAsRecord());
+		}
 	}
 	
 }
