@@ -241,7 +241,7 @@ import com.google.inject.Inject;
 		
 		 if ( _dataTransformation ==null) {
 			_logger.severe("NULL"); 
-		 }
+		 }		 
 		 
 			IQuery query = getQuery(entity.getEntityId());
 			IQueryPaging paging = query.getQueryPaging();

@@ -28,8 +28,7 @@ public class SingletonInjector {
 	 
 	    private static Injector createInjector()
 	    {
-	        return Guice.createInjector(Stage.DEVELOPMENT, new InjectConfiguration());
-	    }
-	    
+	        return Guice.createInjector(Stage.DEVELOPMENT, new DefaultInjectConfiguration());
+	    }	    	    
 	    
 }

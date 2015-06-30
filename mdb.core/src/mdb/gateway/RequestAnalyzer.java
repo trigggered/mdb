@@ -149,7 +149,7 @@ public class RequestAnalyzer implements IRequestAnalyzer{
 					}
 					 
 					else {
-						_logger.info( "Success getResultSet for entityId = "+entityId + "in Requst:"+request.getRequestId() );
+						_logger.info( "ResiltSet is NULL for EntityId= "+entityId + "in Requst:"+request.getRequestId() );
 					}
 					_logger.info( "Success end analize GetData entityId = "+requestEntity.getEntityId() +" in Requst:"+request.getRequestId());				
 					

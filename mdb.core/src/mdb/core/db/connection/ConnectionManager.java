@@ -15,10 +15,16 @@ public abstract  class ConnectionManager implements IConnectionManager  {
 	protected Connection _conn;
 
 	public ConnectionManager(IAppConfig aAppConfig) {
-		_appConfig = aAppConfig;
+		setAppConfig(aAppConfig);		
 	}
 	
 
+	@Override
+	public void setAppConfig (IAppConfig value) {
+		_appConfig = value;
+	}
+	
+	@Override
 	public IAppConfig getAppConfig () {
 		return _appConfig;
 	}

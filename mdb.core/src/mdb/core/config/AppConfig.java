@@ -36,7 +36,7 @@ public class AppConfig  implements IAppConfig {
 	        }
 
 	    } catch (IOException e) {
-	    	_logger.severe("Prperty file not loaded");	        
+	    	_logger.severe("Property file not loaded");	        
 	    }
 	    return properties;
 	}

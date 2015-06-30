@@ -16,5 +16,10 @@ public interface IConnectionManager {
 	public IAppConfig getAppConfig();
 	
 	public void close();
+
+	/**
+	 * @param value
+	 */
+	void setAppConfig(IAppConfig value);
 	
 }

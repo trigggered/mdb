@@ -38,6 +38,16 @@ public class EntityMethods {
 	@Column(name = "IS_PAGING")
 	private int _isPaging;
 	
+	@Column(name = "DS_NAME")
+	private String _dsName;
+	
+	/**
+	 * @return the _dsName
+	 */
+	public String getDsName() {
+		return _dsName;
+	}
+	
 	@Id
 	@Column(name = "ID_EXT_METHOD")
 	private int _idExtMethod;

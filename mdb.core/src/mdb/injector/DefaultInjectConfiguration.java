@@ -22,7 +22,7 @@ import mdb.gateway.RequestAnalyzer;
 import com.google.inject.Binder;
 import com.google.inject.Module;
 
-public class InjectConfiguration implements Module, IInjectConfiguration  {
+public class DefaultInjectConfiguration implements Module, IInjectConfiguration  {
 
 	@Override	
 	public void configure(Binder binder) {
@@ -33,7 +33,7 @@ public class InjectConfiguration implements Module, IInjectConfiguration  {
 		//.in(Scopes.SINGLETON);		
 		
 		binder.bind(IInjectConfiguration.class)
-		.to(InjectConfiguration.class);
+		.to(DefaultInjectConfiguration.class);
 		//.in(Scopes.SINGLETON);
 		
 		binder.bind(IConnectionManager.class)

@@ -12,6 +12,9 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
+import mdb.core.config.IAppConfig;
+import mdb.core.config.JBossConfig;
+import mdb.core.db.connection.IConnectionManager;
 import mdb.core.db.entity.EntityKeys;
 import mdb.core.db.entity.EntityMethods;
 import mdb.core.db.entity.MdbEntityFacade;
@@ -75,13 +78,31 @@ public class QueryPool implements IQueryPool {
 	}
 
 	private IQuery createQueryWithMethods2(int entityId) {
-	
+			
+		IQuery newQuery = createQuery(entityId);		
 		
-		IQuery newQuery = createQuery(entityId);
 		
 		
-		for (EntityMethods method : _mdbEntityFacade.findMethods(entityId) ) {		
+		boolean fSetCustomConfiguration = false;
+		for (EntityMethods method : _mdbEntityFacade.findMethods(entityId) ) {	
 		
+			final String dataSourceName = method.getDsName();						
+			
+			if (dataSourceName != null && dataSourceName.length() > 0 && !fSetCustomConfiguration) {
+				fSetCustomConfiguration = true;
+				_logger.info("Data Source name = "+dataSourceName);	
+				IConnectionManager connManager = SingletonInjector.getInjector().getInstance(IConnectionManager.class);
+				
+				connManager.setAppConfig(	new JBossConfig() {
+					@Override
+					public String getJdbcDataSourceName() {	
+						return dataSourceName;
+					}
+				});
+				newQuery.setConnectionManager(connManager);
+			}			
+			
+			newQuery.setQueryID(entityId);
 			newQuery.getQueryPaging().setPagingUsage(method.isPaging());			
 			
 			EMdbEntityActionType actionType = EMdbEntityActionType.fromInt(method.getIdAction() ); 
@@ -112,8 +133,10 @@ public class QueryPool implements IQueryPool {
 			}								
 		}				
 	
-		for (EntityKeys keys : _mdbEntityFacade.findKeys(entityId) ) {
-			newQuery.setEntityKey(keys.getKeyField(), keys.getSeqName());				
+		if (newQuery != null ) {
+			for (EntityKeys keys : _mdbEntityFacade.findKeys(entityId) ) {
+				newQuery.setEntityKey(keys.getKeyField(), keys.getSeqName());				
+			}
 		}
 		
 		 return newQuery;
