@@ -3,8 +3,11 @@
  */
 package mdb.core.ui.client.view.dialogs.message;
 
+import mdb.core.ui.client.resources.locales.Captions;
+
 import com.smartgwt.client.util.BooleanCallback;
 import com.smartgwt.client.util.SC;
+import com.smartgwt.client.widgets.Dialog;
 
 
 /**
@@ -33,9 +36,37 @@ public class Dialogs {
 		
 	}
 	
-	public static void AskDialog(String message, BooleanCallback callback) {
+	public static void AskDialog2(String message, BooleanCallback callback) {
 	
-		SC.ask(message, callback);
+		Dialog dialogProperties = new Dialog();
+		dialogProperties.setShowModalMask(true);
+		dialogProperties.setButtons(Dialog.YES,Dialog.NO, Dialog.CANCEL);     	    		
+		SC.ask(Captions.ALARM, message, callback, dialogProperties);		
+	}
+	
+
+	public static void AskDialog(String message, BooleanCallback callback) {	
+	     	    		
+		SC.ask(message, callback);		
+		
+	}
+
+	/**
+	 * 
+	 */
+	public static void ValidatonWarning() {
+		
+		SC.warn(Captions.ERROR_VALIDATION , Captions.ERROR_REQUIRED);
+		
+	}
+
+	/**
+	 * @param saveCorrectResult
+	 * @param booleanCallback
+	 */
+	public static void Message(String message,
+			BooleanCallback booleanCallback) {
+		SC.say(message, booleanCallback);
 		
 	}
 	

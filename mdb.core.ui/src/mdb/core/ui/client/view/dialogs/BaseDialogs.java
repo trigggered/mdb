@@ -30,7 +30,8 @@ public abstract class BaseDialogs extends Window implements IView {
 		Apply,
 		Clear, 
 		Save,
-		Search
+		Search,
+		Close
 	};
 	
 	HashMap<EButtons, Button> _buttons = new HashMap<EButtons, Button>(); 

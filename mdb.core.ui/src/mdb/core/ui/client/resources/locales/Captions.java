@@ -4,6 +4,7 @@
 package mdb.core.ui.client.resources.locales;
 
 
+
 /**
  * @author azhuk
  * Creation date: Dec 19, 2014
@@ -42,11 +43,8 @@ public class Captions {
 	public static final String COLLAPSE = "Свернуть";
 	public static final String EXPAND = "Развернуть";
 	public static final String CHOSE_REC =  "Выберите запись";
-	
-	
-	
-	
-	
-	
-	
+	public static final String Q_HAS_CHANGE_SAVE_BEFORE_CLOSE = "В  карточку внесены изменения. Сохранить данные перед закрытием? ";
+	public static final String ERROR_VALIDATION = "Ошибка валидации";
+	public static final String ERROR_REQUIRED = "Введены не все или не корректные данные. Проверьте!";	
+	public static final String SAVE_CORRECT_RESULT =  "Данные сохранены успешно";
 }
