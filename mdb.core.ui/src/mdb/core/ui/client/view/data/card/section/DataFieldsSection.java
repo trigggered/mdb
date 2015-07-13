@@ -6,6 +6,8 @@ package mdb.core.ui.client.view.data.card.section;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import mdb.core.shared.transport.IRequestData;
+import mdb.core.shared.transport.RequestEntity;
 import mdb.core.ui.client.communication.IRemoteDataSave;
 import mdb.core.ui.client.data.IDataComponent;
 import mdb.core.ui.client.data.IDataSource;
@@ -25,9 +27,9 @@ import com.smartgwt.client.widgets.form.fields.FormItem;
  * Creation date: Jan 29, 2014
  *
  */
-public  class ADataFieldsSection extends DataView implements IDataSection, IRemoteDataSave{
+public  class DataFieldsSection extends DataView implements IDataSection, IRemoteDataSave{
 	
-	private static final Logger _logger = Logger.getLogger(ADataFieldsSection.class.getName());
+	private static final Logger _logger = Logger.getLogger(DataFieldsSection.class.getName());
 	
 	
 	private class DynamicFieldsSection extends BaseView implements IDataComponent {
@@ -111,7 +113,7 @@ public  class ADataFieldsSection extends DataView implements IDataSection, IRemo
 	private int _sectionId;
 	
 		
-	public ADataFieldsSection(ICard card) {
+	public DataFieldsSection(ICard card) {
 		_card = card;			
 		setMainEntityId(_card.getCardEntityId());
 	}	
@@ -163,7 +165,10 @@ public  class ADataFieldsSection extends DataView implements IDataSection, IRemo
 	 */
 	@Override
 	public void prepareRequestData() {
-				
+		_logger.info("################ Start prepareRequestData  for Fields Section ######################");		
+		IRequestData re = getDataBinder().getDataProvider().getRequest().add(new RequestEntity(getMainEntityId()));				
+		re.getParams().copyFrom(getParams());			
+		re.setExecuteType(mdb.core.shared.transport.IRequestData.ExecuteType.GetData);	
 	}
 
 	
@@ -173,6 +178,12 @@ public  class ADataFieldsSection extends DataView implements IDataSection, IRemo
 	@Override
 	public void bindDataComponents() throws DataBindException {
 		IDataSource ds =  getMainDataSource();
+		
+		if ( ds == null) {
+			_logger.severe("MainDataSource is null !");
+			return;					
+		}
+		
 		ds.setLocalKeyGen(false);		
 		_editDialog.setDataSource(ds);
 		
@@ -235,7 +246,7 @@ public  class ADataFieldsSection extends DataView implements IDataSection, IRemo
 		if (item != null) {
 			Object val = item.getValue();
 			if (val == null) {
-				item.setValue(_card.getId());
+				item.setValue(_card.getCardId());
 			}
 		}
 		

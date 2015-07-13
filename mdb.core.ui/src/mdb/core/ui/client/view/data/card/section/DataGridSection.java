@@ -18,9 +18,9 @@ import mdb.core.ui.client.view.data.grid.GridView;
  * Creation date: Mar 20, 2014
  *
  */
-public  class  ADataGridSection extends GridView implements IDataSection, IRemoteDataSave{
+public  class  DataGridSection extends GridView implements IDataSection, IRemoteDataSave{
 	private static final Logger _logger = Logger
-			.getLogger(ADataGridSection.class.getName());
+			.getLogger(DataGridSection.class.getName());
 	
 	
 	  
@@ -31,7 +31,7 @@ public  class  ADataGridSection extends GridView implements IDataSection, IRemot
 	private int _sectionId;	
 	
 	
-	public ADataGridSection (ICard card) {		
+	public DataGridSection (ICard card) {		
 		_card = card;						
 	}		
 	
@@ -48,16 +48,13 @@ public  class  ADataGridSection extends GridView implements IDataSection, IRemot
 	
 	
 	@Override
-	public void prepareRequestData() {		
-		
-		_logger.info("################ Start prepareRequestData id for Grid Section: "+getSectionId()+" ######################");
-		_logger.info("Put parametr ID_DOC= "+String.valueOf(_card.getId()));
-		 getDataBinder().getDataProvider().getRequest().setPosition(2);
+	public void prepareRequestData() {			
+		_logger.info("################ Start prepareRequestData id for Grid Section: "+getSectionId()+" ######################");				
     	IRequestData entity = getDataBinder().getDataProvider().getRequest().add(new RequestEntity (getMainEntityId()));
     	
-    	entity.getParams().putAll(getParams());
-    	entity.getParams().add("ID_DOC", String.valueOf(_card.getId()));
+    	_logger.info( getParams().get("CLIENTID").getValue());
     	
+    	entity.getParams().copyFrom(getParams());    	
     	entity.setExecuteType(ExecuteType.GetData);
     	super.prepareRequestData();
     	_logger.info("################# End prepareRequestData  #####################");

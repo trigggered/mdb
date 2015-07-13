@@ -26,7 +26,7 @@ public interface ICard {
 	}
 	
 	
-	public long getId();
+	public long getCardId();
 
 	/**
 	 * @return
@@ -37,4 +37,9 @@ public interface ICard {
 	 * @return
 	 */
 	public EViewState getViewState();
+
+	/**
+	 * @param value
+	 */
+	void setCardId(long value);
 }

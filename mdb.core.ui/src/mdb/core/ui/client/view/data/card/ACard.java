@@ -1,6 +1,7 @@
 package mdb.core.ui.client.view.data.card;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.logging.Logger;
 
 import mdb.core.shared.transport.IRequestData.ExecuteType;
@@ -11,8 +12,8 @@ import mdb.core.ui.client.communication.impl.GatewayQueue;
 import mdb.core.ui.client.resources.locales.Captions;
 import mdb.core.ui.client.view.data.DataView;
 import mdb.core.ui.client.view.data.IDataView;
-import mdb.core.ui.client.view.data.card.section.ADataFieldsSection;
-import mdb.core.ui.client.view.data.card.section.ADataGridSection;
+import mdb.core.ui.client.view.data.card.section.DataFieldsSection;
+import mdb.core.ui.client.view.data.card.section.DataGridSection;
 import mdb.core.ui.client.view.data.card.section.IDataSection;
 import mdb.core.ui.client.view.dialogs.BaseDialogs.EButtons;
 import mdb.core.ui.client.view.dialogs.message.Dialogs;
@@ -38,7 +39,7 @@ public abstract class ACard extends DataView implements ICard,  IRemoteDataSave 
 	
 	private long _cardId;	
 	
-	protected TabSet _mainTabSet;	
+		
 	private EViewState _viewState;
 		
 
@@ -52,6 +53,8 @@ public abstract class ACard extends DataView implements ICard,  IRemoteDataSave 
 
 
 	protected  HashMap<Integer, IDataSection> _hmDataSections;		 
+
+
 	protected  HashMap<String , Button> _buttons;
 	
 	
@@ -66,10 +69,10 @@ public abstract class ACard extends DataView implements ICard,  IRemoteDataSave 
 		IDataSection toReturn = null;
 		switch (sectionType) {
 		case Grid:
-			toReturn = new ADataGridSection(this);
+			toReturn = new DataGridSection(this);
 			break;
 		case Fields:
-			toReturn = new ADataFieldsSection(this);
+			toReturn = new DataFieldsSection(this);
 			break;
 		case VerticalGrid:
 			break;
@@ -80,45 +83,33 @@ public abstract class ACard extends DataView implements ICard,  IRemoteDataSave 
 
 	protected IDataSection createDataSection(int sectionid, IDataSection.ESectionType sectionType) {		
 		IDataSection dataSection = createDataSection(sectionType);
-		dataSection.setSectionId(sectionid);
-		
+		dataSection.setSectionId(sectionid);		
 		_hmDataSections.put(sectionid, dataSection);
-		Tab tab = new Tab();
-		tab.setTitle( dataSection.getCaption());
-		tab.setIcon( dataSection.getImgCaption());
-		
-		tab.setPane(dataSection.getCanvas());
-		_mainTabSet.addTab(tab);
-		
-		dataSection.setViewContainerID(tab.getID());		
-		
 		return dataSection;	
 	}
 	
-
+	
+	
 	@Override
-	protected void createComponents() {
-		
-		super.createComponents();	
+	protected void createComponents() {		
+		super.createComponents();			
 		
 		_hmDataSections = new HashMap<Integer, IDataSection>();
-		_buttons = new HashMap<String, Button>();
+		_buttons = new HashMap<String, Button>();		
 		
-		
-		Layout mainLayout = new HLayout();
-		mainLayout.setHeight("95%");
-		_mainTabSet = new TabSet();
-		_mainTabSet.setWidth("50%");
-		_mainTabSet.setShowResizeBar(true);
-		
-			
+		createCardLayouts();
 		createFieldSections();
 		createGridSections();		
 	}
 	
+	protected abstract void createCardLayouts(); 
+	
 	protected abstract void createGridSections();	
 	
 	protected abstract void createFieldSections();
+	
+	protected abstract void addSection(IDataSection dataSection);
+	
 	
 	protected ACard getSelf() {
 		return this;
@@ -171,6 +162,7 @@ public abstract class ACard extends DataView implements ICard,  IRemoteDataSave 
 	
 	public abstract void visibleButtons(Boolean[] visibles);
 		
+	
 	
 	
 	public   HashMap<Integer, IDataSection>  getDataSections() {
@@ -226,28 +218,28 @@ public abstract class ACard extends DataView implements ICard,  IRemoteDataSave 
 		} else  {
 		_logger.info("Request data for exists document");
 			getDataBinder().getDataProvider().getRequest().setPosition(100);
-		}
-		
-		prepareRequestData((IDataView)_hmDataSections.values());
-		
-		 
+		}		
+		prepareRequestData(_hmDataSections.values().toArray(new IDataView[_hmDataSections.values().size()]));	
+					 
 	}
 	
 	
 	@Override
 	public void putRequestToQueue()  {
 		putRequestToQueue(this);
-		putRequestToQueue((IDataView)_hmDataSections.values());
+		putRequestToQueue(_hmDataSections.values().toArray(new IDataView[_hmDataSections.values().size()]));
 		
 	}	
 	
 	
 
-	public long getId() {
+	@Override
+	public long getCardId() {
 		return _cardId;
 	}
 	
-	public void setId(long value) {
+	@Override
+	public void setCardId(long value) {
 		this._cardId = value;				 
 	}
 	
@@ -255,8 +247,7 @@ public abstract class ACard extends DataView implements ICard,  IRemoteDataSave 
 	@Override
 	public void close() {		
 		IsCanClose(null);
-	}
-	
+	}	
 		
 	@Override
 	public void IsCanClose(final BooleanCallback callback) {		
@@ -438,23 +429,11 @@ public abstract class ACard extends DataView implements ICard,  IRemoteDataSave 
 		rq.setExecuteType(ExecuteType.ChangeData);
 		getDataBinder().getDataProvider().getRequest().add(rq);
 		GatewayQueue.instance().put(getDataBinder().getDataProvider());
-	}
-
-
+	}		
 	
-			
-		
 	
 	public void refresh() {
 		callRequestData();
 	}
-	
-
-	
-	public TabSet getMainTabSet() {
-		return _mainTabSet;
-	}
-
-
 
 }

@@ -148,12 +148,8 @@ public abstract class DataView extends BaseView implements IDataView {
 	
 	
 	
-	public  void prepareRequestData(Collection<IDataView> values) {
-	
-		for (IRemoteDataRequest dataRequestor : values ) {
-			if (dataRequestor!= null)
-				dataRequestor.prepareRequestData();			 
-		 }
+	public  void prepareRequestData(Collection<IDataView> values) {	
+		prepareRequestData(values.toArray(new IDataView[values.size()]));
 	}
 	
 	
@@ -238,6 +234,7 @@ public abstract class DataView extends BaseView implements IDataView {
 		if  (_lstDataSources.containsKey(key) ) {
 				return _lstDataSources.get(key);
 		}
+		
 		return null;
 	}
 	
