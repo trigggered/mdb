@@ -51,7 +51,7 @@ public abstract class ACard extends DataView implements ICard,  IRemoteDataSave 
 
 
 
-	protected  HashMap<String, IDataSection> _hmDataSections;		 
+	protected  HashMap<Integer, IDataSection> _hmDataSections;		 
 	protected  HashMap<String , Button> _buttons;
 	
 	
@@ -78,7 +78,7 @@ public abstract class ACard extends DataView implements ICard,  IRemoteDataSave 
 	}		
 
 
-	protected IDataSection createDataSection(String sectionid, IDataSection.ESectionType sectionType) {		
+	protected IDataSection createDataSection(int sectionid, IDataSection.ESectionType sectionType) {		
 		IDataSection dataSection = createDataSection(sectionType);
 		dataSection.setSectionId(sectionid);
 		
@@ -101,7 +101,7 @@ public abstract class ACard extends DataView implements ICard,  IRemoteDataSave 
 		
 		super.createComponents();	
 		
-		_hmDataSections = new HashMap<String, IDataSection>();
+		_hmDataSections = new HashMap<Integer, IDataSection>();
 		_buttons = new HashMap<String, Button>();
 		
 		
@@ -173,7 +173,7 @@ public abstract class ACard extends DataView implements ICard,  IRemoteDataSave 
 		
 	
 	
-	public   HashMap<String, IDataSection>  getDataSections() {
+	public   HashMap<Integer, IDataSection>  getDataSections() {
 		return _hmDataSections;	
 	}	
 	

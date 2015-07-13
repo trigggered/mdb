@@ -28,7 +28,7 @@ public  class  ADataGridSection extends GridView implements IDataSection, IRemot
 
 
 
-	private String _sectionId;	
+	private int _sectionId;	
 	
 	
 	public ADataGridSection (ICard card) {		
@@ -37,12 +37,12 @@ public  class  ADataGridSection extends GridView implements IDataSection, IRemot
 	
 	
 	@Override
-	public void setSectionId(String sectionid) {
+	public void setSectionId(int sectionid) {
 		_sectionId = sectionid;
 	}
 	
 	@Override
-	public String  getSectionId() {
+	public int  getSectionId() {
 		return _sectionId;
 	}
 	

@@ -22,9 +22,9 @@ public interface IDataSection  extends IDataView{
 	/**
 	 * @param sectionid
 	 */
-	void setSectionId(String sectionid);
+	void setSectionId(int sectionid);
 	
-	String  getSectionId();
+	int  getSectionId();
 
 	/**
 	 * @param aCard

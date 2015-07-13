@@ -108,7 +108,7 @@ public  class ADataFieldsSection extends DataView implements IDataSection, IRemo
 		
 	private DynamicFieldsSection _editDialog;
 	private ICard _card;
-	private String _sectionId;
+	private int _sectionId;
 	
 		
 	public ADataFieldsSection(ICard card) {
@@ -294,8 +294,8 @@ public  class ADataFieldsSection extends DataView implements IDataSection, IRemo
 	 * @see mdb.core.ui.client.view.data.card.section.IDataSection#setSectionId(java.lang.String)
 	 */
 	@Override
-	public void setSectionId(String sectionid) {
-		// TODO Auto-generated method stub
+	public void setSectionId(int sectionid) {
+		_sectionId = sectionid;
 		
 	}
 
@@ -304,7 +304,7 @@ public  class ADataFieldsSection extends DataView implements IDataSection, IRemo
 	 * @see mdb.core.ui.client.view.data.card.section.IDataSection#getSectionId()
 	 */
 	@Override
-	public String getSectionId() {
+	public int getSectionId() {
 		
 		return _sectionId;
 	}
