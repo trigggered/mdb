@@ -6,11 +6,13 @@ package mdb.core.ui.client.view.dialogs;
 import java.util.HashMap;
 
 import mdb.core.ui.client.view.IMainView;
+import mdb.core.ui.client.view.IOwnerWnd;
 import mdb.core.ui.client.view.IView;
 
-import com.gargoylesoftware.htmlunit.javascript.configuration.WebBrowser;
 import com.smartgwt.client.types.Alignment;
-import com.smartgwt.client.util.BooleanCallback;
+
+import mdb.core.ui.client.util.BooleanCallback;
+
 import com.smartgwt.client.widgets.Button;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.Window;
@@ -219,12 +221,12 @@ public abstract class BaseDialogs extends Window implements IView {
 	}
 	
 	@Override
-	public void setOwnerWindow(Tab tab) {
+	public void setOwnerWindow(IOwnerWnd ownerWnd) {
 		
 	}
 	
 	@Override
-	public Tab getOwnerWindow() {
+	public IOwnerWnd getOwnerWindow() {
 		return null;
 	}
 	

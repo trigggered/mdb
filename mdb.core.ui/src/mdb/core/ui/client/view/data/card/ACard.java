@@ -1,7 +1,6 @@
 package mdb.core.ui.client.view.data.card;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.logging.Logger;
 
 import mdb.core.shared.transport.IRequestData.ExecuteType;
@@ -10,6 +9,7 @@ import mdb.core.ui.client.app.AppController;
 import mdb.core.ui.client.communication.IRemoteDataSave;
 import mdb.core.ui.client.communication.impl.GatewayQueue;
 import mdb.core.ui.client.resources.locales.Captions;
+import mdb.core.ui.client.util.BooleanCallback;
 import mdb.core.ui.client.view.data.DataView;
 import mdb.core.ui.client.view.data.IDataView;
 import mdb.core.ui.client.view.data.card.section.DataFieldsSection;
@@ -19,13 +19,9 @@ import mdb.core.ui.client.view.dialogs.BaseDialogs.EButtons;
 import mdb.core.ui.client.view.dialogs.message.Dialogs;
 
 import com.smartgwt.client.types.Alignment;
-import com.smartgwt.client.util.BooleanCallback;
-import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.Button;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.Layout;
-import com.smartgwt.client.widgets.tab.Tab;
-import com.smartgwt.client.widgets.tab.TabSet;
 
 
 public abstract class ACard extends DataView implements ICard,  IRemoteDataSave {	
@@ -305,7 +301,8 @@ public abstract class ACard extends DataView implements ICard,  IRemoteDataSave 
 	public void save() {
 		
 		if (!isValidate() ) {
-			SC.warn(Captions.ERROR_VALIDATION ,Captions.ERROR_REQUIRED );
+			
+			Dialogs.ValidatonWarning();
 			return; //false;
 		}		
 		if ( isHaseChanges() ) {			

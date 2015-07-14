@@ -7,8 +7,8 @@ import mdb.core.ui.client.data.IDataSource;
 import mdb.core.ui.client.resources.locales.Captions;
 import mdb.core.ui.client.view.dialogs.message.Dialogs;
 
-import com.smartgwt.client.util.BooleanCallback;
-import com.smartgwt.client.util.SC;
+import mdb.core.ui.client.util.BooleanCallback;
+
 
 /**
  * @author azhuk Creation date: Oct 2, 2012

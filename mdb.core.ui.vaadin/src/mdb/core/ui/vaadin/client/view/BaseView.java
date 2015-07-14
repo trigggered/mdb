@@ -1,18 +1,27 @@
-package mdb.core.ui.client.view;
+package mdb.core.ui.vaadin.client.view;
 
 import java.util.HashMap;
 
 import mdb.core.ui.client.app.AppController;
+import mdb.core.ui.client.view.IMainView;
+import mdb.core.ui.client.view.IOwnerWnd;
+import mdb.core.ui.client.view.IView;
 import mdb.core.ui.client.view.components.menu.IMenuContainer;
+import mdb.core.ui.client.util.BooleanCallback;
 
-import  mdb.core.ui.client.util.BooleanCallback;
-import com.smartgwt.client.widgets.Canvas;
-import com.smartgwt.client.widgets.layout.HLayout;
-import com.smartgwt.client.widgets.layout.Layout;
-import com.smartgwt.client.widgets.layout.VLayout;
-import com.smartgwt.client.widgets.tab.Tab;
 
-public abstract class BaseView extends VLayout implements IView {
+
+
+
+
+
+import com.vaadin.ui.Component;
+import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Layout;
+import com.vaadin.ui.TabSheet.Tab;
+import com.vaadin.ui.VerticalLayout;
+
+public abstract class BaseView extends VerticalLayout implements IView {
 	
 	public enum EViewPanelType {
 		HLayout,
@@ -44,21 +53,25 @@ public abstract class BaseView extends VLayout implements IView {
     }
     
     protected void createComponents () {    	
-    	setWidth100();
-        setHeight100();    
-        setLayoutMargin(5);
+    	setWidth("100%");
+        setHeight("100%");    
         
         if (isCreateMenuContainer()) {
 	        _menuContainer = createMenuContainer();
 	        if (_menuContainer!=null) {
-	        	addMember( _menuContainer.getLayout() );
+	        	
+	        	addComponent(_menuContainer.getLayout() );
+	        	
 	        	createMenu ();
 	        }
         
         }
+        
         _viewPanel = createViewPanel();        
         if (_viewPanel != null) {
-        	addMember( _viewPanel );
+        
+        	
+        	addComponent( _viewPanel );
         }
         _componentsCreated = true;
     }       
@@ -93,17 +106,17 @@ public abstract class BaseView extends VLayout implements IView {
     	Layout mainPanel;
     	switch (_viewPanelType) {
     	case HLayout: 
-    		mainPanel = new HLayout();
+    		mainPanel = new HorizontalLayout();
     		break;
     	case VLayout:
-    		mainPanel = new VLayout();
+    		mainPanel = new VerticalLayout();
     		break;
     	default :
-    			mainPanel = new HLayout();    			
+    			mainPanel = new HorizontalLayout();    			
     	}
     				    
-    	mainPanel.setHeight100();
-    	mainPanel.setWidth100();
+    	mainPanel.setHeight("100%");
+    	mainPanel.setWidth("100%");
 		return mainPanel;
     }
 
@@ -225,7 +238,7 @@ public abstract class BaseView extends VLayout implements IView {
 	}
 	
 	@Override
-	public void print() {		
-		Canvas.showPrintPreview(getCanvas());		
+	public void print() {			
+				
 	}
 }

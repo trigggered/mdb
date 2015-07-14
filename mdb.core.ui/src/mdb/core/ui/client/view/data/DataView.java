@@ -25,9 +25,10 @@ import mdb.core.ui.client.view.components.menu.data.MenuDataNavigator;
 import mdb.core.ui.client.view.components.menu.data.MenuDataPaging;
 import mdb.core.ui.client.view.components.menu.impl.smart.ToolStripMenuContainer;
 import mdb.core.ui.client.view.components.menu.impl.smart.ToolStripMenuItemFactory;
+import mdb.core.ui.client.view.dialogs.message.Dialogs;
+import mdb.core.ui.client.util.BooleanCallback;
 
 import com.smartgwt.client.data.Record;
-import com.smartgwt.client.util.BooleanCallback;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.Dialog;
@@ -347,9 +348,9 @@ public abstract class DataView extends BaseView implements IDataView {
 	@Override
 	public void callDeleteEvent() {	
 		
-		if (isSelectedRecord()) {		
+		if (isSelectedRecord()) {
 			
-			SC.ask( Captions.Q_DELETE_REC, new BooleanCallback() {
+			Dialogs.AskDialog(Captions.Q_DELETE_REC, new BooleanCallback() {
 				
 				@Override
 				public void execute(Boolean value) {
@@ -358,9 +359,12 @@ public abstract class DataView extends BaseView implements IDataView {
 							removeRecord(rec);
 							callAfterDeleteEvent();
 						}								
-					}				
+					}
+					
 				}
-			});				
+			});
+			
+							
 		}		
 	}
 	
@@ -463,10 +467,9 @@ public abstract class DataView extends BaseView implements IDataView {
 	public void IsCanClose(final BooleanCallback callback) {
 		if ( isHaseChanges() ) {
 			Dialog dialog = new Dialog();
-		     dialog.setShowModalMask(true);
-		     dialog.setButtons(Dialog.YES,Dialog.NO, Dialog.CANCEL);     
+	  
 		     
-			SC.ask(Captions.ALARM, Captions.Q_SAVE_CHANGES, new BooleanCallback() {
+			Dialogs.AskDialog2( Captions.Q_SAVE_CHANGES, new BooleanCallback() {
 				
 				@Override
 				public void execute(Boolean value) {
@@ -485,7 +488,7 @@ public abstract class DataView extends BaseView implements IDataView {
 						callback.execute(toReturn);
 					}						
 				}
-			},dialog);
+			});
 		} else {
 			callback.execute(true);
 		}

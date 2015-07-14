@@ -1,4 +1,4 @@
-package mdb.core.ui.client.view;
+package mdb.core.ui.vaadin.client.view;
 
 
 import java.util.HashMap;
@@ -6,56 +6,43 @@ import java.util.LinkedHashMap;
 import java.util.logging.Logger;
 
 import mdb.core.ui.client.app.AppController;
+import mdb.core.ui.client.view.BaseView.EViewPanelType;
+import mdb.core.ui.client.view.IMainView;
+import mdb.core.ui.client.view.IView;
 import mdb.core.ui.client.view.components.menu.AuthorizeMenu;
 import mdb.core.ui.client.view.components.menu.IMenu;
 import mdb.core.ui.client.view.components.menu.IMenuContainer;
 import mdb.core.ui.client.view.components.menu.IMenuItemFactory;
+import mdb.core.ui.client.view.components.menu.Menu;
 import mdb.core.ui.client.view.components.menu.impl.smart.ToolStripMenuItemFactory;
 import mdb.core.ui.client.view.components.menu.mdb.IMdbMainMenuAction;
 import mdb.core.ui.client.view.components.menu.mdb.MdbMainMenu;
 import mdb.core.ui.client.view.components.menu.mdb.MdbMainMenuCommand;
 import mdb.core.ui.client.view.data.DataView;
+import mdb.core.ui.client.view.data.IDataView;
 import mdb.core.ui.client.view.debug.DebugMenu;
 
-import com.google.gwt.user.client.Cookies;
-import com.google.gwt.user.client.History;
-import com.google.gwt.user.client.ui.RootPanel;
-import com.smartgwt.client.core.KeyIdentifier;
-import com.smartgwt.client.data.Record;
-import com.smartgwt.client.types.Alignment;
-import com.smartgwt.client.types.TabBarControls;
-import com.smartgwt.client.types.VerticalAlignment;
-import com.smartgwt.client.util.SC;
-import com.smartgwt.client.widgets.Canvas;
-import com.smartgwt.client.widgets.Label;
-import com.smartgwt.client.widgets.Window;
-import com.smartgwt.client.widgets.form.DynamicForm;
-import com.smartgwt.client.widgets.form.fields.SelectItem;
-import com.smartgwt.client.widgets.form.fields.events.ChangeEvent;
-import com.smartgwt.client.widgets.form.fields.events.ChangeHandler;
-import com.smartgwt.client.widgets.layout.Layout;
-import com.smartgwt.client.widgets.layout.LayoutSpacer;
-import com.smartgwt.client.widgets.menu.Menu;
-import com.smartgwt.client.widgets.menu.MenuItem;
-import com.smartgwt.client.widgets.menu.MenuItemIfFunction;
-import com.smartgwt.client.widgets.menu.events.ClickHandler;
-import com.smartgwt.client.widgets.menu.events.MenuItemClickEvent;
-import com.smartgwt.client.widgets.tab.Tab;
-import com.smartgwt.client.widgets.tab.TabSet;
+import com.vaadin.server.ThemeResource;
+import com.vaadin.server.VaadinRequest;
+import com.vaadin.ui.Layout;
+import com.vaadin.ui.TabSheet;
+import com.vaadin.ui.TabSheet.Tab;
+import com.vaadin.ui.UI;
+import com.vaadin.ui.VerticalLayout;
 
 
 
-public abstract class AMainView extends DataView  implements  IMainView  {
+public abstract class AMainView extends UI  implements  IMainView, IDataView {
 	
 
     private static final Logger _logger = Logger.getLogger(AMainView.class.getName());
     
-    private TabSet _mainTabSet;    
-    private Menu _tabContextMenu;
+    private TabSheet _mainTabSet;    
+    private mdb.core.ui.client.view.components.menu.Menu _tabContextMenu;
     private HashMap<String,IView> _mapView = new HashMap<String, IView>();
     
     public AMainView() {
-    	super(EViewPanelType.HLayout);
+    	
     }
     
    
@@ -66,12 +53,12 @@ public abstract class AMainView extends DataView  implements  IMainView  {
     	AppController.setInstance(new AppController());
 		AppController.getInstance().setMainView(this);		
 		
-		History.addValueChangeHandler(AppController.getInstance().getValueChangeHandler());				
-		History.fireCurrentHistoryState();
+	
 		
     }
   
-    public void onModuleLoad() {    
+    @Override
+	protected void init(VaadinRequest request) {    
 
     	_logger.info("Start Load module Main");
     	
@@ -83,63 +70,20 @@ public abstract class AMainView extends DataView  implements  IMainView  {
     	setupEvents();
     	
         this.setStyleName("tabSetContainer");
-        setLayoutMargin(5);
-        getViewPanel().setLayoutMargin(5);                    
-
-        Layout paneContainerProperties = new Layout();
-        paneContainerProperties.setLayoutMargin(0);
-        paneContainerProperties.setLayoutTopMargin(1);
         
-        _mainTabSet = new TabSet();
-        _mainTabSet.setPaneContainerProperties(paneContainerProperties);
-        _mainTabSet.setWidth100();
-        _mainTabSet.setHeight100();
-        /*_mainTabSet.addCloseClickHandler(new CloseClickHandler() {
-			
-			@Override
-			public void onCloseClick(TabCloseClickEvent event) {
-				
-				String tabId = event.getTab().getID();
-				if (_mapView.containsKey(tabId) )  {
-					IView view =_mapView.get(tabId);
-					if (view!= null) {
-						event.cancel();		
-						view.close();
-					}														
-				}
-			}
-		});
-        */
+                            
+
         
-        LayoutSpacer layoutSpacer = new LayoutSpacer();
-        layoutSpacer.setWidth(5);    
-        _mainTabSet.setTabBarControls(TabBarControls.TAB_SCROLLER, TabBarControls.TAB_PICKER, layoutSpacer, getSkinControlComponent());        
-       
-        
-        getViewPanel().addMember(_mainTabSet);
 
+        _mainTabSet = new TabSheet();
+        _mainTabSet.setSizeFull();
 
-        if (SC.hasFirebug()) {
-            Label label = new Label();
-            label.setWidth100();
-            label.setHeight(50);
-            label.setValign(VerticalAlignment.CENTER);
-            label.setAlign(Alignment.CENTER);
-            label.setContents("Firebug can make the Showcase run slow. For the best performance, we suggest disabling Firebug for this site.");
-
-            Window fbWindow = new Window();
-            fbWindow.setTitle("Firebug Detected");
-            fbWindow.setWidth100();
-            fbWindow.setHeight(80);
-            fbWindow.addItem(label);
-            fbWindow.setRedrawOnResize(true);
-            this.addMember(fbWindow);
-        }
-
-        this.draw();
-        
-        RootPanel p = RootPanel.get("loadingWrapper");
-        if (p != null) RootPanel.getBodyElement().removeChild(p.getElement());                    
+        final VerticalLayout layout = new VerticalLayout();
+        layout.setSizeFull();
+		layout.setMargin(true);
+		setContent(layout);
+		
+		layout.addComponent(_mainTabSet);
         
         _logger.info("Sucsses Loaded module Main");
     }    
@@ -153,38 +97,7 @@ public abstract class AMainView extends DataView  implements  IMainView  {
         valueMap.put("Simplicity", "Simplicity");
         return valueMap;
     }
-    
-    protected DynamicForm  getSkinControlComponent() {
-        SelectItem selectItem = new SelectItem();
-        selectItem.setHeight(21);
-        selectItem.setWidth(130);    
-
-
-        selectItem.setValueMap(getSkinMapValues());
-
-        final String skinCookieName = "skin_name_2_4";
-        String currentSkin = Cookies.getCookie(skinCookieName);
-        
-        if (currentSkin == null) {
-            currentSkin = getCurrentSkinName();
-        }
-        selectItem.setDefaultValue(currentSkin);
-        selectItem.setShowTitle(false);
-        selectItem.addChangeHandler(new ChangeHandler() {
-            public void onChange(ChangeEvent event) {
-                Cookies.setCookie(skinCookieName, (String) event.getValue());
-                com.google.gwt.user.client.Window.Location.reload();
-            }
-        });        
-        
-        DynamicForm form = new DynamicForm();
-        form.setPadding(0);
-        form.setMargin(0);
-        form.setCellPadding(1);
-        form.setNumCols(1);
-        form.setFields(selectItem);        
-        return form;
-    }
+ 
     
     protected String  getCurrentSkinName() {
     	return "Enterprise";
@@ -199,6 +112,8 @@ public abstract class AMainView extends DataView  implements  IMainView  {
     }
     
     private Menu createTabContextMenu() {
+    	return null;
+    	/*
         Menu menu = new Menu();
         menu.setWidth(140);
 
@@ -242,6 +157,7 @@ public abstract class AMainView extends DataView  implements  IMainView  {
 
         menu.setItems(closeItem, closeAllButCurrent, closeAll);
         return menu;
+        */
     }
 
 	
@@ -255,14 +171,15 @@ public abstract class AMainView extends DataView  implements  IMainView  {
     		Tab existTab = checkExistView(view);
     		if ( existTab != null) {
     			
-    			String tabId = existTab.getID(); 
+    			
+    			String tabId = existTab.getId(); 
     			if (_mapView.containsKey(tabId) )  {
 					IView existView =_mapView.get(tabId);
 					if (existView!= null) {
 						existView.redraw();
 					}
     			}
-    			_mainTabSet.selectTab(existTab);
+    			_mainTabSet.setSelectedTab(existTab);
     			view = null;
     			return;
     		}
@@ -270,31 +187,25 @@ public abstract class AMainView extends DataView  implements  IMainView  {
     	
     	view.initialize();
     	view.setMainView(this);
-    	final Tab tab = new Tab();
-        tab.setContextMenu(getTabContextMenu());        
-        tab.setTitle(view.getCaption());        
-        tab.setPane(view.getCanvas() );
+    	Tab tab = _mainTabSet.addTab(null, view.getCaption());
+    	tab.setId( String.valueOf(_mainTabSet.getTabPosition(tab)) );
+    	tab.setClosable(true);
+    	
+    	//tab.setContextMenu(getTabContextMenu());        
         
-        _mapView.put(tab.getID(), view);
+        
+        _mapView.put(tab.getId(), view);
         //tab.setAttribute(property, value);
-        tab.setCanClose(true);
+        
         //view.setWindow()
         _logger.info("Tab icon ="+view.getImgCaption());
-        if ( view.getImgCaption()!=null && !view.getImgCaption().isEmpty() ) {
-        	tab.setIcon(view.getImgCaption());
+        if ( view.getImgCaption()!=null && !view.getImgCaption().isEmpty() ) {        
+        	tab.setIcon(new ThemeResource(view.getImgCaption()));        	
         	
         }
-        view.setOwnerWindow( new IOwnerWnd() {
-			
-			@Override
-			public void setCaption(String caption) {
-				tab.setTitle(caption);
-				
-			}
-		});
-        _mainTabSet.addTab(tab);
+        view.setOwnerWindow(tab);
         _logger.info("Tab icon ="+tab.getIcon());
-        _mainTabSet.selectTab(tab);        
+        _mainTabSet.setSelectedTab(tab);        
     }
 	
     @Override

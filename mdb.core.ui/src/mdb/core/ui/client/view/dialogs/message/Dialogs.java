@@ -4,8 +4,8 @@
 package mdb.core.ui.client.view.dialogs.message;
 
 import mdb.core.ui.client.resources.locales.Captions;
+import  mdb.core.ui.client.util.BooleanCallback;
 
-import com.smartgwt.client.util.BooleanCallback;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.Dialog;
 
@@ -36,18 +36,34 @@ public class Dialogs {
 		
 	}
 	
-	public static void AskDialog2(String message, BooleanCallback callback) {
+	public static void AskDialog2(String message, final BooleanCallback callback) {
 	
 		Dialog dialogProperties = new Dialog();
 		dialogProperties.setShowModalMask(true);
-		dialogProperties.setButtons(Dialog.YES,Dialog.NO, Dialog.CANCEL);     	    		
-		SC.ask(Captions.ALARM, message, callback, dialogProperties);		
+		dialogProperties.setButtons(Dialog.YES,Dialog.NO, Dialog.CANCEL);
+		
+		SC.ask(Captions.ALARM, message, new com.smartgwt.client.util.BooleanCallback() {
+			
+			@Override
+			public void execute(Boolean value) {
+				callback.execute(value);
+				
+			}
+		}, dialogProperties);
+				
 	}
 	
 
-	public static void AskDialog(String message, BooleanCallback callback) {	
-	     	    		
-		SC.ask(message, callback);		
+	public static void AskDialog(String message, final BooleanCallback callback) {	
+	     	
+		SC.ask(message, new com.smartgwt.client.util.BooleanCallback() {
+			
+			@Override
+			public void execute(Boolean value) {
+				callback.execute(value);
+				
+			}
+		});				
 		
 	}
 
@@ -65,9 +81,18 @@ public class Dialogs {
 	 * @param booleanCallback
 	 */
 	public static void Message(String message,
-			BooleanCallback booleanCallback) {
-		SC.say(message, booleanCallback);
+			final BooleanCallback booleanCallback) {
+		
+		SC.say(message, new com.smartgwt.client.util.BooleanCallback() {
+			
+			@Override
+			public void execute(Boolean value) {
+				booleanCallback.execute(value);
+				
+			}
+		});
 		
 	}
+
 	
 }

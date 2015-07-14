@@ -4,7 +4,7 @@
 package mdb.core.ui.client.view;
 
 
-import com.smartgwt.client.util.BooleanCallback;
+import mdb.core.ui.client.util.BooleanCallback;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.tab.Tab;
 
@@ -30,11 +30,11 @@ public interface IView extends ISingleInstanceOnly {
 	/**
 	 * @param tab
 	 */
-	public void setOwnerWindow(Tab tab);
+	public void setOwnerWindow(IOwnerWnd tab);
 	/**
 	 * @return
 	 */
-	public Tab getOwnerWindow();
+	public IOwnerWnd getOwnerWindow();
 	/**
 	 * @return
 	 */
