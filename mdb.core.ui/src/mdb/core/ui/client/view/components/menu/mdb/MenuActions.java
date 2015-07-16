@@ -1,15 +1,23 @@
 package mdb.core.ui.client.view.components.menu.mdb;
 
+import java.util.HashMap;
+
+import org.eclipse.jdt.internal.compiler.parser.diagnose.DiagnoseParser;
+
 import mdb.core.shared.data.Params;
 import mdb.core.shared.transport.IRequestData.ExecuteType;
 import mdb.core.ui.client.command.ICommand;
-import mdb.core.ui.client.communication.impl.MdbActionDataProvider;
+import mdb.core.ui.client.communication.impl.AMdbActionDataProvider;
 import mdb.core.ui.client.data.IDataSpecification;
+import mdb.core.ui.client.data.IDataWraper;
+import mdb.core.ui.client.data.fields.IDataSourceFields;
+import mdb.core.ui.client.data.fields.IDataSourceFieldsBuilder;
 import mdb.core.ui.client.view.components.menu.IMenu;
 import mdb.core.ui.client.view.components.menu.IMenuContainer;
 import mdb.core.ui.client.view.components.menu.IMenuItem;
 import mdb.core.ui.client.view.components.menu.IMenuItem.ItemType;
 import mdb.core.ui.client.view.components.menu.data.MenuDynamic;
+import mdb.core.ui.client.view.dialogs.input.IInputDialogs;
 
 /**
  * @author azhuk
@@ -69,11 +77,12 @@ public class MenuActions extends  MenuDynamic {
 		
 	}
 	
-	class ActionCommand  extends MdbActionDataProvider  implements ICommand<IMenuItem> {
+	class ActionCommand  extends AMdbActionDataProvider  implements ICommand<IMenuItem> {
 		/**
 		 * @param entittId
 		 */
 		private Integer _actionEntityId;
+		private IInputDialogs _inputDialog;
 		
 		
 		@Override
@@ -97,6 +106,25 @@ public class MenuActions extends  MenuDynamic {
 		public void  setActionForEntityId(Integer value) {
 			_actionEntityId = value;
 		}
+
+
+
+		/* (non-Javadoc)
+		 * @see mdb.core.ui.client.communication.impl.AMdbActionDataProvider#getInputDialogs()
+		 */
+		@Override
+		protected IInputDialogs getInputDialogs() {
+			return _inputDialog;
+		}
+
+
+		/**
+		 * 
+		 */
+		public void setInputDialog(IInputDialogs dialog) {
+			_inputDialog = dialog;
+			
+		}
 	}		
 	
 	
@@ -106,6 +134,15 @@ public class MenuActions extends  MenuDynamic {
 	private  ActionCommand _actionCommand;
 	private IMenuItem _ownerMenuItem;
 	private int _ActionForEntityId;
+	private IDataSourceFieldsBuilder _fieldsBuilder;
+	
+	protected  IDataSourceFieldsBuilder getDataSourceFieldsBuilder() {
+		return _fieldsBuilder;
+	}
+	
+	protected  void setDataSourceFieldsBuilder(IDataSourceFieldsBuilder value) {
+		_fieldsBuilder = value;
+	}
 	
 	/**
 	 * @return the _ActionForEntityId
@@ -122,18 +159,26 @@ public class MenuActions extends  MenuDynamic {
 		_actionCommand.setActionForEntityId(value);		
 	}
 
-	public MenuActions (String name, IMenuContainer container) {
-		this(name);
+	public MenuActions (String name, IMenuContainer container, 
+									  IDataWraper dataWraper,  
+									  IDataSourceFieldsBuilder fieldsBuilder,
+									  IInputDialogs dialog) {
+		this(name,dataWraper, fieldsBuilder, dialog);
 		setContainer(container);						
 	}	
 	
-	public MenuActions (String name) {			
-		super(name);
+	public MenuActions ( String name, IDataWraper dataWraper, 
+									  IDataSourceFieldsBuilder fieldsBuilder,
+									  IInputDialogs dialog) {			
+		super(name, dataWraper);
+		
+		setDataSourceFieldsBuilder(fieldsBuilder);
 		setDataSpecification(new MenuActionSpec());		
 		
 		setEntityId(ENTITY_ID);	
 		
 		_actionCommand = createActionComand();	
+		_actionCommand.setInputDialog(dialog);
 		
 		setOwnerMenuItem( addItem(getOwnerMenuTittle(), "silk/actions.png", ItemType.Menu, 0)) ;
 		getMapItems().put("0", getOwnerMenuItem());						
@@ -157,7 +202,10 @@ public class MenuActions extends  MenuDynamic {
 	}
 
 	protected MenuActions.ActionCommand createActionComand() {
-		return   new ActionCommand();	
+		ActionCommand  toReturn = new ActionCommand();
+		
+		toReturn.setDataSourceFieldsBuilder(getDataSourceFieldsBuilder());
+		return   	toReturn;
 	}
 	
 	protected  void setCommand(IMenuItem item ) {		
@@ -175,11 +223,6 @@ public class MenuActions extends  MenuDynamic {
 	}	
 
 	
-	@Override
-	protected void setParentIdValue(IMenuItem item, String parentId) {
-		item.setAttribute("parentID", "0");	
-	}
-	
 	
 	@Override
 	public IMenu getSelf() {
@@ -193,6 +236,26 @@ public class MenuActions extends  MenuDynamic {
 	protected void setOwnerMenuItem (IMenuItem value) {
 		_ownerMenuItem = value;	
 	}
+
+	/* (non-Javadoc)
+	 * @see mdb.core.ui.client.communication.IDataProvider#getDataSourceFieldsMap()
+	 */
+	@Override
+	public HashMap<Integer, IDataSourceFields> getDataSourceFieldsMap() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see mdb.core.ui.client.communication.IDataProvider#getDataSourceKeysMap()
+	 */
+	@Override
+	public HashMap<Integer, String[]> getDataSourceKeysMap() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
 
 
 }

@@ -15,7 +15,7 @@ import mdb.core.shared.transport.Request;
 import mdb.core.ui.client.communication.IDataProvider;
 import mdb.core.ui.client.communication.IQueue;
 import mdb.core.ui.client.communication.IQueueProcessing;
-import mdb.core.ui.client.view.dialogs.waiting.WaitPopup;
+import mdb.core.ui.client.view.dialogs.waiting.IWaitPopup;
 
 /**
  * @author azhuk
@@ -37,12 +37,18 @@ public class GatewayQueue  implements IQueue<IDataProvider, Request> {
 	
 	private static  IQueue<IDataProvider, Request>  _instance;
 	
-	private WaitPopup _waitPopup = new WaitPopup(); 
+	private IWaitPopup _waitPopup = null; 
+	
 	public static IQueue<IDataProvider, Request>  instance() {
 		if (_instance == null) {
 			_instance = new GatewayQueue();
 		}		
 		return _instance;
+	}
+	
+	@Override
+	public void setWaitPopup (IWaitPopup waitPopup) {
+		_waitPopup =  waitPopup;
 	}
 	
 	/* (non-Javadoc)
@@ -144,7 +150,16 @@ public class GatewayQueue  implements IQueue<IDataProvider, Request> {
 	public void beginProcess() {
 		_queueState = EQueueState.Processing;
 		_logger.info("Change Queue state to Processing");
+		if (isCanShowWaiting () ) {
 		_waitPopup.show("");
+		}
+	}
+
+	/**
+	 * @return
+	 */
+	private boolean isCanShowWaiting() {
+		return _waitPopup != null;
 	}
 
 	/* (non-Javadoc)
@@ -156,7 +171,10 @@ public class GatewayQueue  implements IQueue<IDataProvider, Request> {
 		_queueState = EQueueState.Waiting;
 		_logger.info("Change Q state to Waiting");
 		runDelayed();
-		_waitPopup.hide();
+		
+		if (isCanShowWaiting()) {
+			_waitPopup.hide(); 
+		}
 	}	
 
 	

@@ -5,7 +5,7 @@ package mdb.core.ui.client.data.bind;
 
 import java.util.HashMap;
 
-import mdb.core.ui.client.data.IDataSource;
+import mdb.core.ui.client.data.IBaseDataSource;
 
 /**
  * @author azhuk
@@ -14,8 +14,8 @@ import mdb.core.ui.client.data.IDataSource;
  */
 public interface IBindDataSource extends IBindSource {
 	
-	public void setDataSources(HashMap<Integer, IDataSource> value);	
-	public HashMap<Integer, IDataSource> getDataSources();
+	public void setDataSources(HashMap<Integer, IBaseDataSource> value);	
+	public HashMap<Integer, IBaseDataSource> getDataSources();
 
 	
 }

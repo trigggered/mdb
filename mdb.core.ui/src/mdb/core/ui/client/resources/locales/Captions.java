@@ -3,8 +3,6 @@
  */
 package mdb.core.ui.client.resources.locales;
 
-
-
 /**
  * @author azhuk
  * Creation date: Dec 19, 2014
@@ -47,4 +45,7 @@ public class Captions {
 	public static final String ERROR_VALIDATION = "Ошибка валидации";
 	public static final String ERROR_REQUIRED = "Введены не все или не корректные данные. Проверьте!";	
 	public static final String SAVE_CORRECT_RESULT =  "Данные сохранены успешно";
+	public static final String Q_ASK = "Вопрос";
+	public static final String NONE = "";
+	public static final String Q_LOG_OUT = "Exit ?";
 }

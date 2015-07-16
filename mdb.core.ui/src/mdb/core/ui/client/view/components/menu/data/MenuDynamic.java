@@ -4,6 +4,7 @@
 package mdb.core.ui.client.view.components.menu.data;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Logger;
 
 import mdb.core.shared.data.Params;
@@ -16,15 +17,13 @@ import mdb.core.ui.client.communication.IDataProvider;
 import mdb.core.ui.client.communication.IRemoteDataRequest;
 import mdb.core.ui.client.communication.impl.GatewayQueue;
 import mdb.core.ui.client.data.IDataSpecification;
-import mdb.core.ui.client.data.bind.IViewDataBinder.State;
-import mdb.core.ui.client.data.impl.ViewDataConverter;
-import mdb.core.ui.client.data.impl.fields.DataSourceFields;
+import mdb.core.ui.client.data.IDataWraper;
+import mdb.core.ui.client.data.bind.IDataBinder.State;
 import mdb.core.ui.client.events.ICallbackEvent;
 import mdb.core.ui.client.view.components.menu.IMenu;
 import mdb.core.ui.client.view.components.menu.IMenuItem;
 import mdb.core.ui.client.view.components.menu.Menu;
 
-import com.smartgwt.client.data.Record;
 
 /**
  * @author azhuk
@@ -44,42 +43,62 @@ public abstract  class MenuDynamic extends Menu	implements  IDataProvider, IRemo
 	
 	private static final Logger _logger = Logger.getLogger(MenuDynamic.class.getName());
 	private IDataSpecification _dataSpecification;				
-	private Record[] _records;	
+	//private Record[] _records;	
+	private IDataWraper _dataWraper; 
+	
+	
+	public MenuDynamic (String name, IDataWraper dataWraper) {
+		super(name);
+		setDataWraper(dataWraper);		
+	}	
 	
 	
 	/**
-	 * @param name
+	 * @param dataWraper
 	 */
-	public MenuDynamic(String name) {
-		super(name);
+	private void setDataWraper(IDataWraper dataWraper) {
+		_dataWraper = dataWraper;		
 	}
+	
+	protected IDataWraper getDataWraper() {
+		return _dataWraper;
+	}
+
 	
 	protected  HashMap<String, IMenuItem> getMapItems() {
 		return _mapItems;
 	}
 
-	protected void setParentIdValue(IMenuItem item, String parentId) {
-		item.setAttribute("parentID",parentId);
-	}
 	
-	protected void buildMenu(Record[] records) {
+	
+	protected void buildMenu() {
 		_logger.info("Start build menu");
 		
-		if (records != null && records.length > 0) {				
-						
-		    for (Record rec : records) {
+		
+		if (_dataWraper.isDataExists()) {				
+			
+			while(_dataWraper.hasNext()) {
 		    	
-		    	String id = rec.getAttributeAsString(getDataSpecification().getId());
-		    	String parentId = rec.getAttributeAsString(getDataSpecification().getParentId());
-		    	String title = rec.getAttributeAsString(getDataSpecification().getTitle());
-		    	String img =  rec.getAttributeAsString(getDataSpecification().getImg());
-		    	String action = rec.getAttributeAsString(getDataSpecification().getAction());
+				Map<String, String> rec = _dataWraper.next();
+			
+		    	String id = rec.get(getDataSpecification().getId());
+		    	String parentId = rec.get(getDataSpecification().getParentId());
+		    	String title = rec.get(getDataSpecification().getTitle());
+		    	String img =  rec.get(getDataSpecification().getImg());
+		    	String action = rec.get(getDataSpecification().getAction());
 		    	
-		    	String position = rec.getAttributeAsString(getDataSpecification().getPosition());
-		    	String shortcut = rec.getAttributeAsString(getDataSpecification().getShortcut());
+		    	String position = rec.get(getDataSpecification().getPosition());
+		    	String shortcut = rec.get(getDataSpecification().getShortcut());
 		    	
 		    	
 		    	IMenuItem item  = createMenuItem(IMenuItem.ItemType.MenuItem);
+	    	
+		    	if (parentId != null && !parentId.isEmpty()) {
+		    		item.setParentId(Integer.parseInt(parentId) );
+		    	} else {
+		    		item.setParentId(-1);
+		    	}
+		    	
 		    	item.setCaption(title);
 		    	item.setHint("id:"+id+" Action:"+action );
 		    	item.setImg(img);
@@ -91,7 +110,7 @@ public abstract  class MenuDynamic extends Menu	implements  IDataProvider, IRemo
 		    		item.setPosition(Integer.parseInt(position));
 		    	}
 		    	
-		    	setParentIdValue(item, parentId);		    	
+		    	//setParentIdValue(item, parentId);		    	
 		    	
 		    	setCommand(item);
 		    	_mapItems.put(id, item);
@@ -100,8 +119,9 @@ public abstract  class MenuDynamic extends Menu	implements  IDataProvider, IRemo
 		    
 		    
 		    for ( IMenuItem item : _mapItems.values() ) {
-		    	String parentId = item.getAttribute("parentID"); 
-		    	if ( parentId!=null && _mapItems.containsKey(parentId) ) {
+		    	//String parentId = item.getAttribute("parentID"); 
+		    	String parentId = String.valueOf(item.getParentId());
+		    	if (item.isHasParent() && _mapItems.containsKey(parentId) ) {
 		    		 
 		    			IMenuItem parentItem = _mapItems.get(parentId);
 		    			parentItem.setItemType(IMenuItem.ItemType.Menu);
@@ -209,8 +229,8 @@ public abstract  class MenuDynamic extends Menu	implements  IDataProvider, IRemo
 		IRequestData rq =	_responce.get(String.valueOf(getEntityId()));
 			if (rq != null) {
 				((RequestEntity) rq).setExecuteType(ExecuteType.GetData);
-				 _records = ViewDataConverter.jSon2RecordArray(rq.getData());
-				buildMenu(_records);
+				_dataWraper.setData(rq.getData());				
+				buildMenu();
 			}			
 	}
 
@@ -235,7 +255,7 @@ public abstract  class MenuDynamic extends Menu	implements  IDataProvider, IRemo
 	}
 
 	@Override
-	public HashMap<Integer, Record[]> getDataMap() {
+	public HashMap<Integer, String> getDataMap() {
 		return null;
 	}
 
@@ -244,17 +264,6 @@ public abstract  class MenuDynamic extends Menu	implements  IDataProvider, IRemo
 	public void setAfterInvokeEvent(ICallbackEvent<State> callbackEvent) {
 	}
 	
-	/* (non-Javadoc)
-	 * @see mdb.core.ui.client.communication.IDataProvider#getDataSourceFieldsMap()
-	 */
-	@Override
-	public HashMap<Integer, DataSourceFields> getDataSourceFieldsMap() {
-		return null;
-	}
 	
-	@Override
-	public HashMap<Integer, String[]> getDataSourceKeysMap() {
-		return null;
-	}
 	
 }

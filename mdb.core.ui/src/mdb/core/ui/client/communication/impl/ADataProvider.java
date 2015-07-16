@@ -8,7 +8,7 @@ import java.util.logging.Logger;
 
 import mdb.core.shared.transport.Request;
 import mdb.core.ui.client.communication.IDataProvider;
-import mdb.core.ui.client.data.impl.fields.DataSourceFields;
+import mdb.core.ui.client.data.fields.IDataSourceFields;
 
 /**
  * @author azhuk
@@ -19,7 +19,7 @@ public abstract class  ADataProvider implements IDataProvider  {
 	
 	 private static final Logger _logger = Logger.getLogger(ADataProvider.class.getName());	
 	 
-	 public HashMap<Integer, DataSourceFields>  	_dataSourceFieldsMap 	= new HashMap<Integer, DataSourceFields>();
+	 public HashMap<Integer, IDataSourceFields>  	_dataSourceFieldsMap 	= new HashMap<Integer, IDataSourceFields>();
 	 public HashMap<Integer, String[]>  			_dataSourceKeysMap 		= new HashMap<Integer, String[]>();  	 
 	 
 	 private Request _request = new Request();
@@ -71,7 +71,7 @@ public abstract class  ADataProvider implements IDataProvider  {
 
 
 	@Override
-	public HashMap<Integer, DataSourceFields>  getDataSourceFieldsMap() {
+	public HashMap<Integer, IDataSourceFields>  getDataSourceFieldsMap() {
 		return _dataSourceFieldsMap;
 	}
 	

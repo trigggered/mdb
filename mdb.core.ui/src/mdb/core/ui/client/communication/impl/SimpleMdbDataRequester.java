@@ -11,12 +11,13 @@ import mdb.core.shared.transport.IRequestData;
 import mdb.core.shared.transport.IRequestData.ExecuteType;
 import mdb.core.shared.transport.RequestEntity;
 import mdb.core.ui.client.communication.IRemoteDataRequest;
-import mdb.core.ui.client.data.bind.IViewDataBinder.State;
-import mdb.core.ui.client.data.impl.ViewDataConverter;
-import mdb.core.ui.client.data.impl.fields.DataSourceFields;
+import mdb.core.ui.client.data.DataConverter;
+import mdb.core.ui.client.data.bind.IDataBinder.State;
+import mdb.core.ui.client.data.fields.IDataSourceFields;
 import mdb.core.ui.client.events.ICallbackEvent;
 
-import com.smartgwt.client.data.Record;
+
+
 
 /**
  * @author azhuk
@@ -29,13 +30,13 @@ public  class SimpleMdbDataRequester extends ADataProvider implements  IRemoteDa
 	private int _entityId ; 
 	
 	protected Params _params = new Params();				
-	private ICallbackEvent<Record[]> _callbackEvent;
+	private ICallbackEvent<String> _callbackEvent;
 	
 	public SimpleMdbDataRequester() {
 		
 	}
 	
-	public SimpleMdbDataRequester(ICallbackEvent<Record[]> callbackEvent) {
+	public SimpleMdbDataRequester(ICallbackEvent<String> callbackEvent) {
 		_callbackEvent = callbackEvent;
 	}
 
@@ -46,14 +47,14 @@ public  class SimpleMdbDataRequester extends ADataProvider implements  IRemoteDa
 		
 	}
 	
-	public static void call (EMdbEntityActionType actionType, int entityId, Params params, ICallbackEvent<Record[]> callbackEvent ) {
+	public static void call (EMdbEntityActionType actionType, int entityId, Params params, ICallbackEvent<String> callbackEvent ) {
 		SimpleMdbDataRequester requester = new SimpleMdbDataRequester();
 		requester.setEntityId(entityId);
 		requester._callbackEvent =callbackEvent;
 		
 		 IRequestData  re = requester.getRequest().add(new RequestEntity(entityId));
 		 re.setRequestFieldsDescription(false);
-		 String data = ViewDataConverter.map2Json(params.toMap());
+		 String data = DataConverter.map2Json(params.toMap());
 		 re.addtDataForChange(actionType, data);
 		 re.setExecuteType(ExecuteType.ChangeData);
 
@@ -62,14 +63,14 @@ public  class SimpleMdbDataRequester extends ADataProvider implements  IRemoteDa
 		 
 	}
 	
-	public static void callAction (int entityId, int actionId, Params params, ICallbackEvent<Record[]> callbackEvent ) {
+	public static void callAction (int entityId, int actionId, Params params, ICallbackEvent<String> callbackEvent ) {
 		SimpleMdbDataRequester requester = new SimpleMdbDataRequester();
 		requester.setEntityId(entityId);
 		requester._callbackEvent =callbackEvent;
 		
 		 IRequestData  re = requester.getRequest().add(new RequestEntity(entityId));
 		 re.setRequestFieldsDescription(false);
-		 String data = ViewDataConverter.map2Json(params.toMap());
+		 String data = DataConverter.map2Json(params.toMap());
 		 
 		 
 		 re.setExecActionData(actionId, data, null);
@@ -109,20 +110,13 @@ public  class SimpleMdbDataRequester extends ADataProvider implements  IRemoteDa
 		GatewayQueue.instance().getProcessor().run(); 	
 	}
 
-	/* (non-Javadoc)
-	 * @see mdb.core.ui.client.communication.IDataProvider#getDataMap()
-	 */
-	@Override
-	public HashMap<Integer, Record[]> getDataMap() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
 
 	/* (non-Javadoc)
 	 * @see mdb.core.ui.client.communication.IDataProvider#getDataSourceFieldsMap()
 	 */
 	@Override
-	public HashMap<Integer, DataSourceFields> getDataSourceFieldsMap() {
+	public HashMap<Integer, IDataSourceFields> getDataSourceFieldsMap() {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -159,8 +153,17 @@ public  class SimpleMdbDataRequester extends ADataProvider implements  IRemoteDa
 		if (rq != null) {
 			((RequestEntity) rq).setExecuteType(ExecuteType.GetData);
 			if (_callbackEvent!= null) {
-				_callbackEvent.doWork( ViewDataConverter.jSon2RecordArray(rq.getData() ) );
+				_callbackEvent.doWork( rq.getData()  );
 			}
 		}		
+	}
+
+	/* (non-Javadoc)
+	 * @see mdb.core.ui.client.communication.IDataProvider#getDataMap()
+	 */
+	@Override
+	public HashMap<Integer, String> getDataMap() {
+		// TODO Auto-generated method stub
+		return null;
 	}	
 }

@@ -6,9 +6,9 @@ package mdb.core.ui.client.view.components.menu.data;
 import java.util.HashMap;
 
 import mdb.core.ui.client.command.ICommand;
+import mdb.core.ui.client.data.IBaseDataSource;
 import mdb.core.ui.client.data.IDataNavigator;
 import mdb.core.ui.client.data.IDataPaging;
-import mdb.core.ui.client.data.IDataSource;
 import mdb.core.ui.client.resources.locales.Captions;
 import mdb.core.ui.client.view.components.Component;
 import mdb.core.ui.client.view.components.ISimpleVisualComponent;
@@ -27,7 +27,7 @@ public abstract class AMenuData extends  Menu   {
 
 	private HashMap<IDataNavigator.Buttons, IMenuItem>  _buttons = new HashMap<IDataNavigator.Buttons, IMenuItem>();	
 	private static HashMap<IDataNavigator.Buttons, ISimpleVisualComponent>  _buttonInitialiser;
-	private IDataSource _dataSource;
+	private IBaseDataSource _dataSource;
 	private IDataView _view;
 
 	
@@ -55,7 +55,7 @@ public abstract class AMenuData extends  Menu   {
 		 
 	}
 	
-	public AMenuData(String name, IDataSource dataSource, IDataView view) {
+	public AMenuData(String name, IBaseDataSource dataSource, IDataView view) {
 		super(name);
 		
 		_view = view;
@@ -68,14 +68,14 @@ public abstract class AMenuData extends  Menu   {
 		return _view;
 	}
 	
-	public void setDataSource (IDataSource dataSource) {		
+	public void setDataSource (IBaseDataSource dataSource) {		
 		_dataSource = dataSource;
 		if (_dataSource != null) {
 			createDefaultButtons();
 		}		
 	}
 	
-	public IDataSource getDataSource() {
+	public IBaseDataSource getDataSource() {
 		return _dataSource;
 	}	
 

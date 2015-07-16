@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map.Entry;
 
 import mdb.core.shared.transport.Request;
+import mdb.core.ui.client.view.dialogs.waiting.IWaitPopup;
 
 
 
@@ -41,4 +42,8 @@ public interface IQueue<T, E> {
 	public  void printQueue();
 	public    String   getQueueData (List<Request> values);
 	public EQueueState getState();
+	/**
+	 * @param waitPopup
+	 */
+	void setWaitPopup(IWaitPopup waitPopup);
 }

@@ -5,22 +5,33 @@ package mdb.core.ui.client.view;
 
 
 import mdb.core.ui.client.util.BooleanCallback;
-import com.smartgwt.client.widgets.Canvas;
-import com.smartgwt.client.widgets.tab.Tab;
 
 /**
  * @author azhuk
  * Creation date: Aug 7, 2013
  *
  */
-public interface IView extends ISingleInstanceOnly {	
+public interface IView extends ISingleInstanceOnly {
+	
+	public enum EViewPanelType {
+		HLayout,
+		VLayout
+	}
+	
+	public enum EViewShowType {
+		TabWindow,
+		Window,
+		Dialog		
+	}
+	
+	public EViewShowType  getViewShowType();
 	public  String getCaption();
 	public  void  setCaption(String value);
 	
 	public  String getImgCaption();
 	public  void setImgCaption(String value);	
 		
-	public Canvas getCanvas();
+	//public Canvas getCanvas();
 	public void initialize();
 	public void setMainView (IMainView mainView);
 	public IMainView getMainView ();
@@ -53,4 +64,12 @@ public interface IView extends ISingleInstanceOnly {
 	
 	public String getViewContainerID( );
 	public void print();
+	/**
+	 * 
+	 */
+	public void show();
+	
+	
+	
+	
 }

@@ -46,6 +46,7 @@ public class MdbMainMenuCommand implements ICommand<IMenuItem> {
 		return view
 		}		
 		*/				
-		_boundView.openViewInTab( _mdbMainMenuAction.getView(action));
+		//_boundView.openViewInTab( _mdbMainMenuAction.getView(action));
+		_boundView.openView( _mdbMainMenuAction.getView(action));
 	}
 }

@@ -3,7 +3,8 @@
  */
 package mdb.core.ui.client.data.checkers;
 
-import com.smartgwt.client.util.BooleanCallback;
+import mdb.core.ui.client.util.BooleanCallback;
+
 
 /**
  * @author azhuk

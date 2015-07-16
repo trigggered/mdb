@@ -36,7 +36,7 @@ public interface IMenuItem extends IPosition, IVisualComponent, IHasChangeHandle
 	public ItemType getItemType();
 	public void  setItemType(ItemType value);
 	
-	public ICommand<IMenuItem>  getComand ();
+	public ICommand<IMenuItem>  getCommand ();
 	public void  setCommand(ICommand<IMenuItem> command);				
 	
 	public int  getPosition();
@@ -59,4 +59,13 @@ public interface IMenuItem extends IPosition, IVisualComponent, IHasChangeHandle
 	public boolean isAlreadyBound();
 	public IMenu getMenu();
 	public void setMenu(IMenu menu);
+	/**
+	 * @param id
+	 */
+	public void setId(int value);	
+	public int getId();
+	
+	public void setParentId(int value);
+	public int getParentId();
+	public boolean isHasParent();
 }

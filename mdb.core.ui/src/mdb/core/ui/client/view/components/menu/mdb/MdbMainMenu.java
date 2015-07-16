@@ -3,9 +3,13 @@
  */
 package mdb.core.ui.client.view.components.menu.mdb;
 
+import java.util.HashMap;
+
 import mdb.core.shared.data.Params;
 import mdb.core.ui.client.command.ICommand;
 import mdb.core.ui.client.data.IDataSpecification;
+import mdb.core.ui.client.data.IDataWraper;
+import mdb.core.ui.client.data.fields.IDataSourceFields;
 import mdb.core.ui.client.view.components.menu.IMenuContainer;
 import mdb.core.ui.client.view.components.menu.IMenuItem;
 import mdb.core.ui.client.view.components.menu.data.MenuDynamic;
@@ -70,12 +74,13 @@ public class MdbMainMenu  extends MenuDynamic {
 	private ICommand<IMenuItem> _command;	
 	
 	
-	public MdbMainMenu (int appId, IMenuContainer container,  ICommand<IMenuItem> command) {
-		this(MAIN_MENU, appId, container,  command, null);		
+	public MdbMainMenu (IDataWraper dataWraper, int appId, IMenuContainer container,  ICommand<IMenuItem> command) {
+		this(dataWraper, MAIN_MENU, appId, container,  command, null);		
 	}
 	
-	public MdbMainMenu (int menuEntityId, int appId, IMenuContainer container,  ICommand<IMenuItem> command, Params qParams) {
-		super ("Main menu");
+	public MdbMainMenu (IDataWraper dataWraper, int menuEntityId, int appId, IMenuContainer container,  ICommand<IMenuItem> command, Params qParams) {
+		super ("Main menu", dataWraper);
+		
 		setEntityId(menuEntityId);
 		setDataSpecification(new MenuActionSpec () );		
 		_command = command;						
@@ -90,6 +95,24 @@ public class MdbMainMenu  extends MenuDynamic {
 	@Override
 	protected  void setCommand(IMenuItem item ) {		
 		item.setCommand( _command );
+	}
+
+	/* (non-Javadoc)
+	 * @see mdb.core.ui.client.communication.IDataProvider#getDataSourceFieldsMap()
+	 */
+	@Override
+	public HashMap<Integer, IDataSourceFields> getDataSourceFieldsMap() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see mdb.core.ui.client.communication.IDataProvider#getDataSourceKeysMap()
+	 */
+	@Override
+	public HashMap<Integer, String[]> getDataSourceKeysMap() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }

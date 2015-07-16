@@ -5,8 +5,8 @@ package mdb.core.ui.client.view.components.menu.data;
 
 import mdb.core.shared.transport.RequestEntity;
 import mdb.core.ui.client.command.ICommand;
+import mdb.core.ui.client.data.IBaseDataSource;
 import mdb.core.ui.client.data.IDataNavigator;
-import mdb.core.ui.client.data.IDataSource;
 import mdb.core.ui.client.view.components.menu.IMenuItem;
 import mdb.core.ui.client.view.data.IDataView;
 
@@ -20,7 +20,7 @@ public class MenuDataNavigator extends  AMenuData  implements IDataNavigator {
 
 
 
-	public MenuDataNavigator(String name, IDataSource dataSource, IDataView view) {
+	public MenuDataNavigator(String name, IBaseDataSource dataSource, IDataView view) {
 		super(name, dataSource,view);		
 	}	
 	

@@ -5,13 +5,13 @@ package mdb.core.ui.client.view.data;
 
 import mdb.core.shared.data.Params;
 import mdb.core.ui.client.communication.IRemoteDataRequest;
-import mdb.core.ui.client.data.IDataSource;
+import mdb.core.ui.client.data.IBaseDataSource;
 import mdb.core.ui.client.data.bind.IBindDataSource;
-import mdb.core.ui.client.data.bind.IViewDataBinder;
+import mdb.core.ui.client.data.bind.IDataBinder;
 import mdb.core.ui.client.events.IDataEditHandler;
 import mdb.core.ui.client.view.IView;
 
-import com.smartgwt.client.data.Record;
+
 
 
 /**
@@ -19,17 +19,14 @@ import com.smartgwt.client.data.Record;
  * Creation date: Oct 10, 2012
  *
  */
-public interface IDataView extends IBindDataSource, IView, IRemoteDataRequest{	
+public interface IDataView<E> extends IBindDataSource, IView, IRemoteDataRequest{	
 	
-	public void setDataBinder( IViewDataBinder value);
-	public IViewDataBinder getDataBinder();
+	public void setDataBinder( IDataBinder value);
+	public IDataBinder getDataBinder();
 	
-	public IDataSource getMainDataSource();
+	public IBaseDataSource getMainDataSource();
 	
 	public void showFilterView();	
-	
-	public Record getSelectedRecord();
-	public Record[] getSelectedRecords();
 	
 	public boolean isSelectedRecord();
 	
@@ -43,10 +40,10 @@ public interface IDataView extends IBindDataSource, IView, IRemoteDataRequest{
 	public Params getParams();	
 	
 	/*Events*/
-	public void addEditEvent (IDataEditHandler handler);
-	public void addInsertEvent (IDataEditHandler handler);
-	public void addDeleteEvent (IDataEditHandler handler);
-	public void addViewEvent (IDataEditHandler handler);
+	public void addEditEvent (IDataEditHandler<E> handler);
+	public void addInsertEvent (IDataEditHandler<E> handler);
+	public void addDeleteEvent (IDataEditHandler<E> handler);
+	public void addViewEvent (IDataEditHandler<E> handler);
 	/*Call events*/
 	public void callEditEvent();
 	public void callInsertEvent();
@@ -65,5 +62,8 @@ public interface IDataView extends IBindDataSource, IView, IRemoteDataRequest{
 	 * @param value
 	 */
 	void setAutoSave(boolean value);
+	
+	String getSelectedRecordJSON();
+	
 	
 }

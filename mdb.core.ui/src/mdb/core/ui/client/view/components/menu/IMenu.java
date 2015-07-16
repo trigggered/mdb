@@ -26,5 +26,9 @@ public interface IMenu extends IVisualComponent, IPosition {
 	public void setContainer (IMenuContainer menuContainer);
 	public IMenuContainer getContainer();
 	
-	public List<IMenuItem> getSortedItems();	
+	public List<IMenuItem> getSortedItems();
+	/**
+	 * @param i
+	 */
+	public void setPosition(int i);	
 }

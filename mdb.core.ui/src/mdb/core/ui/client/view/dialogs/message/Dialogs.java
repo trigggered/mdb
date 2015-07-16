@@ -3,11 +3,7 @@
  */
 package mdb.core.ui.client.view.dialogs.message;
 
-import mdb.core.ui.client.resources.locales.Captions;
-import  mdb.core.ui.client.util.BooleanCallback;
-
-import com.smartgwt.client.util.SC;
-import com.smartgwt.client.widgets.Dialog;
+import mdb.core.ui.client.util.BooleanCallback;
 
 
 /**
@@ -15,65 +11,44 @@ import com.smartgwt.client.widgets.Dialog;
  * Creation date: Nov 26, 2014
  *
  */
-public class Dialogs {	
+public class Dialogs  {	
 	
-	public static void ShowMessage(String message) {
-		
-		SC.say(message);
-		
+	static IMessageDialogs _messDialogs; 
+	
+	public static void regiserMessageDialogs(IMessageDialogs  messageDialogs) {
+		_messDialogs = messageDialogs;
 	}
 	
-	public static void ShowMessage(String title, String message) {
-		
-		SC.say(title, message);
-		
+	
+	public static void ShowMessage(String message) {
+		_messDialogs.ShowMessage(message);		
+	}
+	
+	public static void ShowMessage(String title, String message) {		
+		_messDialogs.ShowMessage(title, message);		
 	}
 
 	
 	public static void ShowWarnMessage(String message) {
 		
-		SC.warn(message);
+		_messDialogs.ShowWarnMessage(message);
 		
 	}
 	
 	public static void AskDialog2(String message, final BooleanCallback callback) {
-	
-		Dialog dialogProperties = new Dialog();
-		dialogProperties.setShowModalMask(true);
-		dialogProperties.setButtons(Dialog.YES,Dialog.NO, Dialog.CANCEL);
-		
-		SC.ask(Captions.ALARM, message, new com.smartgwt.client.util.BooleanCallback() {
-			
-			@Override
-			public void execute(Boolean value) {
-				callback.execute(value);
-				
-			}
-		}, dialogProperties);
-				
+	 _messDialogs.AskDialog2(message, callback);			
 	}
 	
 
 	public static void AskDialog(String message, final BooleanCallback callback) {	
-	     	
-		SC.ask(message, new com.smartgwt.client.util.BooleanCallback() {
-			
-			@Override
-			public void execute(Boolean value) {
-				callback.execute(value);
-				
-			}
-		});				
-		
+		_messDialogs.AskDialog(message, callback);
 	}
 
 	/**
 	 * 
 	 */
 	public static void ValidatonWarning() {
-		
-		SC.warn(Captions.ERROR_VALIDATION , Captions.ERROR_REQUIRED);
-		
+		_messDialogs.ValidatonWarning();
 	}
 
 	/**
@@ -82,16 +57,7 @@ public class Dialogs {
 	 */
 	public static void Message(String message,
 			final BooleanCallback booleanCallback) {
-		
-		SC.say(message, new com.smartgwt.client.util.BooleanCallback() {
-			
-			@Override
-			public void execute(Boolean value) {
-				booleanCallback.execute(value);
-				
-			}
-		});
-		
+		_messDialogs.Message(message, booleanCallback);		
 	}
 
 	

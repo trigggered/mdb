@@ -4,10 +4,8 @@
 package mdb.core.ui.client.view.components.menu;
 
 
+import mdb.core.ui.client.view.IView;
 import mdb.core.ui.client.view.data.IDataView;
-
-import com.smartgwt.client.widgets.Canvas;
-import com.smartgwt.client.widgets.layout.Layout;
 
 /**
  * @author azhuk
@@ -15,11 +13,20 @@ import com.smartgwt.client.widgets.layout.Layout;
  *
  */
 public interface IMenuContainer {
+	
+	enum EContaynerOriented {
+		Vertical,
+		Horizontal
+	}
+	
 	public void bind(IMenu menu);
-	public Layout getLayout ();
 	public IDataView  getView();
 	public void setView(IDataView value);
 	public boolean isMenuExist(IMenu menu);
-	public void addMemberToContainer(Canvas canvas);
+	
+	/**
+	 * @param aBaseView
+	 */
+	public void addToView(IView view);
 	
 }

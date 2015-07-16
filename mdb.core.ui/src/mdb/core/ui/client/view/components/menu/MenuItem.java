@@ -12,24 +12,26 @@ import mdb.core.ui.client.view.components.AVisualComponent;
 
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HandlerRegistration;
-import com.smartgwt.client.widgets.events.ClickEvent;
-import com.smartgwt.client.widgets.events.ClickHandler;
+
 
 /**
  * @author azhuk
  * Creation date: Dec 20, 2012
  *
  */
-public class MenuItem extends AVisualComponent implements IMenuItem, ClickHandler {
+public class MenuItem extends AVisualComponent implements IMenuItem {
 	
 	private ItemType _itemType;
 	private ICommand<IMenuItem> _command;	
 	private int _positon;
+	
 	private IMenu _menu;
 	private IMenu _childMenu;
 	private Object _value;
 	private LinkedHashMap<String,Object> _valueMap;
 	private int _memberNumber =-1;
+	private int _id;
+	private int _parentid;
 	
 	private IChangeHandler _changeHandler;
 	
@@ -71,7 +73,7 @@ public class MenuItem extends AVisualComponent implements IMenuItem, ClickHandle
 	 * @see mdb.ui.client.view.common.components.menu.IMenuItem#getComand()
 	 */
 	@Override
-	public ICommand<IMenuItem> getComand() {
+	public ICommand<IMenuItem> getCommand() {
 		return _command;
 	}
 	
@@ -79,6 +81,7 @@ public class MenuItem extends AVisualComponent implements IMenuItem, ClickHandle
 	/* (non-Javadoc)
 	 * @see com.smartgwt.client.widgets.events.ClickHandler#onClick(com.smartgwt.client.widgets.events.ClickEvent)
 	 */
+/*
 	@Override
 	public void onClick(ClickEvent event) {
 		
@@ -86,7 +89,7 @@ public class MenuItem extends AVisualComponent implements IMenuItem, ClickHandle
 			_command.execute(this);
 		}
 	}
-
+*/
 	protected Boolean assignCommand() {
 		return _command != null;
 	}	
@@ -197,7 +200,48 @@ public class MenuItem extends AVisualComponent implements IMenuItem, ClickHandle
 	@Override
 	public boolean isAlreadyBound() {
 		return getMemberNumber() >=0;
+	
 	}
 	
+	/* (non-Javadoc)
+	 * @see mdb.core.ui.client.view.components.menu.IMenuItem#setId(int)
+	 */
+	@Override
+	public void setId(int value) {
+		_id = value;		
+	}
 	
+	/* (non-Javadoc)
+	 * @see mdb.core.ui.client.view.components.menu.IMenuItem#getId()
+	 */
+	@Override
+	public int getId() {	
+		return _id;
+	}
+
+	/* (non-Javadoc)
+	 * @see mdb.core.ui.client.view.components.menu.IMenuItem#setParentId(int)
+	 */
+	@Override
+	public void setParentId(int value) {
+		_parentid = value;		
+	}
+
+	/* (non-Javadoc)
+	 * @see mdb.core.ui.client.view.components.menu.IMenuItem#getParentId()
+	 */
+	@Override
+	public int getParentId() {
+		return _parentid;
+	}
+
+	/* (non-Javadoc)
+	 * @see mdb.core.ui.client.view.components.menu.IMenuItem#isHasParent()
+	 */
+	@Override
+	public boolean isHasParent() {
+		return getParentId()>0;
+	}
 }
+	
+	

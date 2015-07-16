@@ -5,6 +5,7 @@ package mdb.core.ui.client.data;
 
 
 
+
 /**
  * @author azhuk
  * Creation date: Mar 5, 2014
@@ -12,13 +13,16 @@ package mdb.core.ui.client.data;
  */
 public interface IDataComponent {
 	
-	void setDataSource(IDataSource value );
-	IDataSource getDataSource();	
+	void setDataSource(IBaseDataSource value );
+	
+	void setDataSource(IBaseDataSource value, boolean isCanEdit);
+	
+	IBaseDataSource getDataSource();	
 	/**
 	 * @param value
 	 * @param isCanEdit
 	 */
-	void setDataSource(IDataSource value, boolean isCanEdit);	
+		
 	/**
 	 * @param masterFldName
 	 * @param lookUpKeyValue

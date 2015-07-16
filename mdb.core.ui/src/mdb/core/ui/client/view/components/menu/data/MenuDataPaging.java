@@ -4,8 +4,8 @@
 package mdb.core.ui.client.view.components.menu.data;
 
 import mdb.core.ui.client.command.ICommand;
+import mdb.core.ui.client.data.IBaseDataSource;
 import mdb.core.ui.client.data.IDataPaging;
-import mdb.core.ui.client.data.IDataSource;
 import mdb.core.ui.client.view.components.menu.IMenuItem;
 import mdb.core.ui.client.view.components.menu.IMenuItem.ItemType;
 import mdb.core.ui.client.view.data.IDataView;
@@ -18,7 +18,7 @@ import mdb.core.ui.client.view.data.IDataView;
  */
 public class MenuDataPaging extends  AMenuData implements IDataPaging {		
 		
-	public MenuDataPaging(String name, IDataSource dataSource,IDataView view ) {
+	public MenuDataPaging(String name, IBaseDataSource dataSource,IDataView view ) {
 		super(name,  dataSource, view );		
 	}	
 	

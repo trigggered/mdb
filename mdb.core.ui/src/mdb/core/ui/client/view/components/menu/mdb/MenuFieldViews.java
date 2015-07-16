@@ -3,17 +3,20 @@
  */
 package mdb.core.ui.client.view.components.menu.mdb;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.logging.Logger;
 
 import mdb.core.ui.client.command.ICommand;
 import mdb.core.ui.client.data.IDataSpecification;
+import mdb.core.ui.client.data.IDataWraper;
+import mdb.core.ui.client.data.fields.IDataSourceFields;
 import mdb.core.ui.client.view.components.menu.IMenuContainer;
 import mdb.core.ui.client.view.components.menu.IMenuItem;
 import mdb.core.ui.client.view.components.menu.IMenuItem.ItemType;
 import mdb.core.ui.client.view.components.menu.data.MenuDynamic;
 
-import com.smartgwt.client.data.Record;
 
 
 
@@ -95,8 +98,8 @@ public class MenuFieldViews extends  MenuDynamic   {
 	
 	//private Command _command = new Command();
 	
-	public MenuFieldViews(IMenuContainer container ) {
-		super (null);
+	public MenuFieldViews(IDataWraper dataWraper, IMenuContainer container ) {
+		super(null, dataWraper);
 		 _itemMenu = addItem(ItemType.Combobox);
 		 _itemMenu.setWidth(100);
 		 _itemMenu.setCaption("Views");
@@ -113,15 +116,19 @@ public class MenuFieldViews extends  MenuDynamic   {
 	
 	
 	@Override
-	protected void buildMenu(Record[] records) {
+	protected void buildMenu() {
 		_logger.info("Start build menu");				
 		
-		if (records != null) {
+		
+		if (getDataWraper().isDataExists()) {
+			LinkedHashMap<String, Object>  map = new LinkedHashMap<String, Object>();
 			
-			LinkedHashMap<String, Object>  map = new LinkedHashMap<String, Object>();	
-		    for (Record rec : records) {
-		    	map.put(rec.getAttributeAsString(getDataSpecification().getId()),
-		    			rec.getAttributeAsString(getDataSpecification().getTitle()));
+			
+			while ( getDataWraper().hasNext()) {
+				Map<String, String> rec =  getDataWraper().next();
+		    //for (Record rec : records) {
+		    	map.put(rec.get(getDataSpecification().getId()),
+		    			rec.get(getDataSpecification().getTitle()));
 		    					
 			}
 		    _itemMenu.setValueMap(map);
@@ -141,6 +148,26 @@ public class MenuFieldViews extends  MenuDynamic   {
 	
 	public void addCommand(ICommand<IMenuItem> command) {
 		_itemMenu.setCommand(command);	 	
+	}
+
+
+	/* (non-Javadoc)
+	 * @see mdb.core.ui.client.communication.IDataProvider#getDataSourceFieldsMap()
+	 */
+	@Override
+	public HashMap<Integer, IDataSourceFields> getDataSourceFieldsMap() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	/* (non-Javadoc)
+	 * @see mdb.core.ui.client.communication.IDataProvider#getDataSourceKeysMap()
+	 */
+	@Override
+	public HashMap<Integer, String[]> getDataSourceKeysMap() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }

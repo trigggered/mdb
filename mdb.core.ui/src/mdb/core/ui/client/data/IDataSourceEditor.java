@@ -3,7 +3,8 @@
  */
 package mdb.core.ui.client.data;
 
-import mdb.core.ui.client.data.impl.fields.MdbField;
+import mdb.core.ui.client.data.fields.IMdbField;
+
 
 /**
  * @author azhuk
@@ -11,6 +12,6 @@ import mdb.core.ui.client.data.impl.fields.MdbField;
  *
  */
 public interface IDataSourceEditor {
-	public void edit(IDataSource ds, MdbField field); 
+	public void edit(IBaseDataSource ds, IMdbField field); 
 
 }

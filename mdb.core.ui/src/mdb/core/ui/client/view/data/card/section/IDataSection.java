@@ -3,15 +3,17 @@
  */
 package mdb.core.ui.client.view.data.card.section;
 
+
 import mdb.core.ui.client.view.data.IDataView;
 import mdb.core.ui.client.view.data.card.ICard;
 
 /**
  * @author azhuk
  * Creation date: Jul 10, 2015
+ * @param <E>
  *
  */
-public interface IDataSection  extends IDataView{
+public interface IDataSection<E> extends IDataView<E> {
 	
 	public enum ESectionType {
 		Grid,

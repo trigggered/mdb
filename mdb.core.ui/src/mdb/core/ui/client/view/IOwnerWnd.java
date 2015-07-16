@@ -13,4 +13,5 @@ import java.util.logging.Logger;
  */
 public interface IOwnerWnd {
 	void setCaption(String caption);
+	
 }

@@ -8,9 +8,8 @@ import java.util.logging.Logger;
 import mdb.core.shared.data.Params;
 import mdb.core.ui.client.communication.impl.SimpleMdbDataRequester;
 import mdb.core.ui.client.events.ICallbackEvent;
+import mdb.core.ui.client.util.BooleanCallback;
 
-import com.smartgwt.client.data.Record;
-import com.smartgwt.client.util.BooleanCallback;
 
 /**
  * @author azhuk
@@ -23,7 +22,7 @@ public class SimpleChecker implements IChecker {
 			.getName());
 	
 	SimpleMdbDataRequester _dataRequester; 
-	ICallbackEvent<Record[]> _callBack;
+	ICallbackEvent<String> _callBack;
 	Params _params = new Params();
 	
 	/**
@@ -34,16 +33,16 @@ public class SimpleChecker implements IChecker {
 	}
 
 	public SimpleChecker(){
-		_dataRequester = new SimpleMdbDataRequester(new ICallbackEvent<Record[]>() {
+		_dataRequester = new SimpleMdbDataRequester(new ICallbackEvent<String>() {
 			
 			@Override
-			public void doWork(Record[] data) {
+			public void doWork(String data) {
 				_callBack.doWork(data);				
 			}
 		});		
 	}
 	
-	protected  void check(int entityId,   ICallbackEvent<Record[]> callBack) {
+	protected  void check(int entityId,   ICallbackEvent<String> callBack) {
 		_callBack = callBack;		
 		_dataRequester.request(entityId, getParams());
 	}
