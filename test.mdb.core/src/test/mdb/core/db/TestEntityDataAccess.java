@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 import junit.framework.TestCase;
 import mdb.core.db.IEntityDataAccess;
 import mdb.core.shared.data.Params;
+import mdb.injector.SingletonInjector;
 import test.mdb.environment.TestInjectConfiguration;
 
 import com.google.inject.Guice;
@@ -20,6 +21,7 @@ public class TestEntityDataAccess extends TestCase {
 	public TestEntityDataAccess() {
 		
 		Injector injector = Guice.createInjector(new TestInjectConfiguration());
+		SingletonInjector.setInjector(injector);
 		_entityDataAccess = injector.getInstance(IEntityDataAccess.class);     
 	}
 	

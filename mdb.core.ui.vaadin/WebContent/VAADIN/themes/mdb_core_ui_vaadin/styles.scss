@@ -1,9 +1,0 @@
-@import "addons.scss";
-@import "mdb_core_ui_vaadin.scss";
-
-/* This file prefixes all rules with the theme name to avoid causing conflicts with other themes. */
-/* The actual styles should be defined in mdb_core_ui_vaadin.scss */
-.mdb_core_ui_vaadin {
-  @include addons;
-  @include mdb_core_ui_vaadin;
-}

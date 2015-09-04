@@ -8,7 +8,7 @@ import static org.junit.Assert.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import mdb.core.shared.transformation.impl.JSONRequestSerialiser;
+import mdb.core.shared.transformation.mdbrequest.JSONRequestSerialiser;
 import mdb.core.shared.transport.Request;
 import mdb.core.shared.transport.RequestEntity;
 
@@ -50,9 +50,7 @@ public class TestRequesSerialiser {
 		List<Request>  desList = ser.listDeserialize(jsonStr);
 		assertEquals(list.size(),  desList.size() );
 		
-		assertTrue(desList.get(0).existEntity( String.valueOf(entityId) ) );
-		
-		
+		assertTrue(desList.get(0).existEntity( String.valueOf(entityId) ) );	
 		
 	}
 }

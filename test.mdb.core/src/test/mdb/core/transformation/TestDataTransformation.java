@@ -1,18 +1,20 @@
-/**
- * 
- */
+
 package test.mdb.core.transformation;
 
 import java.sql.ResultSet;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import junit.framework.TestCase;
 import mdb.core.db.IEntityDataAccess;
 import mdb.core.shared.data.Params;
-import mdb.core.shared.transformation.impl.ResultSetToJSONTransformation;
+import mdb.core.shared.transformation.json.JSONTransformation;
+import mdb.core.shared.transformation.sql.IResultSetSerializer;
+import mdb.core.shared.transformation.sql.ResultSetJacksonSerializerImpl;
+import mdb.core.shared.transformation.sql.ResultSetManualSerializerImpl;
+import mdb.injector.SingletonInjector;
 
 import org.junit.Test;
 
@@ -37,8 +39,10 @@ public class TestDataTransformation extends TestCase {
 	
 	
 	public TestDataTransformation() {
-	Injector injector = Guice.createInjector(new TestInjectConfiguration());
-	_entityDataAccesst = injector.getInstance(IEntityDataAccess.class);
+		
+		Injector injector = Guice.createInjector(new TestInjectConfiguration());
+		SingletonInjector.setInjector(injector);
+		_entityDataAccesst = injector.getInstance(IEntityDataAccess.class);
     
 	}
 	
@@ -61,7 +65,8 @@ public class TestDataTransformation extends TestCase {
 		_logger.log(Level.INFO, "End call");		
 		return rs;		 
 	}
-	public ResultSet getResultSet (int entityId) {		
+	
+	public ResultSet getEnitiesMethods (int entityId) {		
 		_logger.log(Level.INFO, "Start call");
 							
 		Params params  = new Params();
@@ -73,24 +78,52 @@ public class TestDataTransformation extends TestCase {
 		return rs;		 
 	}
 	
+	public ResultSet getResultSet (int entityId) {				
+		ResultSet rs = _entityDataAccesst.getResultSet(entityId);
+		return rs;		 
+	}
 	
+	
+	@Test
 	public void testData() {
 		ResultSet rs =  getResultSet1275();
 		assertNotNull(rs);
 	}
 	
-	
+	@Test
 	public void testResultSet2Json() {
+		//final int ENTITY_ID = 5028;
+		final int ENTITY_ID = 5309;
+		final int EXPECTED_ROW_COUNT = 1;
 		
-		ResultSet rs = getResultSet(5028);
-		String jsonStr = ResultSetToJSONTransformation.make(rs);		
+		ResultSet rs = getResultSet(ENTITY_ID);
+		IResultSetSerializer resultSetSerializer = new  ResultSetManualSerializerImpl();
+		String jsonStr1 = resultSetSerializer.make(rs);		
 		
-		assertNotNull(jsonStr);
-		_logger.info(jsonStr);		
+		assertNotNull(jsonStr1);
+		_logger.info("######################################################");
+		_logger.info("######################################################");
+		_logger.info(jsonStr1);		
 		
-		List<HashMap<String, String>> arrMap=  ResultSetToJSONTransformation.deserialise(jsonStr);
-		assertNotNull(arrMap);
-		assertEquals(8, arrMap.size());		
+		List<Map<String, String>> arrMap1=  JSONTransformation.json2ListMap(jsonStr1);
+		assertNotNull(arrMap1);
+		assertEquals(EXPECTED_ROW_COUNT, arrMap1.size());		
+		
+		_logger.info("######################################################");
+		_logger.info("######################################################");
+		
+		_entityDataAccesst.getQueryPool().closeAll();
+		rs = getResultSet(ENTITY_ID);
+		resultSetSerializer = new  ResultSetJacksonSerializerImpl();
+		String jsonStr2 = resultSetSerializer.make(rs);				
+		
+		assertNotNull(jsonStr2);
+		_logger.info(jsonStr2);		
+		
+		List<Map<String, String>> arrMap2=  JSONTransformation.json2ListMap(jsonStr2);
+		assertNotNull(arrMap2);
+		assertEquals(EXPECTED_ROW_COUNT, arrMap2.size());		
+		_entityDataAccesst.getQueryPool().closeAll();
 	}
 	
 	/*
@@ -119,7 +152,7 @@ public class TestDataTransformation extends TestCase {
 	}
 	*/
 	
-	@Test
+	
 	public void testLobStorInfo() {
 	/*	Map<String,String> infoToJson = new HashMap<String,String>();
 		infoToJson.put(ELobStoringResultProp.AttributeId.toString(), String.valueOf(100) );
@@ -137,8 +170,7 @@ public class TestDataTransformation extends TestCase {
 		
 		assertEquals(infoToJson.get(ELobStoringResultProp.AttributeId), infoFromJson.get(ELobStoringResultProp.AttributeId));
 		
-		*/
-		
+		*/		
 	}
 	
 }

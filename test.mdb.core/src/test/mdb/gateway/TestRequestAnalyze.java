@@ -8,7 +8,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import junit.framework.TestCase;
-import mdb.core.shared.transformation.IRequestSerialiser;
+import mdb.core.shared.transformation.mdbrequest.IRequestSerialiser;
 import mdb.core.shared.transport.IRequestData;
 import mdb.core.shared.transport.Request;
 import mdb.core.shared.transport.RequestEntity;
@@ -40,7 +40,7 @@ public class TestRequestAnalyze extends TestCase {
 	
 	private Request getRequest() {
 		Request  toReturn = new Request();
-		RequestEntity requestEntity =  new RequestEntity(21);
+		IRequestData requestEntity =  new RequestEntity(21);
 		requestEntity.getParams().add("PID_DENTITY", "1428");				
 		
 		toReturn.add(requestEntity);    	
