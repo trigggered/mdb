@@ -8,8 +8,8 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 import mdb.core.shared.gw.WebServiceClient;
-import mdb.core.shared.transformation.IRequestSerialiser;
-import mdb.core.shared.transformation.impl.JSONRequestSerialiser;
+import mdb.core.shared.transformation.mdbrequest.IRequestSerialiser;
+import mdb.core.shared.transformation.mdbrequest.JSONRequestSerialiser;
 import mdb.core.shared.transport.Request;
 import mdb.core.shared.utils.zip.GZipHelper;
 

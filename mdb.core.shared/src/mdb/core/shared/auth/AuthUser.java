@@ -85,9 +85,9 @@ public  class AuthUser implements IUserInfo, IsSerializable  {
 	public int getId() {
 		return _id;		
 	}
-	
-	public int setId(int value) {
-		return _id = value;
+	@Override
+	public void setId(int value) {
+		_id = value;
 	}
 	
 	public String toString() {

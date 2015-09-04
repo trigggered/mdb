@@ -41,6 +41,10 @@ public interface IUserInfo extends Serializable{
 	/**
 	 * @param _chooseApplicationID
 	 */
-	void setChooseApplicationID(int _chooseApplicationID);	
+	void setChooseApplicationID(int _chooseApplicationID);
+	/**
+	 * @param value
+	 */
+	void setId(int value);	
 	
 }
