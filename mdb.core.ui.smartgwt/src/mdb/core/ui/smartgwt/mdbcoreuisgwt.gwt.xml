@@ -1,0 +1,17 @@
+<module rename-to='mdb.core.ui.smartgwt'>
+  <inherits name='com.google.gwt.user.User'/>
+  
+  <source path="client"/> 
+  
+  
+  <!-- 
+  <source path="command"></source>
+  <source path="communication"></source>
+  <source path="data"></source>
+  <source path="events"></source>
+  <source path="view"></source>
+  <source path="rpc"></source>
+  <source path="widgets"></source>
+  <source path="session"></source>
+   -->
+</module> 
