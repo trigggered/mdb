@@ -9,7 +9,7 @@ import mdb.core.ui.client.command.ICommand;
 import mdb.core.ui.client.view.components.menu.IMenuContainer;
 import mdb.core.ui.client.view.components.menu.IMenuItem;
 import mdb.core.ui.client.view.components.menu.Menu;
-import mdb.core.ui.client.view.data.grid.GridView;
+import mdb.core.ui.smartgwt.client.view.data.grid.GridView;
 import mdb.core.shared.data.Params;
 
 /**
@@ -17,7 +17,7 @@ import mdb.core.shared.data.Params;
  * Creation date: Jan 28, 2013
  *
  */
-public class EntityGetData extends GridView {
+public class EntityData extends GridView {
 	
 
 	Params _params;
@@ -46,7 +46,7 @@ public class EntityGetData extends GridView {
 	}		
 	
 	
-	private EntityFieldsEditor _entityFieldsEditor;
+	private FieldsEditor _entityFieldsEditor;
 	
 	
 	
@@ -58,7 +58,7 @@ public class EntityGetData extends GridView {
 	}
 	
 	
-	public EntityGetData (EntityFieldsEditor entityFieldsEditor) {
+	public EntityData (FieldsEditor entityFieldsEditor) {
 		_entityFieldsEditor =entityFieldsEditor;
 	}
 	

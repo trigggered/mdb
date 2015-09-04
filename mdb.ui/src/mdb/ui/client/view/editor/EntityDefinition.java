@@ -12,10 +12,14 @@ import mdb.core.ui.client.command.ICommand;
 import mdb.core.ui.client.view.components.menu.IMenuContainer;
 import mdb.core.ui.client.view.components.menu.IMenuItem;
 import mdb.core.ui.client.view.components.menu.Menu;
-import mdb.core.ui.client.view.data.DataView;
+import mdb.core.ui.client.view.data.IDataView;
+import mdb.core.ui.smartgwt.client.data.IDataSource;
+import mdb.core.ui.smartgwt.client.view.data.DataView;
 
 import com.smartgwt.client.data.Record;
 import com.smartgwt.client.widgets.form.DynamicForm;
+import com.smartgwt.client.widgets.layout.HLayout;
+import com.smartgwt.client.widgets.layout.Layout;
 
 /**
  * @author azhuk
@@ -84,10 +88,13 @@ private class Menu1 extends Menu {
 
 	
 
+
     @Override
     protected void  createComponents() {
     	super.createComponents();
     	setImgCaption("icons/16/view16.bmp");
+    	
+    	Layout lay = new HLayout();
      	_frmEntity = new DynamicForm();
 	 	_frmEntity.setWidth100(); 	        
 	 	_frmEntity.setHeight("90%");
@@ -96,9 +103,8 @@ private class Menu1 extends Menu {
 	 	_frmEntitySeq.setWidth100(); 	        
 	 	_frmEntitySeq.setHeight("90%");
 	 	
-	 	getViewPanel().addMember(_frmEntity);
-	 	getViewPanel().addMember(_frmEntitySeq);
-        
+	 	lay.addMembers(_frmEntity,_frmEntitySeq);
+	 	getMainLayout().addMember(lay);
 	 	
 	}
     	 
@@ -125,10 +131,10 @@ private class Menu1 extends Menu {
 		@Override
 		public void bindDataComponents() {		 			
 			
-			_frmEntity.setDataSource(getDataSources().get(ENTITY_DEF_ID).getDataSource());
+			_frmEntity.setDataSource( ((IDataSource)getDataSources().get(ENTITY_DEF_ID)).getDataSource());
 			_frmEntity.fetchData();
 			
-			_frmEntitySeq.setDataSource(getDataSources().get(ENTITY_KEYS_ID).getDataSource());
+			_frmEntitySeq.setDataSource( ((IDataSource)getDataSources().get(ENTITY_KEYS_ID)).getDataSource());
 			_frmEntitySeq.fetchData();
 			
 		}
@@ -149,18 +155,7 @@ private class Menu1 extends Menu {
 
 	}
 
-	/* (non-Javadoc)
-	 * @see mdb.core.ui.view.data.IDataView#getSelectedRecord()
-	 */
-	@Override
-	public Record getSelectedRecord() {	
-		return null;
-	}
 
-	@Override
-	public Record[] getSelectedRecords() {	
-		return null;
-	}
 	
 	/* (non-Javadoc)
 	 * @see mdb.core.ui.view.data.IDataView#isSelectedRecord()
@@ -213,5 +208,47 @@ private class Menu1 extends Menu {
 	public void save() {	
 		saveEntityInfo();
 		saveSeqPkInfo();
+	}
+
+
+	/* (non-Javadoc)
+	 * @see mdb.core.ui.client.view.data.IDataView#callDeleteEvent()
+	 */
+	@Override
+	public void callDeleteEvent() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	/* (non-Javadoc)
+	 * @see mdb.core.ui.client.view.data.IDataView#getSelectedRecordJSON()
+	 */
+	@Override
+	public String getSelectedRecordJSON() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+
+
+	/* (non-Javadoc)
+	 * @see mdb.core.ui.client.view.data.ADataView#clearEvents(mdb.core.ui.client.view.data.IDataView)
+	 */
+	@Override
+	protected void clearEvents(IDataView<Record> view) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	/* (non-Javadoc)
+	 * @see mdb.core.ui.client.view.ABaseView#initSize()
+	 */
+	@Override
+	protected void initSize() {
+		// TODO Auto-generated method stub
+		
 	}	
 }

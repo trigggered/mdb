@@ -9,8 +9,9 @@
     <inherits name="com.google.gwt.regexp.RegExp"/>
 	<inherits name="com.google.gwt.precompress.Precompress"/>
     
-    <inherits name="mdb.core.ui.mdbcoreui"/>
+    <inherits name="mdb.core.ui.mdbcoreui"/>    
     <inherits name="mdb.core.shared.mdbcoreshared"/>
+    <inherits name="mdb.core.ui.smartgwt.mdbcoreuisgwt"/>
     
     <inherits name="com.google.gwt.core.Core"/>
     <inherits name="com.google.gwt.user.History"/>   
@@ -46,6 +47,13 @@
   <property-provider name="user.agent" generator="com.google.gwt.useragent.rebind.UserAgentPropertyGenerator"/>
  
   <entry-point class='mdb.ui.client.view.Main'/>
+ 
+ <!-- 
+<set-configuration-property name='xsiframe.failIfScriptTag' value='FALSE'/>  
+<add-linker name="xsiframe"/>
+<set-configuration-property name="devModeRedirectEnabled" value="true"/>
+<set-property name="compiler.useSourceMaps" value="true" />
+ -->
  
   <!-- Internationalization support. Uncomment to enable i18n to these locales -->
 

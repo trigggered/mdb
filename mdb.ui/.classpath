@@ -12,5 +12,6 @@
 	</classpathentry>
 	<classpathentry combineaccessrules="false" kind="src" path="/mdb.core.ui"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/commons-fileupload"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/mdb.core.ui.smartgwt"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>

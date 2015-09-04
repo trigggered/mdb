@@ -13,15 +13,16 @@ import mdb.core.shared.transport.IRequestData;
 import mdb.core.shared.transport.IRequestData.ExecuteType;
 import mdb.core.shared.transport.RequestEntity;
 import mdb.core.ui.client.command.ICommand;
-import mdb.core.ui.client.data.IDataSource;
 import mdb.core.ui.client.data.IDataSpecification;
-import mdb.core.ui.client.data.impl.ViewDataConverter;
 import mdb.core.ui.client.events.ICallbackEvent;
 import mdb.core.ui.client.view.IMainView;
 import mdb.core.ui.client.view.components.menu.IMenuItem;
-import mdb.core.ui.client.view.data.DataView;
 import mdb.core.ui.client.view.data.IDataView;
-import mdb.core.ui.client.view.dialogs.input.InputVariablesDialog;
+import mdb.core.ui.smartgwt.client.data.IDataSource;
+import mdb.core.ui.smartgwt.client.data.SGWTRecordWraper;
+import mdb.core.ui.smartgwt.client.data.ViewDataConverter;
+import mdb.core.ui.smartgwt.client.view.data.DataView;
+import mdb.core.ui.smartgwt.client.view.dialogs.input.InputVariablesDialog;
 import mdb.ui.client.communication.rpc.regexp.RegExpService;
 import mdb.ui.client.communication.rpc.regexp.RegExpServiceAsync;
 import at.wizzart.gwt.widgets.client.CodeMirror;
@@ -37,11 +38,10 @@ import com.smartgwt.client.widgets.Button;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.layout.HLayout;
-import com.smartgwt.client.widgets.layout.HStack;
 import com.smartgwt.client.widgets.layout.Layout;
 import com.smartgwt.client.widgets.layout.SectionStack;
 import com.smartgwt.client.widgets.layout.SectionStackSection;
-import com.smartgwt.client.widgets.layout.VStack;
+import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.tab.Tab;
 import com.smartgwt.client.widgets.tab.TabSet;
 import com.smartgwt.client.widgets.tab.events.TabSelectedEvent;
@@ -185,7 +185,7 @@ public class EntityEditor extends DataView   {
 		public void onClick(com.smartgwt.client.widgets.events.ClickEvent event) {			
 			CodeMirror codeForm =  _editorsForms.get( _tabSetSql.getSelectedTab().getTitle() );			
 			final String sqlText =  codeForm.getValue();
-			final IDataSource dsEntityEdit = getDataSource(Integer.valueOf(ID_DS_METHODS));					
+			final IDataSource dsEntityEdit = (IDataSource)getDataSource(Integer.valueOf(ID_DS_METHODS));					
 			
 			if (dsEntityEdit != null && dsEntityEdit.getData()!= null) {
 				
@@ -225,8 +225,8 @@ public class EntityEditor extends DataView   {
 	}
 	
 	 
- 	 private EntityGetData _viewEntityData;
-	 private IDataView _viewFieldsEditor;
+ 	 private EntityData _viewEntityData;
+	 private DataView _viewFieldsEditor;
 	 private EntityDefinition _frmEntityDefinition;
 	
 	 private static final String DESCRIPTION = "Entity  editor";
@@ -257,9 +257,12 @@ public class EntityEditor extends DataView   {
 		 _frmEntityDefinition.addCustomProperty("ID_DENTITY", getEditEntityId ());		 
 	 }	 
 	
-	@Override
-	protected Layout createViewPanel() {
-		Layout layout = super.createViewPanel();
+	 @Override
+	protected void createComponents() {
+		super.createComponents();	
+	
+		getMainLayout().setMembersMargin(5);
+		
 		SectionStack sectionStackMain = new SectionStack();
 		sectionStackMain.setVisibilityMode(VisibilityMode.MULTIPLE);
         
@@ -275,9 +278,10 @@ public class EntityEditor extends DataView   {
         entityPropertySection.addItem(createEntityPropertyPanel());
         
         sectionStackMain.setSections(sqlSection, entityPropertySection);
-        layout.addMember(sectionStackMain);
-        return sectionStackMain;
-     }
+        getMainLayout().addMember(sectionStackMain);        
+	}
+	 
+	
 
 	
 	@Override
@@ -290,8 +294,8 @@ public class EntityEditor extends DataView   {
 	
 	private TabSet createEntityPropertyPanel () {
 		_frmEntityDefinition  = new EntityDefinition();		
-		_viewFieldsEditor = new EntityFieldsEditor();		
-		_viewEntityData = new EntityGetData((EntityFieldsEditor) _viewFieldsEditor);		
+		_viewFieldsEditor = new FieldsEditor();		
+		_viewEntityData = new EntityData((FieldsEditor) _viewFieldsEditor);		
 		
 		TabSet tabSetProperty = new TabSet();
         tabSetProperty.setHeight("50%");
@@ -299,14 +303,14 @@ public class EntityEditor extends DataView   {
         /*Tab Description*/
         Tab tabDescription = new Tab();
         tabDescription.setTitle("Description");                        
-        tabDescription.setPane(_frmEntityDefinition.getCanvas());
+        tabDescription.setPane(_frmEntityDefinition.getMainLayout());
         tabDescription.setIcon(_frmEntityDefinition.getImgCaption());
         tabSetProperty.addTab(tabDescription);        
         
         /*Tab "Data Result"*/
         Tab tabDataResult = new Tab();
         tabDataResult.setTitle("Data Result");        
-        tabDataResult.setPane(_viewEntityData.getCanvas());
+        tabDataResult.setPane(_viewEntityData.getMainLayout());
         tabDataResult.setIcon(_viewEntityData.getImgCaption());
         tabSetProperty.addTab(tabDataResult);  
         
@@ -315,7 +319,7 @@ public class EntityEditor extends DataView   {
         tabCollumns.setTitle("Fields Defenition");        
         
         //ListGrid gridColumns = new ListGrid();        
-        tabCollumns.setPane(_viewFieldsEditor.getCanvas());        
+        tabCollumns.setPane(_viewFieldsEditor.getMainLayout());        
         tabCollumns.setIcon(_viewFieldsEditor.getImgCaption() );
         tabSetProperty.addTab(tabCollumns);
         
@@ -340,16 +344,16 @@ public class EntityEditor extends DataView   {
 
         /*Layout description */
         Layout methodDescriotionLayout = new HLayout();
-        methodDescriotionLayout.setMargin(10);
-        methodDescriotionLayout.setMembersMargin(10);
-        methodDescriotionLayout.setHeight("10%");
+        //methodDescriotionLayout.setMargin(10);
+        //methodDescriotionLayout.setMembersMargin(10);
+        //methodDescriotionLayout.setHeight("10%");
           
         DynamicForm entityMethodsForm = new DynamicForm();
         entityMethodsForm.setGroupTitle("Edit method note");
         entityMethodsForm.setIsGroup(true);
         //entityMethods.setWidth100();
-        entityMethodsForm.setWidth(300);  
-        DataSource ds = getDataSource(Integer.valueOf(ID_DS_METHODS)).getDataSource();
+        //entityMethodsForm.setWidth(300);  
+        DataSource ds = ((IDataSource)getDataSource(Integer.valueOf(ID_DS_METHODS))).getDataSource();
 	 	entityMethodsForm.setDataSource(ds);
 	 	entityMethodsForm.fetchData();
 	 	
@@ -376,8 +380,9 @@ public class EntityEditor extends DataView   {
         
 	 	/*SQL editor*/
 	 	final CodeMirror editor = new CodeMirror();    
-        editor.setHeight("90%");
+        //editor.setHeight("90%");
         //editor.setWidth("100%");
+	 	editor.setWidth("100%");
         editor.addInitializeHandler(new InitializeHandler() {			
 			@Override
 			public void onInitialize(InitializeEvent event) {
@@ -406,33 +411,33 @@ public class EntityEditor extends DataView   {
         Button btnCancel = new Button();
         btnCancel.setTitle("Cancel");
         btnCancel.addClickHandler( new CancelEditMehodHandler() );
-        btnCancel.setIcon("icons/16/rollback16.bmp");
-        
+        btnCancel.setIcon("icons/16/rollback16.bmp");        
         
         
         Layout btnsLayout = new HLayout();
         btnsLayout.setMargin(10);
         btnsLayout.setMembersMargin(10);
         btnsLayout.setHeight("10%");
-        btnsLayout.addMember(btnExecute);
-        btnsLayout.addMember(btnSave);
-        btnsLayout.addMember(btnCancel);     
+        btnsLayout.addMembers(btnExecute, btnSave,btnCancel);
+             
         /*Buttons and layout for buttons*/
         
         /*Main Layout*/        
-        final Layout mainLayout = new HStack();        
+        final Layout mainLayout = new HLayout();        
+        final Layout rightLayout = new VLayout();        
         mainLayout.setWidth100();
-        final Layout leftLayout = new VStack();        
-        leftLayout.setVisible(true);
-        leftLayout.setWidth("20%");
-        leftLayout.setMembersMargin(10);
-        leftLayout.setShowEdges(true);
-        leftLayout.addMember(btnsLayout );	 		 	                
-        leftLayout.addMember(methodDescriotionLayout);
+        //rightLayout.setVisible(true);
+        rightLayout.setMembersMargin(10);
+        rightLayout.setShowEdges(true);
+        rightLayout.addMembers(btnsLayout,methodDescriotionLayout );	 		 	                
+
 	 	
-        editor.setWidth("75%");
-        mainLayout.addMember(editor);
-        mainLayout.addMember(leftLayout);		 		 		 	
+        Layout leftLayout = new HLayout();
+        leftLayout.setWidth100();
+        leftLayout.setShowResizeBar(true);
+        leftLayout.addMember(editor);
+
+        mainLayout.addMembers(leftLayout, rightLayout);		 		 		 	
 	 	
         tabSql.setPane(mainLayout);        
         return tabSql;        
@@ -448,7 +453,7 @@ public class EntityEditor extends DataView   {
 		final String colMethodBody = "METHOD_BODY";
 		final String colEntityActionId = "ID_DENTITY_ACTION";				
 				
-		IDataSource dsEntityEdit = getDataSource(Integer.valueOf(ID_DS_METHODS));		
+		IDataSource dsEntityEdit = (IDataSource)getDataSource(Integer.valueOf(ID_DS_METHODS));		
 		
 		if (dsEntityEdit != null && dsEntityEdit.getData()!= null) {
 			
@@ -509,26 +514,13 @@ public class EntityEditor extends DataView   {
 						_tabSetSql.addTab(tab );
 					}					
 				}
-			});		 
-	   }
+			}, new SGWTRecordWraper());		 
+	
+	}
+	
 
-	/* (non-Javadoc)
-	 * @see mdb.ui.client.common.view.data.IDataView#getSelectedRecord()
-	 */
-	@Override
-	public Record getSelectedRecord() {		
-		return null;
-	}
+
 	
-	@Override
-	public Record[] getSelectedRecords() {		
-		return null;
-	}
-	
-	@Override
-	public boolean isSelectedRecord() {		
-		return getSelectedRecord() != null;
-	}
 
 	/* (non-Javadoc)
 	 * @see mdb.core.ui.view.data.IDataView#showFilterView()
@@ -550,6 +542,52 @@ public class EntityEditor extends DataView   {
 		    	_viewFieldsEditor.callRequestData();	
 			}				
 		}
+	}
+
+	/* (non-Javadoc)
+	 * @see mdb.core.ui.client.view.data.IDataView#isSelectedRecord()
+	 */
+	@Override
+	public boolean isSelectedRecord() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	/* (non-Javadoc)
+	 * @see mdb.core.ui.client.view.data.IDataView#callDeleteEvent()
+	 */
+	@Override
+	public void callDeleteEvent() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	/* (non-Javadoc)
+	 * @see mdb.core.ui.client.view.data.IDataView#getSelectedRecordJSON()
+	 */
+	@Override
+	public String getSelectedRecordJSON() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	/* (non-Javadoc)
+	 * @see mdb.core.ui.client.view.data.ADataView#clearEvents(mdb.core.ui.client.view.data.IDataView)
+	 */
+	@Override
+	protected void clearEvents(IDataView<Record> view) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	/* (non-Javadoc)
+	 * @see mdb.core.ui.client.view.ABaseView#initSize()
+	 */
+	@Override
+	protected void initSize() {
+		// TODO Auto-generated method stub
+		
 	}
 	
 

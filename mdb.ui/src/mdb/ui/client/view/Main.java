@@ -10,12 +10,11 @@ import mdb.core.shared.transport.IRequestData.ExecuteType;
 import mdb.core.shared.transport.RequestEntity;
 import mdb.core.ui.client.command.ICommand;
 import mdb.core.ui.client.communication.impl.GatewayQueue;
-import mdb.core.ui.client.data.bind.IViewDataBinder;
+import mdb.core.ui.client.data.DataConverter;
+import mdb.core.ui.client.data.bind.IDataBinder;
 import mdb.core.ui.client.data.bind.impl.BindSource;
-import mdb.core.ui.client.data.bind.impl.ViewDataBinder;
-import mdb.core.ui.client.data.impl.ViewDataConverter;
+import mdb.core.ui.client.data.bind.impl.DataBinder;
 import mdb.core.ui.client.events.ICallbackEvent;
-import mdb.core.ui.client.view.AMainView;
 import mdb.core.ui.client.view.components.menu.IMenu;
 import mdb.core.ui.client.view.components.menu.IMenuItem;
 import mdb.core.ui.client.view.components.menu.data.TreeMenu;
@@ -23,8 +22,11 @@ import mdb.core.ui.client.view.components.menu.mdb.IMdbMainMenuAction;
 import mdb.core.ui.client.view.data.IDataView;
 import mdb.core.ui.client.view.data.tree.ITreeView;
 import mdb.core.ui.client.view.debug.DebugMenu;
-import mdb.core.ui.client.view.dialogs.input.InputValueDialog;
 import mdb.core.ui.client.view.dialogs.message.Dialogs;
+import mdb.core.ui.smartgwt.client.data.IDataSource;
+import mdb.core.ui.smartgwt.client.view.AMainView;
+import mdb.core.ui.smartgwt.client.view.dialogs.input.InputValueDialog;
+import mdb.core.ui.smartgwt.client.view.dialogs.message.MessageDialogs;
 import mdb.ui.client.communication.rpc.mdbgw.MdbGWQueueProcessor;
 import mdb.ui.client.view.editor.EntityEditor;
 
@@ -44,12 +46,15 @@ import com.smartgwt.client.widgets.grid.events.CellContextClickEvent;
 import com.smartgwt.client.widgets.grid.events.CellContextClickHandler;
 import com.smartgwt.client.widgets.grid.events.CellDoubleClickEvent;
 import com.smartgwt.client.widgets.grid.events.CellDoubleClickHandler;
+import com.smartgwt.client.widgets.layout.HLayout;
+import com.smartgwt.client.widgets.layout.Layout;
 import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.menu.Menu;
 import com.smartgwt.client.widgets.menu.MenuItem;
 import com.smartgwt.client.widgets.tree.Tree;
 import com.smartgwt.client.widgets.tree.TreeGrid;
 import com.smartgwt.client.widgets.tree.TreeNode;
+
 
 public class Main extends AMainView  implements ITreeView {
 	
@@ -59,7 +64,7 @@ public class Main extends AMainView  implements ITreeView {
 	private final int  TREE_ENTITY_ID = 41;
 	private final int  ENTITY_EDIT_ID = 21;
     
-    private VLayout _sideNavLayout;
+    
     private TreeGrid _sideNavTree;    	
 
     private final int APP_ID =0;
@@ -76,16 +81,28 @@ public class Main extends AMainView  implements ITreeView {
     @Override
     protected void registerGatewayQueue() {		
 		GatewayQueue.instance().setProcessor(new MdbGWQueueProcessor());
-	}
+		Dialogs.regiserMessageDialogs(new MessageDialogs());
+	}  
     
-    
-	@Override
-	protected void createComponents() {
-		super.createComponents();
-		createTree();
-		
-	}	    
 	
+	
+    @Override
+	protected void createComponents () {   	
+	    	createMainLayout();	        
+	        getMainLayout().setMembersMargin(10);
+	        if (isCreateMenuContainer()) {        	
+		        createMenuContainer();        	        		        	
+		        createMenu ();	                
+	        }       
+	                
+	        initSize();
+	        
+	        Layout lay = new HLayout();
+	        lay.addMembers( createTree(),  createWindowManagerComponent());
+	        
+	        getMainLayout().addMember(lay);      	        	       
+	}  
+	   
     
 	@Override
 	public void onModuleLoad() {
@@ -216,7 +233,7 @@ public class Main extends AMainView  implements ITreeView {
         return contextMenu;
 	}
 	
-	private void createTree() {
+	private Layout createTree() {
 		_sideNavTree = new TreeGrid();		
 		_sideNavTree.draw();    	
 		_sideNavTree.addCellDoubleClickHandler(new CellDoubleClickHandler() {			
@@ -243,19 +260,21 @@ public class Main extends AMainView  implements ITreeView {
 			});       
 
 			
-			_sideNavLayout = new VLayout();
-	        _sideNavLayout.setHeight100();
-	        _sideNavLayout.setWidth(185);
-	        _sideNavLayout.setShowResizeBar(true);
-	        getViewPanel().addMember(_sideNavLayout,0);        
-			_sideNavLayout.addMember(createSpeedOpenSqlEditorForm() );
-	    	_sideNavLayout.addMember(_sideNavTree);		
+			Layout sideNavLayout = new VLayout();
+	        sideNavLayout.setHeight100();
+	        sideNavLayout.setWidth(185);
+	        sideNavLayout.setShowResizeBar(true);
+	                
+			sideNavLayout.addMember(createSpeedOpenSqlEditorForm() );
+	    	sideNavLayout.addMember(_sideNavTree);		
+	    	//getMainLayout().addMember(sideNavLayout,0);
+	    	return sideNavLayout;
 	}
 	
 	
 	private void bindTree() {									
 		
-		DataSource ds =getMainDataSource().getDataSource();
+		DataSource ds =((IDataSource)getMainDataSource()).getDataSource();
 		if (!ds.isCreated() ) {
 			ds.setTitleField("TITLE");
 		}
@@ -286,12 +305,12 @@ public class Main extends AMainView  implements ITreeView {
 				final TreeNode parentNode  = tree.findById(currentNodeId);
 					
 				
-				final IViewDataBinder binder = new ViewDataBinder(new BindSource() {					
+				final IDataBinder binder = new DataBinder(new BindSource() {					
 					@Override
 					public void bindDataComponentsAfterChange()  {							
 						
 					IRequestData entity = getDataProvider().getResponse().get(String.valueOf(ENTITY_EDIT_ID) );
-					Map<String,String> map= ViewDataConverter.jsonToMap(entity.getData());								
+					Map<String,String> map= DataConverter.jsonToMap(entity.getData());								
 						node.setAttribute("ID", map.get("ID_DENTITY"));
 						node.setAttribute("NAME", data);
 						node.setAttribute("TITLE", map.get("ID_DENTITY")+"-"+data);
@@ -306,15 +325,16 @@ public class Main extends AMainView  implements ITreeView {
 					@Override
 					public void bindDataComponents() {						
 					}
-				});					
+				}, getDataProvider());					
 			
+				
 		    	
 				RequestEntity entity = (RequestEntity) binder.getDataProvider().getRequest().add(new RequestEntity(ENTITY_EDIT_ID));
 		    	entity.setExecuteType(ExecuteType.ChangeData);		    	
 		    	GatewayQueue.instance().put(binder.getDataProvider());
 		    	
 		    	@SuppressWarnings("serial")
-				String jsonData  = ViewDataConverter.map2Json(new HashMap<String,String>() {{
+				String jsonData  = DataConverter.map2Json(new HashMap<String,String>() {{
 																		put("ID_DENTITY", "-1");																		
 																		put("NAME_DENTITY", data);
 																		put("NOTE_DENTITY", data);
@@ -432,7 +452,7 @@ public class Main extends AMainView  implements ITreeView {
 	/* (non-Javadoc)
 	 * @see mdb.ui.client.common.view.data.IDataView#getSelectedRecord()
 	 */
-	@Override
+	
 	public Record getSelectedRecord() {		
 		return _sideNavTree.getSelectedRecord();
 	}
@@ -479,6 +499,51 @@ public class Main extends AMainView  implements ITreeView {
 	@Override
 	public void refreshTree() {
 		super.callRequestData();
-	}	
+	}
+
+
+	/* (non-Javadoc)
+	 * @see mdb.core.ui.client.view.data.IDataView#isSelectedRecord()
+	 */
+	@Override
+	public boolean isSelectedRecord() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+	/* (non-Javadoc)
+	 * @see mdb.core.ui.client.view.data.IDataView#callDeleteEvent()
+	 */
+	@Override
+	public void callDeleteEvent() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	/* (non-Javadoc)
+	 * @see mdb.core.ui.client.view.data.IDataView#getSelectedRecordJSON()
+	 */
+	@Override
+	public String getSelectedRecordJSON() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+
+
+	/* (non-Javadoc)
+	 * @see mdb.core.ui.client.view.data.ADataView#clearEvents(mdb.core.ui.client.view.data.IDataView)
+	 */
+	@Override
+	protected void clearEvents(IDataView<Record> view) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
 
 }

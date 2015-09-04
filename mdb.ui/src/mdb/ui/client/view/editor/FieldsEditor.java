@@ -11,15 +11,16 @@ import mdb.core.shared.transport.IRequestData;
 import mdb.core.shared.transport.IRequestData.ExecuteType;
 import mdb.core.shared.transport.RequestEntity;
 import mdb.core.ui.client.command.ICommand;
-import mdb.core.ui.client.data.impl.fields.DataSourceFieldsBuilder;
 import mdb.core.ui.client.view.components.menu.IMenuContainer;
 import mdb.core.ui.client.view.components.menu.IMenuItem;
 import mdb.core.ui.client.view.components.menu.IMenuItem.ItemType;
 import mdb.core.ui.client.view.components.menu.Menu;
 import mdb.core.ui.client.view.components.menu.mdb.MenuFieldViews;
 import mdb.core.ui.client.view.data.IDataView;
-import mdb.core.ui.client.view.data.grid.GridView;
-import mdb.core.ui.client.view.dialogs.edit.EditDialog;
+import mdb.core.ui.smartgwt.client.data.SGWTRecordWraper;
+import mdb.core.ui.smartgwt.client.data.fields.DataSourceFieldsBuilder;
+import mdb.core.ui.smartgwt.client.view.data.grid.GridView;
+import mdb.core.ui.smartgwt.client.view.dialogs.edit.EditDialog;
 import mdb.ui.client.view.DataViewByEntity;
 
 import com.smartgwt.client.data.DataSourceField;
@@ -31,12 +32,11 @@ import com.smartgwt.client.data.Record;
  * Creation date: Jan 24, 2013
  *
  */
-public class EntityFieldsEditor extends GridView {
+public class FieldsEditor extends GridView {
 	
-	private static final Logger _logger = Logger.getLogger(EntityFieldsEditor.class.getName());
+	private static final Logger _logger = Logger.getLogger(FieldsEditor.class.getName());
 	
 	private final int ID_ENTITY_FIELDS = 1275;
-	//private MenuFieldViews _menuFieldViews = new MenuFieldViews(getMenuContainer());
 	private MenuFieldViews _menuFieldViews;
 	private String _enttityId;
 	
@@ -132,7 +132,7 @@ public class EntityFieldsEditor extends GridView {
 		
 		if (container!=null) {			
 		
-			_menuFieldViews = new MenuFieldViews(container);
+			_menuFieldViews = new MenuFieldViews(new SGWTRecordWraper(), container);
 			_menuFieldViews.addCommand(new ICommand<IMenuItem>() {				
 				@Override
 				public void execute(IMenuItem sender) {
@@ -146,9 +146,9 @@ public class EntityFieldsEditor extends GridView {
 			 menuItem.setCommand( new ICommand<IMenuItem>() {
 				
 				@Override
-				public void execute(IMenuItem sender) {					
-					IDataView view =new DataViewByEntity(Integer.valueOf(_enttityId).intValue());					 					
-					getMainView().openViewInTab(view);									
+				public void execute(IMenuItem sender) {				
+										 					
+					getMainView().openViewInTab(new DataViewByEntity(Integer.valueOf(_enttityId).intValue()));									
 				}
 			});			 		 
 			 container.bind(menu);			 

@@ -3,8 +3,12 @@
  */
 package mdb.ui.client.view.editor;
 
+import java.util.HashMap;
+
 import mdb.core.ui.client.command.ICommand;
 import mdb.core.ui.client.data.IDataSpecification;
+import mdb.core.ui.client.data.IDataWraper;
+import mdb.core.ui.client.data.fields.IDataSourceFields;
 import mdb.core.ui.client.view.components.menu.IMenuContainer;
 import mdb.core.ui.client.view.components.menu.IMenuItem;
 import mdb.core.ui.client.view.components.menu.IMenuItem.ItemType;
@@ -76,8 +80,8 @@ public class MenuCreateNewEntityMethod extends MenuDynamic {
 	
 	private ICommand<IMenuItem> _command;
 	
-	public MenuCreateNewEntityMethod (IMenuContainer container,  ICommand<IMenuItem> command) {
-		super (null);
+	public MenuCreateNewEntityMethod (IMenuContainer container,  ICommand<IMenuItem> command, IDataWraper dataWraper) {
+		super (null, dataWraper);
 		setDataSpecification(new MenuActionSpec () );
 		
 		_command = command;			
@@ -87,14 +91,29 @@ public class MenuCreateNewEntityMethod extends MenuDynamic {
 		build(MAIN_MENU, null);		
 	}
 	
-	@Override
-	protected void setParentIdValue(IMenuItem item, String parentId) {
-		item.setAttribute("parentID", "0");	
-	}
+	
 
 	@Override
 	protected  void setCommand(IMenuItem item ) {		
 		item.setCommand( _command );
+	}
+
+	/* (non-Javadoc)
+	 * @see mdb.core.ui.client.communication.IDataProvider#getDataSourceFieldsMap()
+	 */
+	@Override
+	public HashMap<Integer, IDataSourceFields> getDataSourceFieldsMap() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see mdb.core.ui.client.communication.IDataProvider#getDataSourceKeysMap()
+	 */
+	@Override
+	public HashMap<Integer, String[]> getDataSourceKeysMap() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

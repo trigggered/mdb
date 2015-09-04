@@ -4,7 +4,7 @@
 package mdb.ui.client.view;
 
 
-import mdb.core.ui.client.view.data.grid.GridView;
+import mdb.core.ui.smartgwt.client.view.data.grid.GridView;
 
 /**
  * @author azhuk
