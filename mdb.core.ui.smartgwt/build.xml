@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<project name="mdb.core.ui.smartgwt" basedir="." default="default">
+        
+<property name="src.dir" value="src" />
+<property name="build.dir" value="bin" />
+
+<property name="dest.dir" value="./../to deploy" />
+<property name="mdb.ui.dir" value="./../mdb.ui/war/WEB-INF/lib" />
+<!--  <property name="iopday.ui.dir" value="./../iopday.ui/war/WEB-INF/lib" /> -->
+<property name="doc.flow.dir" value="./../DocumentFlow/document.flow.ui/war/WEB-INF/lib" />
+<property name="mdb.core.dir" value="./../mdb.core/WebContent/WEB-INF/lib" />
+<property name="jar.filename" value="mdb.core.ui.smartgwt.jar" />
+
+
+<path id="compile.classpath">
+    <fileset dir="./../../lib">
+        <include name="**/*.jar" />
+        <include name="**/*.xml" />
+    </fileset>
+    
+    <fileset dir="${dest.dir}">
+        <include name="**/*.jar" />       
+    </fileset>
+</path>
+
+<target name="default" depends="compile, buildjar,deploy, clean">
+</target>
+
+
+<target name="compile" description="Java compile">
+     <javac destdir="${build.dir}" classpathref="compile.classpath">
+          <src path="${src.dir}"/>
+     </javac>                         
+</target>
+
+
+ 
+<target name="buildjar" description="make jar file" depends="compile">
+                         <jar destfile="${jar.filename}">
+                                 <fileset dir="${build.dir}">
+                                        <include name="**/*.class"/>
+                                        <include name="**/*.xml"/> 
+                                 </fileset>
+                                  <fileset dir="${src.dir}" includes="**/*.java"/>
+                         </jar>
+</target>
+                 
+
+
+<target name="deploy">    
+    <copy file="${jar.filename}" todir="${dest.dir}" />
+    
+    <!--
+    <copy file="${jar.filename}" todir="${doc.flow.dir}"/> 
+    <copy file="${jar.filename}" todir="${mdb.ui.dir}"/>    
+    <copy file="${jar.filename}" todir="${iopday.ui.dir}"/>  
+    -->
+</target>
+
+ <target name="clean" description="clean up">
+                         <echo>I'm cleaning up.</echo>
+                         <delete file="${jar.filename}"/>                         
+ </target>
+                 
+</project>
