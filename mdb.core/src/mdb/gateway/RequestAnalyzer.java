@@ -19,9 +19,11 @@ import mdb.core.db.IEntityDataAccess;
 import mdb.core.db.query.IQuery;
 import mdb.core.shared.data.EMdbFieldType;
 import mdb.core.shared.data.Params;
-import mdb.core.shared.transformation.IRequestSerialiser;
-import mdb.core.shared.transformation.impl.JSONTransformation;
-import mdb.core.shared.transformation.impl.ResultSetToJSONTransformation;
+import mdb.core.shared.transformation.json.JSONTransformation;
+import mdb.core.shared.transformation.mdbrequest.IRequestSerialiser;
+import mdb.core.shared.transformation.sql.IResultSetSerializer;
+import mdb.core.shared.transformation.sql.ResultSetFieldsExtractor;
+import mdb.core.shared.transformation.sql.ResultSetManualSerializerImpl;
 import mdb.core.shared.transport.ChangedData;
 import mdb.core.shared.transport.IRequestData;
 import mdb.core.shared.transport.IRequestData.ExecuteType;
@@ -53,6 +55,14 @@ public class RequestAnalyzer implements IRequestAnalyzer{
 	
 	private IRequestSerialiser _requestSerialiser;
 	
+	private IResultSetSerializer _resultSetSerializer;
+	  
+	  @Inject
+	  public void setResultSetSerializern (IResultSetSerializer value) {
+		  _resultSetSerializer = value;
+	  }	
+	  
+	  
 	@Inject
 	public void setRequestSerialiser(IRequestSerialiser  value) {
 		_requestSerialiser = value;
@@ -185,11 +195,10 @@ public class RequestAnalyzer implements IRequestAnalyzer{
 	private void transformationResultSet(RequestEntity requestEntity, ResultSet resultSet) {
 		
 		requestEntity.setFields(
-				ResultSetToJSONTransformation.getFields(resultSet));
+				ResultSetFieldsExtractor.extract(resultSet));
 		requestEntity.setData(
-				ResultSetToJSONTransformation.make(requestEntity.getFields(), resultSet));
+				_resultSetSerializer.make(requestEntity.getFields(), resultSet));
 		
-		//_logger.info(requestEntity.getData());
 	}
 	
 	private Request prepareMetaData(ResultSet resultSet ) {

@@ -6,7 +6,7 @@ package mdb.gateway;
 
 import javax.ejb.Local;
 
-import mdb.core.shared.transformation.IRequestSerialiser;
+import mdb.core.shared.transformation.mdbrequest.IRequestSerialiser;
 import mdb.core.shared.transport.Request;
 
 

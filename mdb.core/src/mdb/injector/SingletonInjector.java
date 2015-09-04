@@ -26,6 +26,11 @@ public class SingletonInjector {
 	        }
 	    }
 	 
+	    
+	    public static void  setInjector (Injector injector) {	    	
+	    	_injector = injector;
+	    }
+	    
 	    private static Injector createInjector()
 	    {
 	        return Guice.createInjector(Stage.DEVELOPMENT, new DefaultInjectConfiguration());

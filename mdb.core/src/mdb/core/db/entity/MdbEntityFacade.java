@@ -16,18 +16,9 @@ import javax.persistence.criteria.Root;
  *
  */
 @Stateless
-public class MdbEntityFacade extends EntityManagerHelper{
+public class MdbEntityFacade extends EntityManagerHelper {
 	
 
-	/*
-	@PersistenceContext(unitName = "OraDS" , type=PersistenceContextType.TRANSACTION )
-	private EntityManager _entityManager;
-	
-		
-	protected EntityManager getEntityManager() {
-		return _entityManager;
-	}
-	*/
 	
 	public Collection<EntityMethods> findMethods(int entityId) {				
 		
@@ -37,7 +28,7 @@ public class MdbEntityFacade extends EntityManagerHelper{
 
 		
 		criteriaQuery.where(criteriaBuilder.equal(mdbEntityMethodsRoot.get("_idEntity"), entityId));
-		return	getEntityManager().createQuery(criteriaQuery).getResultList();				
+		return	getEntityManager().createQuery(criteriaQuery).getResultList();			
 		
 	}
 	

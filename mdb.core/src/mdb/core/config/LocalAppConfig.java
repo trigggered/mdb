@@ -3,8 +3,8 @@ package mdb.core.config;
 
 public class LocalAppConfig implements IAppConfig {
 
-	final String UNAME ="root";
-	final String UPWD ="www";
+	final String UNAME ="P00090730";
+	final String UPWD  ="P00090730";
 	
 	@Override
 	public String getJndiContext() {
@@ -20,7 +20,8 @@ public class LocalAppConfig implements IAppConfig {
 
 	@Override
 	public String getJdbcDataSourceName() {
-		return "com.mysql.jdbc.Driver";
+		//return "com.oracle.jdbc.Driver";
+		return "oracle.jdbc.OracleDriver";
 	}
 
 	@Override

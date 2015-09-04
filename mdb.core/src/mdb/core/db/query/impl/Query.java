@@ -8,7 +8,7 @@ import mdb.core.db.EntityDataAccess;
 import mdb.core.db.query.IDBSequenceGenerator;
 import mdb.core.db.query.paging.IQueryPaging;
 import mdb.core.shared.data.Params;
-import mdb.core.shared.transformation.impl.JSONTransformation;
+import mdb.core.shared.transformation.json.JSONTransformation;
 
 import com.google.inject.Inject;
 

@@ -4,7 +4,9 @@ import mdb.core.config.IAppConfig;
 import mdb.core.config.OraJBossConfig;
 import mdb.core.db.EntityDataAccess;
 import mdb.core.db.IEntityDataAccess;
+import mdb.core.db.IMdbQueryPreparator;
 import mdb.core.db.IQueryPool;
+import mdb.core.db.MdbQueryJpaPreparator;
 import mdb.core.db.QueryPool;
 import mdb.core.db.connection.IConnectionManager;
 import mdb.core.db.connection.ServerConectionManagerImpl;
@@ -12,10 +14,10 @@ import mdb.core.db.query.IQuery;
 import mdb.core.db.query.impl.Query;
 import mdb.core.db.query.paging.IQueryPaging;
 import mdb.core.db.query.paging.impl.OraQueryPaging;
-import mdb.core.shared.transformation.IDataTransformation;
-import mdb.core.shared.transformation.IRequestSerialiser;
-import mdb.core.shared.transformation.impl.JSONRequestSerialiser;
-import mdb.core.shared.transformation.impl.JSONTransformation;
+import mdb.core.shared.transformation.mdbrequest.IRequestSerialiser;
+import mdb.core.shared.transformation.mdbrequest.JSONRequestSerialiser;
+import mdb.core.shared.transformation.sql.IResultSetSerializer;
+import mdb.core.shared.transformation.sql.ResultSetManualSerializerImpl;
 import mdb.gateway.IRequestAnalyzer;
 import mdb.gateway.RequestAnalyzer;
 
@@ -39,17 +41,21 @@ public class DefaultInjectConfiguration implements Module, IInjectConfiguration 
 		binder.bind(IConnectionManager.class)
 		.to(ServerConectionManagerImpl.class);
 		//.in(Scopes.SINGLETON);
+
+	///	binder.bind(IMdbQueryPreparator.class)
+	///.to(MdbQueryJpaPreparator.class);
+
 		
-		binder.bind(IQueryPool.class)
-		.to(QueryPool.class);
+		//binder.bind(IQueryPool.class)
+		//.to(QueryPool.class);
 		//.in(Scopes.SINGLETON);
 		
 		binder.bind(IEntityDataAccess.class)
 		.to(EntityDataAccess.class);
 		//.in(Scopes.SINGLETON);
 		
-		binder.bind(IDataTransformation.class)
-		.to(JSONTransformation.class);
+		binder.bind(IResultSetSerializer.class)
+		.to(ResultSetManualSerializerImpl.class);
 		//.in(Scopes.SINGLETON);		
 		
 		binder.bind(IRequestSerialiser.class)

@@ -3,6 +3,7 @@ package mdb.core.db.connection;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.logging.Logger;
 
 import com.google.inject.Inject;
 
@@ -10,6 +11,8 @@ import mdb.core.config.IAppConfig;
 
 public class LocalConnectionManagerImpl extends ConnectionManager {
 
+	private static final Logger _logger = Logger.getLogger(LocalConnectionManagerImpl.class.getCanonicalName());
+	
 	@Inject
 	public LocalConnectionManagerImpl(IAppConfig aAppConfig) {
 		super(aAppConfig);
@@ -20,18 +23,24 @@ public class LocalConnectionManagerImpl extends ConnectionManager {
 	public Connection getConnectionByName(String name) {
 		return getConnection();
 	}
+	
+	
 
 	@Override
 	public Connection getConnection() {
 		Connection toReturn = null;
- 
-
 		
-			
-		   String url = "jdbc:mysql://localhost/test?user="
-		                   + getAppConfig().GetUserName()
-		                   + "&password="
-		                   + getAppConfig().GetUserPwd();
+		String host = "10.91.64.73";
+		String port = "1527";
+		String sid = "wfw1ua10";
+		
+		 String url = String.format("jdbc:oracle:thin:%s/%s@%s:%s:%s",
+				getAppConfig().GetUserName(),
+				getAppConfig().GetUserPwd(),
+				host, port, sid);
+		
+		   
+		 _logger.info("Connection url="+url);
 		   
 		   try {
 			Class.forName (getAppConfig().getJdbcDataSourceName()).newInstance ();

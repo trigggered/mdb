@@ -16,8 +16,8 @@ public interface IEntityDataAccess {
 	 public void changeData(RequestEntity entity);
 	 
 	 
-	 public String getTransformedData(Integer aEntityId, Params aParams);
-	 public String getTransformedData(Integer aEntityId);
+//	 public String getTransformedData(Integer aEntityId, Params aParams);
+//	 public String getTransformedData(Integer aEntityId);
 	/**
 	 * @param requestEntity
 	 * @return 

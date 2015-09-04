@@ -16,8 +16,8 @@ import javax.jws.WebService;
 
 import mdb.core.shared.gw.mdb.IMdbGatewayServiceRemote;
 import mdb.core.shared.logger.MdbLogger;
-import mdb.core.shared.transformation.IRequestSerialiser;
-import mdb.core.shared.transformation.impl.JSONRequestSerialiser;
+import mdb.core.shared.transformation.mdbrequest.IRequestSerialiser;
+import mdb.core.shared.transformation.mdbrequest.JSONRequestSerialiser;
 import mdb.core.shared.transport.Request;
 import mdb.core.shared.utils.comparator.ComparatorByPosition;
 import mdb.core.shared.utils.zip.GZipHelper;

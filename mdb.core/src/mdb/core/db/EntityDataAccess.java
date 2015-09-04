@@ -1,11 +1,9 @@
 package mdb.core.db;	
 	
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.ejb.EJB;
@@ -15,13 +13,11 @@ import javax.interceptor.Interceptors;
 import mdb.core.db.query.IQuery;
 import mdb.core.db.query.paging.IQueryPaging;
 import mdb.core.shared.data.Params;
-import mdb.core.shared.transformation.IDataTransformation;
-import mdb.core.shared.transformation.impl.JSONTransformation;
+import mdb.core.shared.transformation.json.JSONTransformation;
 import mdb.core.shared.transport.ChangedData;
 import mdb.core.shared.transport.RequestEntity;
 import mdb.injector.InjectingInterceptor;
 
-import com.google.inject.Inject;
 
 
 	
@@ -33,14 +29,7 @@ import com.google.inject.Inject;
 	  
 	  @EJB
 	  private IQueryPool _queryPool;	  
-	  
-	  private IDataTransformation _dataTransformation;
-	  
-	  @Inject
-	  public void setDataTransformation (IDataTransformation value) {
-		  _dataTransformation = value;
-	  }	
-	  
+	
 	  
 	  public IQueryPool getQueryPool () {
 		  return _queryPool;
@@ -70,35 +59,7 @@ import com.google.inject.Inject;
 	}	 
 
 
-	/* (non-Javadoc)
-	 * @see mdb.core.db.IDataAccess#getTransformedData(java.lang.Integer, mdb.core.db.params.Params)
-	 */
-	@Override
-	public String getTransformedData(Integer aEntityId, Params aParams) {
-		ResultSet rs = getResultSet(aEntityId, aParams);
-		_logger.log(Level.INFO, "ResultSet receive");
-		String result = _dataTransformation.make(rs);
-		_logger.log(Level.INFO, "ResultSet converted ");
-		try {
-			rs.close();
-			_logger.log(Level.INFO, "ResultSet closed");
-		} catch (SQLException e) {
-			_logger.log(Level.INFO, "Error till close ResultSet");
-			e.printStackTrace();
-		}
-		
-		return result;
-	}
-
-
-	/* (non-Javadoc)
-	 * @see mdb.core.db.IDataAccess#getTransformedData(java.lang.Integer)
-	 */
-	@Override
-	public String getTransformedData(Integer aEntityId) {
-		return getTransformedData(aEntityId,  null);
-	}
-
+	
 	/* (non-Javadoc)
 	 * @see mdb.core.db.IEntityDataAccess#getResultSet(mdb.core.shared.transport.RequestEntity)
 	 */
@@ -201,31 +162,7 @@ import com.google.inject.Inject;
 		}
 		return null;		
 	}
-	
-	
-/*
-	private static Params json2Params(String value) {
-		Params toReturn =  new Params();	
-		  		
-		Map<String,String> map =  json2Map (value);
-		
-		for (Entry<String, String>  entry : map.entrySet()) {
-			 toReturn.add(entry.getKey(), entry.getValue());
-		}				
-		return toReturn;
-	}
-	
-	
-	private static Map<String,String>  json2Map(String value) {		
-		Map<String,String> toReturn ;
-		if (value !=null) {
-			Type mapType = new TypeToken<Map<String,String>>(){}.getType();				 
-			toReturn = new Gson().fromJson(value.replaceAll("true", "1").replaceAll("false", "0"), mapType);			
-		}		
-		else toReturn = new HashMap<String, String>();
-		return toReturn;
-	}
-*/
+
 
 
 	/* (non-Javadoc)
@@ -239,10 +176,7 @@ import com.google.inject.Inject;
 	
 	public IQuery prepareQuery(RequestEntity entity) {
 		
-		 if ( _dataTransformation ==null) {
-			_logger.severe("NULL"); 
-		 }		 
-		 
+	
 			IQuery query = getQuery(entity.getEntityId());
 			IQueryPaging paging = query.getQueryPaging();
 			

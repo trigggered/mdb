@@ -16,5 +16,22 @@ public interface IQueryPool {
 	public IQuery getQuery(int entityID);	
 	
 	public IQuery getEmptyQuery(int anDEntityID);
+
+	/**
+	 * @param entityID
+	 * @return
+	 */
+	IQuery getQueryFromPool(int entityID);
+
+	/**
+	 * @param entityId
+	 * @return
+	 */
+	IQuery createQuery(int entityId);
+
+	/**
+	 * 
+	 */
+	void closeAll();
 	
 }
